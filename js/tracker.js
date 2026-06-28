@@ -96,7 +96,7 @@ saveProfileBtn?.addEventListener("click", async () => {
     const name = document.getElementById("editName").value.trim();
     const bio = document.getElementById("editBio").value.trim();
     const social = document.getElementById("editSocial").value.trim();
-    const image = editAvatarPreview.src;
+    const file = avatarInput.files[0];
 
     console.log("USER ID :", userId);
 
@@ -108,6 +108,35 @@ saveProfileBtn?.addEventListener("click", async () => {
         profile_image: image
     });
 
+    const file = avatarInput.files[0];
+
+let imageUrl = document.getElementById("profileUserImage").src;
+
+// Kalau user memilih gambar baru
+if (file) {
+    const fileExt = file.name.split(".").pop();
+    const filePath = `${userId}/profile.${fileExt}`;
+
+    // Upload ke Storage
+    const { error: uploadError } = await supabaseClient.storage
+        .from("avatars")
+        .upload(filePath, file, {
+            upsert: true
+        });
+
+    if (uploadError) {
+        alert(uploadError.message);
+        return;
+    }
+
+    // Ambil Public URL
+    const { data } = supabaseClient.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+    imageUrl = data.publicUrl;
+}
+    
     const { data, error } = await supabaseClient
         .from("artist_profiles")
         .upsert(
@@ -116,7 +145,7 @@ saveProfileBtn?.addEventListener("click", async () => {
                 display_name: name,
                 bio: bio,
                 medsos: social,
-                profile_image: image
+                profile_image: imageUrl
             },
             {
                 onConflict: "user_id"
@@ -135,7 +164,7 @@ saveProfileBtn?.addEventListener("click", async () => {
     // update UI
     document.getElementById("profileName").textContent = name;
     document.getElementById("profileBio").textContent = bio;
-    document.getElementById("profileUserImage").src = image;
+    document.getElementById("profileUserImage").src = imageUrl;
 
     editProfileModal.style.display = "none";
 
