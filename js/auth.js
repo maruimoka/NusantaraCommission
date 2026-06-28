@@ -131,4 +131,22 @@ function updateDots(){
 const params = new URLSearchParams(window.location.search);
 const username = params.get("user");
 
+async function checkLogin() {
 
+    const { data } = await supabaseClient.auth.getSession();
+
+    if (data.session) {
+
+        loginBtn.style.display = "none";
+        profileMenu.style.display = "flex";
+
+    } else {
+
+        loginBtn.style.display = "block";
+        profileMenu.style.display = "none";
+
+    }
+
+}
+
+checkLogin();
