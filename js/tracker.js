@@ -173,7 +173,7 @@ async function initTracker() {
 
             <div class="card-left">
 
-                <h4>${item.artist?.username ?? "-"}</h4>
+                <h4>${item.artist?.display_name ?? "-"}</h4>
 
                 <div class="commission-name">
                     <span>${item.artwork?.title ?? "-"}</span>
