@@ -1,107 +1,98 @@
+// =========================
+// ELEMENT
+// =========================
+
 const previewModal =
 document.getElementById("previewModal");
 
 const closePreview =
 document.getElementById("closePreview");
 
-closePreview.addEventListener("click", () => {
+
+// =========================
+// CLOSE
+// =========================
+
+closePreview.onclick = () => {
 
     previewModal.style.display = "none";
 
-});
+};
 
-function openPreview(data){
 
-    // =========================
-    // Kalau dari Supabase
-    // =========================
+window.onclick = (e) => {
 
-    if(data.image_url){
+    if (e.target === previewModal) {
 
-        document.getElementById("modalImage").src =
-            data.image_url;
-
-        document.getElementById("modalTitle").textContent =
-            data.title;
-
-        const price =
-        document.querySelector(".modal-price");
-
-        if(price){
-
-            price.textContent =
-                data.price ?? "-";
-
-        }
-
-        const desc =
-        document.querySelector(".description-box p");
-
-        if(desc){
-
-            desc.textContent =
-                data.description ?? "";
-
-        }
-
-        const artist =
-        document.querySelector(".modal-artist");
-
-        if(artist){
-
-            artist.textContent =
-                data.artist_profiles?.display_name ?? "Unknown Artist";
-
-        }
-
-        const avatar =
-        document.querySelector(".artist-avatar img");
-
-        if(avatar){
-
-            avatar.src =
-                data.artist_profiles?.profile_image ??
-                "asset/imagesbanner1.png";
-
-        }
+        previewModal.style.display = "none";
 
     }
 
-    // =========================
-    // Kalau dari HTML Card lama
-    // =========================
+};
 
-    else{
 
-        const artImage =
-            data.querySelector(".art-image img").src;
+// =========================
+// OPEN PREVIEW
+// =========================
 
-        const artTitle =
-            data.querySelector("h3").textContent;
+function openPreview(card){
 
-        const artistName =
-            data.querySelector(".artist-info span").textContent;
+    const artwork = card.artwork;
 
-        document.getElementById("modalImage").src =
-            artImage;
+    const artist = card.artist;
 
-        document.getElementById("modalTitle").textContent =
-            artTitle;
+    // Image
 
-        const artist =
-        document.querySelector(".modal-artist");
+    document.getElementById("modalImage").src =
+        artwork.image_url;
 
-        if(artist){
+    // Title
 
-            artist.textContent =
-                artistName;
+    document.getElementById("modalTitle").textContent =
+        artwork.title;
 
-        }
+    // Price
 
-    }
+    document.getElementById("modalPrice").textContent =
+        artwork.category === "commission"
+        ? artwork.price
+        : "Gallery";
+
+    // Description
+
+    document.getElementById("modalDescription").textContent =
+        artwork.description || "-";
+
+    // Artist Avatar
+
+    document.getElementById("modalArtistAvatar").src =
+        artist?.profile_image ||
+        "asset/imagesbanner1.png";
+
+    // Artist Name
+
+    const artistLink =
+    document.getElementById("modalArtist");
+
+    artistLink.textContent =
+        artist?.display_name ||
+        "Unknown Artist";
+
+    // (Nanti Part 5 kita isi link profile)
+
+    artistLink.href = "#";
+
+    // Simpan artwork aktif untuk Order
+
+    window.currentArtwork = artwork;
+
+    // Show Modal
 
     previewModal.style.display = "flex";
 
 }
+
+
+// supaya bisa dipanggil homepage.js
 
 window.openPreview = openPreview;
