@@ -148,7 +148,7 @@ async function initTracker() {
         .select(`
             *,
             artist:artist_id (
-                username,
+                display_name,
                 profile_image
             ),
             artwork:artwork_id (
