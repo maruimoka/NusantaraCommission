@@ -1,5 +1,5 @@
 const galleryGrid =
-document.getElementById("gallery-grid");
+document.getElementById("galleryGrid");
 
 let allArtwork = [];
 
