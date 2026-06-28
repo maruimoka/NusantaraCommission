@@ -12,6 +12,11 @@ loginBtn.addEventListener("click", () => {
     loginModal.style.display = "flex";
 });
 
+if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+        loginModal.style.display = "flex";
+    });
+}
 
 // Close Button
 const closeLogin = document.getElementById("closelogin");
@@ -91,7 +96,7 @@ const { error: profileError } = await supabaseClient
 {
     user_id: user.id,
     display_name: username
-}]);
+});
 
 console.log(profileError);
 });   // <-- HARUS ADA INI
