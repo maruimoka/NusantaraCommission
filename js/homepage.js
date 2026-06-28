@@ -79,49 +79,36 @@ function renderCard(
 
     card.className = "art-card";
 
-    card.innerHTML = `
+card.innerHTML = `
+    <div class="art-image">
+        <img src="${artwork.image_url}">
+    </div>
 
-        <div class="art-image">
-
-            <img
-                src="${artwork.image_url}"
-                alt="${artwork.title}">
-
-        </div>
+    <div class="card-content">
 
         <span class="tag ${artwork.category}">
-
             ${artwork.category.toUpperCase()}
-
         </span>
 
         <h3>
-
             ${artwork.title}
-
         </h3>
 
         <div class="artist-info">
 
             <img
                 class="artist-avatar"
-                src="${
-                    artist?.profile_image ||
-                    "asset/imagesbanner1.png"
-                }">
+                src="${artist.profile_image || "asset/imagesbanner1.png"}"
+            >
 
             <span>
-
-                ${
-                    artist?.display_name ||
-                    "Unknown Artist"
-                }
-
+                ${artist.display_name}
             </span>
 
         </div>
 
-    `;
+    </div>
+`;
 
     // Simpan data untuk Preview
 
