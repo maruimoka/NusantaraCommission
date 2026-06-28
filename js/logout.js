@@ -1,65 +1,89 @@
-async function checkSession(){
+// =======================
+// CHECK SESSION
+// =======================
+async function checkSession() {
+    const { data, error } = await supabaseClient.auth.getSession();
 
-    const { data } =
-    await supabaseClient.auth.getSession();
-
-    if(!data.session){
-
-        window.location.href = "index.html";
-
+    if (error) {
+        console.log("Session error:", error);
+        return;
     }
 
+    if (!data.session) {
+        window.location.href = "index.html";
+    }
 }
 
 checkSession();
 
 
-
-//LOGOUT
+// =======================
+// LOGOUT MODAL ELEMENTS (SAFE)
+// =======================
 const logoutBtn = document.getElementById("logoutBtn");
 const logoutModal = document.getElementById("logoutModal");
-
 const closeLogout = document.querySelector(".close-logout");
 const cancelLogout = document.getElementById("cancelLogout");
 const confirmLogout = document.getElementById("confirmLogout");
 
-logoutBtn.addEventListener("click", () => {
 
-    logoutModal.style.display = "flex";
+// =======================
+// OPEN MODAL
+// =======================
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        logoutModal.style.display = "flex";
+    });
+}
 
+
+// =======================
+// CLOSE MODAL (X BUTTON)
+// =======================
+if (closeLogout) {
+    closeLogout.addEventListener("click", () => {
+        logoutModal.style.display = "none";
+    });
+}
+
+
+// =======================
+// CANCEL BUTTON
+// =======================
+if (cancelLogout) {
+    cancelLogout.addEventListener("click", () => {
+        logoutModal.style.display = "none";
+    });
+}
+
+
+// =======================
+// CLICK OUTSIDE MODAL
+// =======================
+window.addEventListener("click", (e) => {
+    if (e.target === logoutModal) {
+        logoutModal.style.display = "none";
+    }
 });
 
-closeLogout.addEventListener("click", () => {
 
-    logoutModal.style.display = "none";
+// =======================
+// CONFIRM LOGOUT
+// =======================
+if (confirmLogout) {
+    confirmLogout.addEventListener("click", async () => {
 
-});
+        const { error } = await supabaseClient.auth.signOut();
 
-cancelLogout.addEventListener("click", () => {
+        if (error) {
+            alert(error.message);
+            return;
+        }
 
-    logoutModal.style.display = "none";
-
-});
-
-window.addEventListener("click", (e)=>{
-
-    if(e.target === logoutModal){
-
+        // tutup modal dulu
         logoutModal.style.display = "none";
 
-    }
-
-});
-
-confirmLogout.addEventListener("click", async () => {
-
-    const { error } = await supabaseClient.auth.signOut();
-
-    if(error){
-        alert(error.message);
-        return;
-    }
-
-    window.location.href = "index.html";
-
-});
+        // redirect
+        window.location.href = "index.html";
+    });
+}
