@@ -74,23 +74,53 @@ avatarInput?.addEventListener("change", function () {
 // ======================
 // SAVE PROFILE (UI ONLY - kalau DB sudah di auth.js)
 // ======================
-saveProfileBtn?.addEventListener("click", () => {
+saveProfileBtn?.addEventListener("click", async () => {
 
-    document.getElementById("profileName").textContent =
-        document.getElementById("editName").value;
+    const user = await supabaseClient.auth.getUser();
 
-    document.getElementById("profileBio").textContent =
-        document.getElementById("editBio").value;
+    if (!user.data?.user) {
+        alert("User tidak login");
+        return;
+    }
 
-    document.getElementById("profileUserImage").src =
-        document.getElementById("editAvatarPreview").src;
+    const userId = user.data.user.id;
+
+    const name = document.getElementById("editName").value;
+    const bio = document.getElementById("editBio").value;
+    const social = document.getElementById("editSocial").value;
+    const image = document.getElementById("editAvatarPreview").src;
+
+    const { error } = await supabaseClient
+        .from("artist_profile")
+        .update({
+            display_name: name,
+            bio: bio,
+            social: social,
+            profile_image: image
+        })
+        .eq("user_id", userId);
+
+    if (error) {
+        console.log("UPDATE ERROR:", error);
+        alert(error.message);
+        return;
+    }
+
+    // update UI juga
+    document.getElementById("profileName").textContent = name;
+    document.getElementById("profileBio").textContent = bio;
+    document.getElementById("profileUserImage").src = image;
 
     editProfileModal.style.display = "none";
 
-    if (typeof showToast === "function") {
-        showToast();
-    }
+    alert("Profile berhasil disimpan!");
+
+    console.log("USER ID:", user.data.user.id);
+
+    console.log("UPDATE TRIGGERED");
 });
+
+
 
 
 // ======================
