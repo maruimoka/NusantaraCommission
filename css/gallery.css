@@ -1,0 +1,411 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    padding-top:90px;
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+}
+
+/* NAVBAR */
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display:flex;
+    width: 100%;
+    justify-content:space-between;
+    align-items:center;
+    padding: 15px 30px;
+    background:white;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+/*logo*/
+.logo img {
+    width: 279px; 
+    height: 97px; 
+    align-items:left;
+}
+/* Tombol Contact Me & Newa */
+.nav-links{
+    display:flex;
+    gap:50px;
+    list-style:none;
+    align-items:top;
+    padding:20px 0;
+    font-size:20px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#e44949;
+    font-weight:bold;
+    align-items:top;
+    padding: 20px 0;
+    opacity: 50%;
+    transition: opacity 0.3s;
+}
+
+.nav-links1{
+    display:flex;
+    gap:50px;
+    list-style:none;
+    align-items:top;
+    padding:20px 0;
+    font-size:20px;
+}
+
+.nav-links1 a{
+    text-decoration:none;
+    color:#e44949;
+    font-weight:bold;
+    align-items:top;
+    padding: 20px 0;
+    opacity: 50%;
+    transition: opacity 0.3s;
+}
+
+.nav-links a:hover{
+    opacity: 100%; 
+    font-weight: bold;              
+}
+
+/*search bar*/
+.search-bar{
+    position: relative;
+    width: 396px;
+    height: 56px;
+    align-items:right;
+    align-items:top;
+}
+
+.search-bar input{
+    width: 100%;
+    padding: 20px 30px 20px 60px; /* beri ruang kiri untuk icon */
+    border: none;
+    border-radius: 20px;
+    background: #eee;
+    font-size: 20px;
+    box-sizing: border-box;
+}
+
+.search-bar i{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+}
+
+.logout-btn{
+
+    width:81px;
+    height:76px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:#E3E0E0;
+
+    color:white;
+
+    font-size:28px;
+
+    transition:.25s;
+
+}
+
+.logout-btn i{
+
+    font-size:42px;
+
+    color:#555;
+}
+
+
+
+/*tombol login pojok*/
+.login-btn{
+    background:#ff3b3b;
+    color:white;
+    border:none;
+    padding:12px 35px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:20px;
+    opacity: 50%;
+    transition: opacity 0.3s;
+}
+
+.login-btn:hover{
+    background:#ff3b3b;
+    color:white;
+    border:none;
+    padding:12px 35px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:20px;
+    opacity: 100%;
+}
+
+.profile-menu{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    background:#ececec;
+
+    border-radius:30px;
+
+    padding:10px 15px;
+}
+
+.profile-dropdown{
+
+    position:absolute;
+
+    margin-top:30px;
+
+     margin-right:30px;
+
+    top:55px;
+
+    right:0;
+
+    width:170px;
+
+    background:white;
+
+    border-radius:8px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    display:none;
+
+    overflow:hidden;
+
+    z-index:999;
+}
+
+.profile-dropdown a{
+
+    display:block;
+
+    padding:16px;
+
+    text-decoration:none;
+
+    color:#ff6d6d;
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    transition:.2s;
+}
+
+.profile-dropdown a:hover{
+
+    background:#f5f5f5;
+}
+
+.profile-menu:hover .profile-dropdown{
+
+    display:block;
+
+}
+
+.profile-avatar{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+}
+
+.profile-avatar img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+}
+
+.menu-btn{
+
+    border:none;
+
+    background:transparent;
+
+    cursor:pointer;
+}
+
+.menu-btn i{
+
+    font-size:28px;
+
+    color:#555;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.post-btn{
+    width:180px;
+    height:56px;
+
+    border:none;
+    border-radius:16px;
+
+    background:#FF4D4D;
+    color:white;
+
+    font-size:28px;
+    font-weight:700;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:14px;
+
+    cursor:pointer;
+}
+
+.post-btn i{
+    font-size:26px;
+}
+
+
+/* HERO */
+
+.hero-banner{
+    width:100%;
+    height:311px;
+    overflow:hidden;
+    position:relative;
+}
+
+.slider{
+    width:100%;
+    height:100%;
+    position:relative;
+}
+
+.slide{
+    position:absolute;
+    inset:0;
+
+    opacity:0;
+    transition:opacity 1s ease-in-out;
+
+    z-index:1;
+}
+
+.slide.active{
+    opacity:1;
+    z-index:2;
+}
+
+.slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* DOT */
+.slider-indicator{
+   display:flex;
+   justify-content:center;
+   gap: 12px;
+   margin-top: 20px;
+   margin-bottom: 20px;
+
+}
+
+.dot{
+    width:14px;
+    height:14px;
+
+    border-radius:50%;
+
+    background:#ddd;
+
+    transition:background .3s ease;
+}
+
+.dot.active{
+    background:#777;
+}
+
+/* GALLERY */
+.gallery-section{
+    padding:40px;
+}
+
+.gallery-section h2{
+    margin-bottom:30px;
+}
+
+/* GRID */
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:40px;
+}
+
+/* CARD */
+.art-card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.art-image{
+    height:200px;
+    background:#f19a9a;
+}
+
+.tag{
+    display:inline-block;
+    margin:15px;
+    padding:8px 20px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.commission{
+    background:#7df0bb;
+}
+
+.gallery{
+    background:#86e7e7;
+}
+
+.art-card h3{
+    padding:0 15px;
+}
+
+.artist-name{
+    padding:15px;
+    color:#888;
+}
+

@@ -1,0 +1,752 @@
+.profile-banner{
+
+    height:320px;
+
+    background:#DDF8AF;
+
+}
+/* ========================= */
+/* ARTIST PROFILE */
+/* ========================= */
+
+.artist-profile{
+
+    width:90%;
+
+    margin:-90px auto 40px;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:35px;
+
+    position:relative;
+
+}
+
+/* Avatar */
+
+.profileavatar{
+
+    width:180px;
+
+    height:180px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    border:6px solid white;
+
+    flex-shrink:0;
+
+    background:#ff4040;
+
+}
+
+
+.profileavatar img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* Nama & Bio */
+
+.profile-info{
+
+    flex:1;
+
+    margin-top:70px;
+
+}
+
+.profile-info h1{
+
+    font-size:54px;
+
+    margin-bottom:10px;
+
+}
+
+.profile-info p{
+
+    font-size:24px;
+
+    color:#555;
+
+    max-width:700px;
+
+}
+
+/* Following & Followers */
+
+.profile-stats{
+
+    display:flex;
+
+    gap:60px;
+
+    margin-top:30px;
+
+}
+
+.profile-stats span{
+
+    font-size:24px;
+
+}
+
+.profile-stats b{
+
+    font-size:46px;
+
+}
+
+.follow-btn{
+
+    margin-top:75px;
+
+    width:220px;
+
+    height:65px;
+
+    border:3px solid black;
+
+    border-radius:40px;
+
+    background:white;
+
+    font-weight:bold;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+.follow-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+.profile-tab{
+
+    display:flex;
+
+    gap:25px;
+
+    margin:35px 0;
+
+}
+
+.profile-tab button{
+
+    width:240px;
+
+    height:60px;
+
+    border:none;
+
+    border-radius:40px;
+
+    background:#F5F5F5;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.profile-tab button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.profile-tab button.active{
+
+    background:#F15B5B;
+
+    color:white;
+
+}
+
+.profile-tab button.active{
+
+    background:#F15B5B;
+
+    color:white;
+
+}
+
+.card-container{
+
+    width:90%;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:30px;
+
+}
+
+
+
+.grid{
+
+width:90%;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+padding:30px 0;
+
+}
+
+.card{
+
+background:white;
+
+border-radius:20px;
+
+overflow:hidden;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.card img{
+
+width:100%;
+
+height:250px;
+
+object-fit:cover;
+
+}
+
+.card-body{
+
+padding:18px;
+
+}
+
+.tag{
+
+display:inline-block;
+
+padding:8px 18px;
+
+border-radius:20px;
+
+background:#67F0A4;
+
+font-weight:bold;
+
+margin-bottom:15px;
+
+}
+
+.card h3{
+
+margin-bottom:12px;
+
+}
+
+.card p{
+
+color:#777;
+
+}
+
+.ordertrack{
+
+    margin-top:75px;
+
+    margin-left:auto;
+
+    display:block;
+
+    width:220px;
+
+    height:65px;
+
+    border:3px solid black;
+
+    border-radius:40px;
+
+    background:white;
+
+    font-weight:bold;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+.ordertrack:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.preview-layout{
+    display:flex;
+    gap:30px;
+}
+
+.preview-left{
+    width:45%;
+}
+
+.preview-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:20px;
+}
+
+.preview-right{
+    width:55%;
+}
+
+.preview-button{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-top:40px;
+}
+
+.edit-btn{
+    width:280px;
+    height:60px;
+
+    border:none;
+    border-radius:14px;
+
+    background:#FF4A4A;
+    color:white;
+
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:5px;
+
+    cursor:pointer;
+    transition:.25s;
+}
+
+.edit-btn:hover{
+    background:#ff2d2d;
+    transform:translateY(-2px);
+}
+
+.delete-btn{
+    width:60px;
+    height:60px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#E8E8E8;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+    transition:.25s;
+}
+
+.delete-btn i{
+    font-size:28px;
+    color:#222;
+}
+
+.delete-btn:hover{
+    background:#d8d8d8;
+    transform:translateY(-2px);
+}
+
+.edit-modal{
+
+    width:700px;
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    background:white;
+
+}
+
+.edit-modal::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.edit-modal::-webkit-scrollbar-thumb{
+
+    background:#d3d3d3;
+
+    border-radius:20px;
+
+}
+
+.edit-modal::-webkit-scrollbar-thumb:hover{
+
+    background:#b5b5b5;
+
+}
+
+.edit-tab{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.edit-tab button{
+
+    width:210px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#ececec;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.edit-tab button.active{
+
+    background:#FF4040;
+
+    color:white;
+
+}
+
+.upload-box{
+
+    height:280px;
+
+    border:2px dashed #cfcfcf;
+
+    border-radius:18px;
+
+    overflow:hidden;
+}
+
+.upload-label{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    cursor:pointer;
+
+}
+
+.upload-label i{
+
+    font-size:70px;
+
+    color:#ff7f7f;
+
+    margin-bottom:15px;
+
+}
+
+.edit-modal label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    margin-top:15px;
+
+    font-weight:bold;
+
+}
+
+.image-preview{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.edit-modal input,
+
+.edit-modal textarea{
+
+    width:100%;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    padding:15px;
+
+    font-size:18px;
+
+    box-sizing:border-box;
+
+}
+
+.edit-modal textarea{
+
+    height:180px;
+
+    resize:none;
+
+}
+
+.save-btn{
+
+    margin-top:25px;
+
+    float:right;
+
+    width:180px;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#FF4040;
+
+    color:white;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+#toast{
+
+    position:fixed;
+
+    top:30px;
+    right:30px;
+
+    background:#3CB371;
+    color:white;
+
+    padding:15px 25px;
+
+    border-radius:10px;
+
+    opacity:0;
+
+    transition:.3s;
+
+    z-index:9999;
+
+}
+
+#toast.show{
+
+    opacity:1;
+
+}
+
+#postUploadContent{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    width:100%;
+    height:100%;
+}
+
+#postUploadContent h3{
+    margin-top:18px;
+    margin-bottom:10px;
+
+    font-size:20px;
+    font-weight:700;
+}
+
+#postUploadContent p{
+    margin:0;
+    font-size:18px;
+}
+
+#postUploadContent{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    width:100%;
+    height:100%;
+}
+
+#postUploadContent h3{
+    margin-top:18px;
+    margin-bottom:10px;
+
+    font-size:20px;
+    font-weight:700;
+}
+
+#postUploadContent p{
+    margin:0;
+    font-size:18px;
+}
+
+.post-modal label{
+
+    display:block;
+
+    margin-top:18px;
+    margin-bottom:8px;
+
+    font-size:18px;
+    font-weight:700;
+
+}
+
+.post-modal input,
+.post-modal textarea{
+
+    width:100%;
+
+    padding:15px;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+
+    font-size:18px;
+
+    box-sizing:border-box;
+}
+
+.post-modal textarea{
+
+    height:180px;
+
+    resize:none;
+}
+
+.post-modal .save-btn{
+
+    margin-top:25px;
+
+    float:right;
+
+    width:180px;
+    height:55px;
+}
+
+.preview-upload-image{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:18px;
+
+}
+
+.post-modal{
+
+    width:700px;
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    background:white;
+
+}
+
+.post-modal::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.post-modal::-webkit-scrollbar-thumb{
+
+    background:#d3d3d3;
+
+    border-radius:20px;
+
+}
+
+.post-modal::-webkit-scrollbar-thumb:hover{
+
+    background:#bdbdbd;
+
+}

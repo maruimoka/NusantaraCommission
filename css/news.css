@@ -1,0 +1,39 @@
+.News{
+
+    width:85%;
+    margin:60px auto;
+
+}
+
+.News h1{
+
+    font-size:48px;
+    margin-bottom:50px;
+    border-bottom:3px solid black;
+    display:inline-block;
+
+}
+
+.News-item{
+
+    display:flex;
+    align-items:center;
+    gap:30px;
+
+    margin-bottom:60px;
+
+}
+
+.News-item img{
+
+    width:70px;
+    height:60px;
+
+}
+
+.News-item span{
+
+    font-size:34px;
+    font-weight:600;
+
+}

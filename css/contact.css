@@ -1,0 +1,41 @@
+
+
+.contact{
+
+    width:85%;
+    margin:60px auto;
+
+}
+
+.contact h1{
+
+    font-size:48px;
+    margin-bottom:50px;
+    border-bottom:3px solid black;
+    display:inline-block;
+
+}
+
+.contact-item{
+
+    display:flex;
+    align-items:center;
+    gap:30px;
+
+    margin-bottom:60px;
+
+}
+
+.contact-item img{
+
+    width:70px;
+    height:60px;
+
+}
+
+.contact-item span{
+
+    font-size:34px;
+    font-weight:600;
+
+}

@@ -1,0 +1,243 @@
+.artist-banner{
+
+    width:100%;
+    height:320px;
+    overflow:hidden;
+
+}
+
+.artist-banner img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+}
+
+.artist-profile{
+
+    width:90%;
+    margin:auto;
+    margin-top:-70px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.profile-left{
+
+    display:flex;
+    align-items:center;
+    gap:35px;
+
+}
+
+.profile-avatar{
+
+    width:170px;
+    height:170px;
+
+    border-radius:50%;
+    overflow:hidden;
+
+    border:6px solid white;
+
+}
+
+.profile-avatar img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+}
+
+.profile-detail h1{
+
+    font-size:52px;
+    margin-bottom:10px;
+
+}
+
+.profile-detail p{
+
+    width:520px;
+    font-size:28px;
+
+}
+
+.profile-stats{
+
+    display:flex;
+    gap:60px;
+
+    margin-top:30px;
+
+}
+
+.profile-stats div{
+
+    font-size:22px;
+
+}
+
+.profile-stats b{
+
+    font-size:42px;
+
+}
+
+.order-btn{
+
+    width:220px;
+    height:65px;
+
+    border-radius:40px;
+
+    border:2px solid #444;
+
+    background:white;
+
+    font-size:20px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.artist-tabs{
+
+    width:90%;
+    margin:45px auto;
+
+    display:flex;
+    gap:25px;
+
+}
+
+.artist-tabs button{
+
+    width:270px;
+    height:65px;
+
+    border:none;
+    border-radius:40px;
+
+    font-size:22px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.artist-tabs button.active{
+
+    background:#ff4444;
+    color:white;
+
+}
+
+.artist-tabs button:not(.active){
+
+    background:#f5f5f5;
+
+}
+
+.card-grid{
+
+    width:90%;
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:40px;
+
+}
+
+.art-card{
+
+    background:white;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:
+    0 5px 18px rgba(0,0,0,.08);
+
+}
+
+.art-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.art-image{
+
+    height:320px;
+
+}
+
+.art-image img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.art-body{
+
+    padding:22px;
+
+}
+
+.label.commission{
+
+    background:#6DFFA7;
+
+    color:black;
+
+}
+
+.label.gallery{
+
+    background:#7BC8FF;
+
+    color:white;
+
+}
+
+.art-title{
+
+    font-size:28px;
+    font-weight:bold;
+
+    margin:18px 0;
+
+}
+
+.artist-name{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:#777;
+
+    font-size:22px;
+
+}

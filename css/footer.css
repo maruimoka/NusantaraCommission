@@ -1,0 +1,48 @@
+/* ================= FOOTER ================= */
+
+footer{
+
+    background:#3b3b3b;
+    color:white;
+
+    margin-top:80px;
+
+}
+
+.footer-content{
+
+    width:85%;
+    margin:auto;
+
+    padding:50px 0;
+
+}
+
+.footer-content ul{
+
+    list-style:disc;
+
+}
+
+.footer-content li{
+
+    font-size:28px;
+    margin:25px 0;
+
+    letter-spacing:4px;
+
+}
+
+footer p{
+
+    text-align:center;
+
+    background:#222;
+
+    padding:25px;
+
+    font-size:22px;
+
+    letter-spacing:3px;
+
+}

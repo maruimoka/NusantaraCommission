@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/tracker.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                <a href="index.html">
+                    <img src="asset/logo.png">
+                </a>
+            </div>
+
+        <button id="logoutBtn" class="logout-btn">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+
+    </nav>
+    </header>
+
+<!-- Logout Modal -->
+<div class="logout-modal" id="logoutModal">
+
+    <div class="logout-box">
+
+        <span class="close-logout">&times;</span>
+
+        <h2>
+            You sure want to <br>
+            Log Out?
+        </h2>
+
+        <button class="yes-btn" id="confirmLogout">
+            Yes
+        </button>
+
+        <button class="no-btn" id="cancelLogout">
+            No
+        </button>
+
+    </div>
+
+</div>
+
+
+    <!-- Profile Section -->
+    <section class="profile-header">
+
+       <div class="profileUser-avatar">
+
+        <img src="asset/imagesbanner1.png"
+         id="profileUserImage"> 
+        </div>
+
+        <div class="profile-info">
+        <h1 id="profileName">
+            Momo Tropical
+        </h1>
+        <p id="profileBio">
+            Just came here for order my delulu~
+        </p>
+
+        </div>
+
+        <button
+class="edit-profile-btn"
+id="openEditProfile">
+    EDIT PROFILE
+</button>
+
+    </section>
+
+    <!-- Order Tracker -->
+ <section class="tracker-wrapper">
+
+    <!-- KIRI -->
+    <div class="tracker-sidebar">
+
+        <h2>• Order Status</h2>
+
+    </div>
+
+    <!-- KANAN -->
+    <div class="tracker-content">
+
+      <div class="tracker-list">
+
+        <!-- CARD 1 -->
+        <div class="tracker-card">
+
+            <div class="card-left">
+
+                <h4>KATSURU17.06</h4>
+
+                <div class="commission-name">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <span>COUPLE BUST UP COMMISSION</span>
+
+                </div>
+
+                <a href="#" class="open-tracker">
+                    • OPEN
+                </a>
+
+            </div>
+
+            <div class="card-right">
+
+                <span class="status finish">
+                    FINISH
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 2 -->
+        <div class="tracker-card">
+
+            <div class="card-left">
+
+                <h4>TROPICAL MOMO</h4>
+
+                <div class="commission-name">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <span>SKETCH COMMISSION</span>
+
+                </div>
+
+            </div>
+
+            <div class="card-right">
+
+                <span class="status waiting">
+                    WAITING LIST
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 3 -->
+
+        <div class="tracker-card">
+
+            <div class="card-left">
+
+                <h4>GABRIELLA EMMA</h4>
+
+                <div class="commission-name">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <span>FULL BODY COMMISSION</span>
+
+                </div>
+
+            </div>
+
+            <div class="card-right">
+
+                <span class="status sketch">
+                    SKETCH
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- copy saja sampai 10 card -->
+
+    </div>
+
+</section>
+
+    <!-- Tracker Modal -->
+    <div class="tracker-modal" id="trackerModal">
+
+    <div class="tracker-box">
+
+        <span class="close">&times;</span>
+
+        <div class="tracker-left">
+
+            <img src="asset/imagesbanner1.png">
+
+        </div>
+
+        <div class="tracker-right">
+
+            <span class="status finish">
+                FINISH
+            </span>
+
+            <h2>COUPLE BUST UP COMMISSION</h2>
+
+            <h1>IDR 210.000</h1>
+
+            <div class="artist-info">
+
+                <div class="artist-avatar"></div>
+
+                <span>KATSURU17.06</span>
+
+            </div>
+
+            <div class="reference-file">
+
+                📄 Character A.png
+
+            </div>
+
+            <div class="reference-file">
+
+                📄 Character B.png
+
+            </div>
+
+            <button class="chatbtn">
+                CHAT
+            </button>
+
+        </div>
+
+    </div>
+
+     </div>
+    </div>
+
+
+<!-- ========================= -->
+<!-- EDIT PROFILE MODAL -->
+<!-- ========================= -->
+
+<div id="editProfileModal" class="modal">
+
+    <div class="modal-content edit-profile-modal">
+
+        <span id="closeEditProfile" class="close-btn">&times;</span>
+
+        <div class="profile-edit-header">
+
+            <div class="edit-avatar">
+
+                <img
+                    id="editAvatarPreview"
+                    src="asset/imagesbanner1.png">
+
+            </div>
+
+            <div class="edit-upload">
+
+                <input
+                    type="file"
+                    id="avatarInput"
+                    accept="image/*"
+                    hidden>
+
+                <label
+                    for="avatarInput"
+                    class="upload-avatar-btn">
+
+                    SELECT IMAGE
+
+                </label>
+
+                <p>JPG, GIF or PNG. Max size of 5MB</p>
+
+            </div>
+
+        </div>
+
+        <label>Name</label>
+
+        <input
+            type="text"
+            id="editName">
+
+        <label>Description</label>
+
+        <textarea
+            id="editBio"></textarea>
+
+        <label>Social Media</label>
+
+        <input
+            type="text"
+            id="editSocial">
+
+        <button
+            id="saveProfileBtn"
+            class="save-btn">
+
+            SAVE
+
+        </button>
+
+    </div>
+
+</div>
+
+    <script src="js/tracker.js"></script>
+    <script src="js/logout.js"></script>
+
+</body>
+</html>

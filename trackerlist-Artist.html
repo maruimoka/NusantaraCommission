@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+
+    
+    <link rel="stylesheet" href="css/tracker.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                <a href="index.html">
+                    <img src="asset/logo.png">
+                </a>
+            </div>
+
+        <button id="logoutBtn" class="logout-btn">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+
+    </nav>
+    </header>
+
+<!-- Logout Modal -->
+<div class="logout-modal" id="logoutModal">
+
+    <div class="logout-box">
+
+        <span class="close-logout">&times;</span>
+
+        <h2>
+            You sure want to <br>
+            Log Out?
+        </h2>
+
+        <button class="yes-btn" id="confirmLogout">
+            Yes
+        </button>
+
+        <button class="no-btn" id="cancelLogout">
+            No
+        </button>
+
+    </div>
+
+</div>
+
+
+    <!-- Profile Section -->
+    <section class="profile-header">
+
+       <div class="profileUser-avatar">
+
+        <img src="asset/imagesbanner1.png"
+         id="profileUserImage"> 
+        </div>
+
+        <div class="profile-info">
+        <h1 id="profileName">
+            Momo Tropical
+        </h1>
+        <p id="profileBio">
+            Just came here for order my delulu~
+        </p>
+
+        </div>
+
+    </section>
+
+    <!-- Order Tracker -->
+ <section class="tracker-wrapper">
+
+    <!-- KIRI -->
+    <div class="tracker-sidebar">
+
+        <h2>• Order Status</h2>
+
+    </div>
+
+    <!-- KANAN -->
+    <div class="tracker-content">
+
+      <div class="tracker-list">
+
+        <!-- CARD 1 -->
+        <div class="tracker-card">
+
+            <div class="card-left">
+
+                <h4>KATSURU17.06</h4>
+
+                <div class="commission-name">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <span>COUPLE BUST UP COMMISSION</span>
+
+                </div>
+
+                <a href="#" class="open-tracker">
+                    • OPEN
+                </a>
+
+            </div>
+
+            <div class="card-right">
+
+                <span class="status finish">
+                    FINISH
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 2 -->
+        <div class="tracker-card">
+
+            <div class="card-left">
+
+                <h4>TROPICAL MOMO</h4>
+
+                <div class="commission-name">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <span>SKETCH COMMISSION</span>
+
+                </div>
+                 <a href="#" class="open-tracker">
+                    • OPEN
+                 </a>
+
+            </div>
+
+            <div class="card-right">
+
+                <span class="status waiting">
+                    WAITING LIST
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 3 -->
+
+        <div class="tracker-card">
+
+            <div class="card-left">
+
+                <h4>GABRIELLA EMMA</h4>
+
+                <div class="commission-name">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <span>FULL BODY COMMISSION</span>
+
+                </div>
+                <a href="#" class="open-tracker">
+                    • OPEN
+                </a>
+
+
+            </div>
+
+            <div class="card-right">
+
+                <span class="status sketch">
+                    SKETCH
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- copy saja sampai 10 card -->
+
+    </div>
+<!-- ========================= -->
+<!-- TRACKER DETAIL MODAL -->
+<!-- ========================= -->
+
+<div id="trackerDetailModal" class="trackerModalArtist">
+
+    <div class="tracker-detail-box">
+
+        <span class="close-detail">&times;</span>
+
+        <!-- Header -->
+        <div class="detail-header">
+
+            <div class="client-profile">
+
+                <div class="client-avatar">
+                    <img src="avatar.jpg">
+                </div>
+
+                <h2 id="clientName">
+                    EMMA
+                </h2>
+
+            </div>
+
+            <div class="header-right">
+
+                <button class="chat-icon">
+                    <i class="fa-solid fa-comment"></i>
+                </button>
+
+                <button
+                    id="changeStatusBtn"
+                    class="status finish">
+
+                    FINISH
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <h1 class="commission-title">
+            COUPLE BUST UP COMMISSION
+        </h1>
+
+        <hr>
+
+        <!-- Reference -->
+
+        <label class="section-title">
+            File
+        </label>
+
+        <div class="reference-file">
+
+            <i class="fa-regular fa-file"></i>
+
+            Reff Character A.png
+
+        </div>
+
+        <div class="reference-file">
+
+            <i class="fa-regular fa-file"></i>
+
+            Reff Character B.png
+
+        </div>
+
+        <!-- Description -->
+
+        <label class="section-title">
+            Description
+        </label>
+
+        <textarea
+            class="description-area"
+            readonly>
+
+Good days...
+
+        </textarea>
+
+        <hr>
+
+        <!-- Upload -->
+
+        <h2 class="submit-title">
+
+            SUBMIT RESULT
+
+        </h2>
+
+        <div id="resultList"></div>
+
+        <label class="upload-result">
+
+            + Add Result
+
+            <input
+                type="file"
+                id="resultUpload"
+                multiple
+                hidden>
+
+        </label>
+
+        <!-- Note -->
+
+        <label class="section-title">
+
+            Note
+
+        </label>
+
+        <textarea
+            id="artistNote"
+            class="note-area"
+            placeholder="Write note for client...">
+
+        </textarea>
+
+        <button id="sendResultBtn" class="send-btn">
+    SEND
+</button>
+
+    </div>
+
+    </div>
+</section>
+
+<div id="statusModal" class="status-modal">
+
+    <div class="status-box">
+
+        <h3>Choose Status</h3>
+
+        <button data-status="WAITING">WAITING</button>
+
+        <button data-status="SKETCH">SKETCH</button>
+
+        <button data-status="LINEART">LINEART</button>
+
+        <button data-status="COLORING">COLORING</button>
+
+        <button data-status="REVISION">REVISION</button>
+
+        <button data-status="FINISH">FINISH</button>
+
+        <button data-status="ON HOLD">ON HOLD</button>
+
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="toast">
+    ✔ Submit terkirim!
+</div>
+
+    <script src="js/tracker.js"></script>
+    <script src="js/logout.js"></script>
+    <script src="js/tracker-artist.js"></script>
+
+</body>
+</html>
