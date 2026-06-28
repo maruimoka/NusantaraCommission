@@ -45,6 +45,9 @@ openEditProfile?.addEventListener("click", () => {
     document.getElementById("editBio").value =
         document.getElementById("profileBio").textContent;
 
+    document.getElementById("editSocial").value =
+    currentProfile.medsos;
+
     editProfileModal.style.display = "flex";
 });
 
@@ -93,11 +96,11 @@ saveProfileBtn?.addEventListener("click", async () => {
     const image = document.getElementById("editAvatarPreview").src;
 
 const { data, error } = await supabaseClient
-    .from("artist_profile")
-    .update({
+    .from("artist_profiles")
+    .upsert({
         display_name: name,
         bio: bio,
-        social: social,
+        medsos: social,
         profile_image: image
     })
     .eq("user_id", userId)
