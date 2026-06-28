@@ -171,26 +171,53 @@
 </section>
 
 <!-- Profile -->
+<!-- ================= PROFILE ================= -->
+
 <section class="artist-profile">
 
     <div class="profileavatar">
-        <img src="avatar.png">
+
+        <img
+            id="profileUserImage"
+            src="asset/imagesbanner1.png"
+            alt="Artist Avatar">
+
     </div>
 
     <div class="profile-info">
 
-        <h1>Momo Tropical</h1>
+        <h1 id="profileName">
+            Loading...
+        </h1>
 
-        <p>
-            Small artist, who likes to draw between my Work &
-            School Hours~
+        <p id="profileBio">
+            Loading profile...
         </p>
 
-    <button class="ordertrack">
-       <a href="trackerlist-Artist.html">
-        ORDER LIST
-       </a>
-    </button>
+        <div class="profile-social">
+
+            <a
+                id="profileSocial"
+                href="#"
+                target="_blank">
+
+                Visit Social Media
+
+            </a>
+
+        </div>
+
+        <button class="ordertrack">
+
+            <a href="trackerlist-Artist.html">
+
+                ORDER LIST
+
+            </a>
+
+        </button>
+
+    </div>
 
 </section>
 
@@ -242,42 +269,20 @@ class="grid">
             <div class="preview-left">
 
                 <img
-                    id="modalImage"
-                    class="preview-image"
-                    src="sample.jpg"
-                    alt=""
-                >
+id="modalImage"
+class="preview-image"
+src="">
 
             </div>
 
             <!-- RIGHT -->
             <div class="preview-right">
 
-                <h1 id="modalTitle">
-                    COUPLE BUST UP COMMISSION
-                </h1>
+                <h1 id="modalTitle"></h1>
 
-                <h2 id="modalPrice">
-                    IDR 210.000
-                </h2>
+                <h2 id="modalPrice"></h2>
 
-                <div class="commission-detail">
-
-                    <h3>DO :</h3>
-
-                    <ul id="modalDo">
-                        <li>Couple / Single</li>
-                        <li>Female / Male</li>
-                        <li>Detailed Background</li>
-                        <li>Detailed Accessories</li>
-                        <li>Fanart / OC / Yumeship</li>
-                    </ul>
-
-                    <h3>DON'T :</h3>
-
-                    <ul id="modalDont">
-                        <li>Mecha / Gore / Blood</li>
-                    </ul>
+                <div class="commission-detail" id="modalDescription"></div>
 
                 </div>
 
