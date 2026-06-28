@@ -210,7 +210,14 @@ bannerInput.addEventListener("change", async function () {
         publicUrlData.publicUrl;
 
     console.log("Banner updated!");
+const { data: check } = await supabaseClient
+    .from("artwork")
+    .select("*")
+    .eq("id", selectedArtwork.id)
+    .single();
 
+console.log(check);
+    
 });
 
 // =========================
@@ -440,6 +447,8 @@ async function refreshProfile() {
     await loadProfile();
 
     await loadArtwork();
+    selectedArtwork = null;
+    previewModal.style.display = "none";
 
 }
 
@@ -803,6 +812,7 @@ saveEditBtn.onclick = async () => {
     const {error} =
     await supabaseClient
     .from("artwork")
+        console.log(selectedArtwork);
     .update({
 
         title:
