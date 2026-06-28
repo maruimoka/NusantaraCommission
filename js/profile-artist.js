@@ -809,10 +809,10 @@ saveEditBtn.onclick = async () => {
         ? "commission"
         : "gallery";
 
+     console.log(selectedArtwork);
     const {error} =
     await supabaseClient
     .from("artwork")
-        console.log(selectedArtwork);
     .update({
 
         title:
