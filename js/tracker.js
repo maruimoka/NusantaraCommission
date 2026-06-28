@@ -107,3 +107,68 @@ saveProfileBtn.onclick = function(){
     showToast();
 
 }
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+const user = sessionData.session.user;
+
+const { data: commissions } = await supabaseClient
+.from("commissions")
+.select("*")
+.eq("client_id", user.id);
+
+commissions.forEach(item => {
+
+    
+
+});
+
+commissions.forEach(item => {
+
+ trackerList.innerHTML += `
+<div class="tracker-card">
+
+    <div class="card-left">
+
+        <h4>${item.artist.username}</h4>
+
+        <div class="commission-name">
+            <i class="fa-regular fa-file"></i>
+            <span>${item.artwork.title}</span>
+        </div>
+
+        <a href="#" class="open-tracker">
+            • OPEN
+        </a>
+
+    </div>
+
+    <div class="card-right">
+
+        <span class="status">
+            ${item.status}
+        </span>
+
+    </div>
+
+</div>
+`;
+
+});
+
+const { data, error } = await supabaseClient
+    .from("commissions")
+    .select(`
+        *,
+        artist:artist_id (
+            username,
+            profile_image
+        ),
+        artwork:artwork_id (
+            title,
+            price,
+            cover_image
+        )
+    `)
+    .eq("client_id", user.id);
