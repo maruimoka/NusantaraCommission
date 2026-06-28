@@ -1,25 +1,6 @@
-// =======================
-// CHECK SESSION
-// =======================
-async function checkSession() {
-    const { data, error } = await supabaseClient.auth.getSession();
-
-    if (error) {
-        console.log("Session error:", error);
-        return;
-    }
-
-    if (!data.session) {
-        window.location.href = "index.html";
-    }
-}
-
-checkSession();
-
-
-// =======================
-// LOGOUT MODAL ELEMENTS (SAFE)
-// =======================
+// ======================
+// ELEMENTS
+// ======================
 const logoutBtn = document.getElementById("logoutBtn");
 const logoutModal = document.getElementById("logoutModal");
 const closeLogout = document.querySelector(".close-logout");
@@ -27,19 +8,19 @@ const cancelLogout = document.getElementById("cancelLogout");
 const confirmLogout = document.getElementById("confirmLogout");
 
 
-// =======================
+// ======================
 // OPEN MODAL
-// =======================
-if (logoutBtn) {
+// ======================
+if (logoutBtn && logoutModal) {
     logoutBtn.addEventListener("click", () => {
         logoutModal.style.display = "flex";
     });
 }
 
 
-// =======================
-// CLOSE MODAL (X BUTTON)
-// =======================
+// ======================
+// CLOSE MODAL (X)
+// ======================
 if (closeLogout) {
     closeLogout.addEventListener("click", () => {
         logoutModal.style.display = "none";
@@ -47,9 +28,9 @@ if (closeLogout) {
 }
 
 
-// =======================
+// ======================
 // CANCEL BUTTON
-// =======================
+// ======================
 if (cancelLogout) {
     cancelLogout.addEventListener("click", () => {
         logoutModal.style.display = "none";
@@ -57,9 +38,9 @@ if (cancelLogout) {
 }
 
 
-// =======================
+// ======================
 // CLICK OUTSIDE MODAL
-// =======================
+// ======================
 window.addEventListener("click", (e) => {
     if (e.target === logoutModal) {
         logoutModal.style.display = "none";
@@ -67,9 +48,9 @@ window.addEventListener("click", (e) => {
 });
 
 
-// =======================
+// ======================
 // CONFIRM LOGOUT
-// =======================
+// ======================
 if (confirmLogout) {
     confirmLogout.addEventListener("click", async () => {
 
@@ -80,10 +61,7 @@ if (confirmLogout) {
             return;
         }
 
-        // tutup modal dulu
         logoutModal.style.display = "none";
-
-        // redirect
         window.location.href = "index.html";
     });
 }
