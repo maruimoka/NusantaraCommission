@@ -639,6 +639,14 @@ savePostBtn.onclick = async () => {
     const { error } =
         await supabaseClient
             .from("artwork")
+        console.log({
+    artist_id: profile.id,
+    title,
+    description,
+    imageUrl,
+    price,
+    category
+});
             .insert({
 
                 artist_id: profile.id,
@@ -675,4 +683,5 @@ savePostBtn.onclick = async () => {
     await loadArtwork();
 
 }
+
 
