@@ -2,55 +2,41 @@
 // DATA
 // =========================
 
-const commissions = [
-    {
-         title:"Commission Result A1",
-         image:"asset/sample1.jpg",
-         price:"Rp150.000",
-         doList:[],
-         dontList:[]
-    },
-    {
-        title:"Commission Result A1",
-         image:"sample1.jpg",
-         price:"Rp150.000",
-         doList:[],
-         dontList:[]
-    },
-    {
-        title:"Commission Result A1",
-         image:"sample1.jpg",
-         price:"Rp150.000",
-         doList:[],
-         dontList:[]
-    }
-];
+const { data: { session } } = await supabaseClient.auth.getSession();
 
-const galleries = [
-    {
-        title: "Artwork 1",
-        artist: "Momo Tropical",
-        image: "gallery1.jpg",
-        price: "-",
-        description: "Gallery Artwork 1"
-    },
-    {
-        title: "Artwork 2",
-        artist: "Momo Tropical",
-        image: "gallery2.jpg",
-        price: "-",
-        description: "Gallery Artwork 2"
-    },
-    {
-        title: "Artwork 3",
-        artist: "Momo Tropical",
-        image: "gallery3.jpg",
-        price: "-",
-        description: "Gallery Artwork 3"
-    }
-];
+const user = session.user;
 
+const { data: artist } = await supabaseClient
+.from("users")
+.select("id")
+.eq("auth_id", user.id)
+.single();
 
+const { data: artworks, error } =
+await supabaseClient
+.from("artwork")
+.select("*")
+.eq("artist_id", artist.id);
+
+const commissions =
+artworks.filter(item =>
+item.category === "commission");
+
+const galleries =
+artworks.filter(item =>
+item.category === "gallery");
+
+renderCards(
+commissions,
+commissionSection,
+"COMMISSION"
+);
+
+renderCards(
+galleries,
+gallerySection,
+"GALLERY"
+);
 // =========================
 // ELEMENT
 // =========================
