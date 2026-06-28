@@ -89,7 +89,7 @@ if (registerSubmitBtn) {
             .from("users")
             .insert([
                 {
-                    id: id,
+                    id: user.id,
                     username: username
                 }
             ]);
