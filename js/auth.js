@@ -98,13 +98,7 @@ if (registerSubmitBtn) {
              alert(insertError.message);
             return;
         }
-
-        // 3. OPTIONAL PROFILE TABLE
-
-        if (profileError) {
-            console.log("Profile insert error:", profileError);
-        }
-
+        
         alert("Register berhasil!");
 
         registerModal.style.display = "none";
