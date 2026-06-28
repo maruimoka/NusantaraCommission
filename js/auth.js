@@ -97,3 +97,5 @@ function updateDots(){
 const params = new URLSearchParams(window.location.search);
 const username = params.get("user");
 
+await supabaseClient.auth.signUp(...)
+
