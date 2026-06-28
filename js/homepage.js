@@ -3,7 +3,7 @@
 // =========================
 
 const galleryGrid =
-document.getElementById("galleryGrid");
+document.getElementById("galleryGrid"); 
 
 
 // =========================
@@ -81,28 +81,26 @@ function renderCard(
 
 card.innerHTML = `
     <div class="art-image">
-        <img src="${artwork.image_url}">
+        <img src="${item.image_url}" alt="${item.title}">
     </div>
 
-    <div class="card-content">
+    <div class="card-info">
 
-        <span class="tag ${artwork.category}">
-            ${artwork.category.toUpperCase()}
+        <span class="tag ${item.category}">
+            ${item.category.toUpperCase()}
         </span>
 
-        <h3>
-            ${artwork.title}
-        </h3>
+        <h3>${item.title}</h3>
 
         <div class="artist-info">
 
             <img
+                src="${item.artist_profiles.profile_image || 'asset/default-profile.png'}"
                 class="artist-avatar"
-                src="${artist.profile_image || "asset/imagesbanner1.png"}"
             >
 
             <span>
-                ${artist.display_name}
+                ${item.artist_profiles.display_name}
             </span>
 
         </div>
