@@ -154,7 +154,9 @@ async function initTracker() {
             artwork:artwork_id (
                 title,
                 price,
-                cover_image
+                description,
+                image_url,
+                category
             )
         `)
         .eq("client_id", user.id);
