@@ -53,18 +53,30 @@ registerSubmitBtn.addEventListener("click", async () => {
 
     const email = document.getElementById("reg-email").value;
     const password = document.getElementById("reg-password").value;
+    const username = document.getElementById("reg-username").value;
 
-    const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password
+    const { data, error } =
+    await supabaseClient.auth.signUp({
+        email,
+        password
     });
-    
-      if (error) {
+
+    if(error){
         alert(error.message);
         return;
     }
 
+    await supabaseClient
+    .from("users")
+    .insert([
+        {
+            id: data.user.id,
+            username: username
+        }
+    ]);
+
     alert("Register berhasil!");
+
 
 console.log("Menutup register");
 
@@ -87,6 +99,16 @@ loginSubmitBtn.addEventListener("click", async () => {
         return;
     }
 
+    const user = data.user;
+
+await supabaseClient
+.from("users")
+.insert([
+{
+    id: user.id,
+    username: document.getElementById("reg-username").value
+}
+]);
     alert("Login berhasil!");
     
     loginModal.style.display = "none";
