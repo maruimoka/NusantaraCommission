@@ -105,10 +105,9 @@ saveProfileBtn?.addEventListener("click", async () => {
         display_name: name,
         bio: bio,
         medsos: social,
-        profile_image: image
+        profile_image: imageUrl
     });
 
-    const file = avatarInput.files[0];
 
 let imageUrl = document.getElementById("profileUserImage").src;
 
@@ -130,7 +129,7 @@ if (file) {
     }
 
     // Ambil Public URL
-    const { data } = supabaseClient.storage
+    const { data: publicUrlData } = supabaseClient.storage
         .from("avatars")
         .getPublicUrl(filePath);
 
