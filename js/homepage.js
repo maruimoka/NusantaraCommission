@@ -1,30 +1,30 @@
+// =========================
+// ELEMENT
+// =========================
+
 const galleryGrid =
 document.getElementById("galleryGrid");
 
-let allArtwork = [];
 
-// =====================
-// LOAD ARTWORK
-// =====================
+// =========================
+// LOAD HOMEPAGE
+// =========================
 
-async function loadHomepageArtwork(){
+async function loadHomepage() {
 
-    const { data, error } =
+    galleryGrid.innerHTML = "";
+
+    // Ambil semua artwork
+
+    const { data: artworks, error } =
     await supabaseClient
-    .from("artwork")
-    .select(`
-        *,
-        artist_profiles(
-            id,
-            display_name,
-            profile_image
-        )
-    `)
-    .order("created_at",{
-        ascending:false
-    });
+        .from("artwork")
+        .select("*")
+        .order("created_at", {
+            ascending: false
+        });
 
-    if(error){
+    if (error) {
 
         console.log(error);
 
@@ -32,75 +32,116 @@ async function loadHomepageArtwork(){
 
     }
 
-    allArtwork = data;
+    if (!artworks.length) {
 
-    renderHomepage(data);
+        galleryGrid.innerHTML = `
+            <h3>No Artwork Yet</h3>
+        `;
+
+        return;
+
+    }
+
+    // Loop semua artwork
+
+    for (const artwork of artworks) {
+
+        // Cari artist profile
+
+        const { data: artist } =
+        await supabaseClient
+            .from("artist_profiles")
+            .select("*")
+            .eq("id", artwork.artist_id)
+            .single();
+
+        renderCard(
+            artwork,
+            artist
+        );
+
+    }
 
 }
 
-// =====================
+
+// =========================
 // RENDER CARD
-// =====================
+// =========================
 
-function renderHomepage(data){
+function renderCard(
+    artwork,
+    artist
+) {
 
-    galleryGrid.innerHTML="";
+    const card =
+    document.createElement("div");
 
-    data.forEach(item=>{
+    card.className = "art-card";
 
-        const card=document.createElement("div");
-
-        card.className="art-card";
-
-        card.innerHTML=`
+    card.innerHTML = `
 
         <div class="art-image">
 
-            <img src="${item.image_url}">
+            <img
+                src="${artwork.image_url}"
+                alt="${artwork.title}">
 
         </div>
 
-        <span class="tag ${item.category}">
+        <span class="tag ${artwork.category}">
 
-            ${item.category.toUpperCase()}
+            ${artwork.category.toUpperCase()}
 
         </span>
 
         <h3>
 
-            ${item.title}
+            ${artwork.title}
 
         </h3>
 
         <div class="artist-info">
 
             <img
-            class="artist-avatar"
-            src="${
-                item.artist_profiles.profile_image ??
-                "asset/imagesbanner1.png"
-            }">
+                class="artist-avatar"
+                src="${
+                    artist?.profile_image ||
+                    "asset/imagesbanner1.png"
+                }">
 
             <span>
 
                 ${
-                    item.artist_profiles.display_name
+                    artist?.display_name ||
+                    "Unknown Artist"
                 }
 
             </span>
 
         </div>
 
-        `;
+    `;
 
-        card.onclick=()=>{
+    // Simpan data untuk Preview
 
-            openPreview(item);
+    card.artwork = artwork;
 
-        }
+    card.artist = artist;
 
-        galleryGrid.appendChild(card);
+    card.onclick = () => {
 
-    });
+        openPreview(card);
+
+    };
+
+    galleryGrid.appendChild(card);
 
 }
+
+
+// =========================
+// INIT
+// =========================
+
+loadHomepage();
