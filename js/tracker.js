@@ -92,15 +92,19 @@ saveProfileBtn?.addEventListener("click", async () => {
     const social = document.getElementById("editSocial").value;
     const image = document.getElementById("editAvatarPreview").src;
 
-    const { error } = await supabaseClient
-        .from("artist_profiles")
-        .update({
-            display_name: name,
-            bio: bio,
-            medsos: social,
-            profile_image: image
-        })
-        .eq("user_id", userId);
+const { data, error } = await supabaseClient
+    .from("artist_profile")
+    .update({
+        display_name: name,
+        bio: bio,
+        social: social,
+        profile_image: image
+    })
+    .eq("user_id", userId)
+    .select();
+    
+console.log("UPDATE DATA:", data);
+console.log("UPDATE ERROR:", error);
 
     if (error) {
         console.log("UPDATE ERROR:", error);
@@ -137,7 +141,7 @@ async function initTracker() {
     const user = sessionData.session.user;
 
     const { data, error } = await supabaseClient
-        .from("commissions")
+        .from("commission")
         .select(`
             *,
             artist:artist_id (
