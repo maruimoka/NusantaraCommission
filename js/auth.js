@@ -49,15 +49,47 @@ showlogin.addEventListener("click", (e) => {
     loginModal.style.display = "flex";
 });
 
+registerSubmitBtn.addEventListener("click", async () => {
 
-loginSubmitBtn.addEventListener("click", (e) => {
+    const email = document.getElementById("reg-email").value;
+    const password = document.getElementById("reg-password").value;
 
+    const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password
+    });
+    
+      if (error) {
+        alert(error.message);
+        return;
+    }
+
+    alert("Register berhasil!");
+
+    registerModal.style.display = "none";
+    loginModal.style.display = "flex";
+});
+
+lloginSubmitBtn.addEventListener("click", async () => {
+
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    alert("Login berhasil!");
+    
     loginModal.style.display = "none";
-
     loginBtn.style.display = "none";
-
     profileMenu.style.display = "flex";
-
 });
 
 // hero banner
@@ -97,5 +129,4 @@ function updateDots(){
 const params = new URLSearchParams(window.location.search);
 const username = params.get("user");
 
-await supabaseClient.auth.signUp(...)
 
