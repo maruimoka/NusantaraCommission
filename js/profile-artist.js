@@ -11,7 +11,91 @@ const galleryTab = document.getElementById("galleryTab");
 const previewModal = document.getElementById("previewModal");
 const closePreview = document.getElementById("closePreview");
 
+const bannerImage = document.getElementById("bannerImage");
+const bannerInput = document.getElementById("bannerInput");
 
+bannerImage.addEventListener("click", () => {
+
+    bannerInput.click();
+
+});
+
+bannerInput.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        bannerImage.src = e.target.result;
+
+    }
+
+    reader.readAsDataURL(file);
+
+});
+
+const file = avatarInput.files[0];
+
+const bannerFile = bannerInput.files[0];
+
+let bannerUrl = currentProfile?.banner_image || "";
+
+if (bannerFile) {
+
+    const ext = bannerFile.name.split(".").pop();
+
+    const path = `${userId}/banner.${ext}`;
+
+    const { error } = await supabaseClient.storage
+        .from("avatars")
+        .upload(path, bannerFile, {
+
+            upsert: true
+
+        });
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    const { data } = supabaseClient.storage
+        .from("avatars")
+        .getPublicUrl(path);
+
+    bannerUrl = data.publicUrl;
+
+}
+
+.upsert({
+
+    user_id: userId,
+
+    display_name: name,
+
+    bio: bio,
+
+    medsos: social,
+
+    profile_image: imageUrl,
+
+    banner_image: bannerUrl
+
+},
+{
+    onConflict: "user_id"
+})
+
+document.getElementById("bannerImage").src =
+    data.banner_image ||
+    "asset/default-banner.jpg";
 // =========================
 // LOAD PROFILE
 // =========================
