@@ -102,7 +102,7 @@ if (registerSubmitBtn) {
 
         // 3. OPTIONAL PROFILE TABLE
         const { error: profileError } = await supabaseClient
-            .from("artist_profile")
+            .from("artist_profiles")
             .insert([
                 {
                     user_id: user.id,
