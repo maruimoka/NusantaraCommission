@@ -94,7 +94,6 @@ const { error: profileError } = await supabaseClient
 }]);
 
 console.log(profileError);
-]);
 });   // <-- HARUS ADA INI
     
 console.log("Menutup register");
