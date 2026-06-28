@@ -98,6 +98,8 @@ saveProfileBtn?.addEventListener("click", async () => {
     const social = document.getElementById("editSocial").value.trim();
     const file = avatarInput.files[0];
 
+    let imageUrl = document.getElementById("profileUserImage").src;
+
     console.log("USER ID :", userId);
 
     console.log({
@@ -107,9 +109,6 @@ saveProfileBtn?.addEventListener("click", async () => {
         medsos: social,
         profile_image: imageUrl
     });
-
-
-let imageUrl = document.getElementById("profileUserImage").src;
 
 // Kalau user memilih gambar baru
 if (file) {
