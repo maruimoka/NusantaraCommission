@@ -14,7 +14,26 @@ const closePreview = document.getElementById("closePreview");
 const bannerImage = document.getElementById("bannerImage");
 const bannerInput = document.getElementById("bannerInput");
 
+const postModal = document.getElementById("postModal");
+const openPostBtn = document.getElementById("openPostBtn");
+const closePostModal = document.getElementById("closePostModal");
+
+const savePostBtn = document.getElementById("savePostBtn");
+
+const postImageInput = document.getElementById("postImageInput");
+const postPreviewImage = document.getElementById("postPreviewImage");
+const postUploadContent = document.getElementById("postUploadContent");
+
+const postTitle = document.getElementById("postTitle");
+const postDescription = document.getElementById("postDescription");
+const postPrice = document.getElementById("postPrice");
+
+const postCommissionTab = document.getElementById("postCommissionTab");
+const postGalleryTab = document.getElementById("postGalleryTab");
+const postPriceLabel = document.getElementById("postPriceLabel");
+
 let currentProfile = null;
+let postCategory = "commission";
 
 
 // =========================
@@ -456,4 +475,204 @@ supabaseClient.auth.onAuthStateChange(
     }
 );
 
+openPostBtn.onclick = () => {
+
+    postModal.style.display = "flex";
+
+}
+
+closePostModal.onclick = () => {
+
+    postModal.style.display = "none";
+
+    resetPostForm();
+
+}
+
+postImageInput.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        postPreviewImage.src = e.target.result;
+
+        postPreviewImage.style.display = "block";
+
+        postUploadContent.style.display = "none";
+
+    }
+
+    reader.readAsDataURL(file);
+
+});
+
+postCommissionTab.onclick = () => {
+
+    postCategory = "commission";
+
+    postCommissionTab.classList.add("active");
+    postGalleryTab.classList.remove("active");
+
+    postPrice.style.display = "block";
+    postPriceLabel.style.display = "block";
+
+}
+
+postGalleryTab.onclick = () => {
+
+    postCategory = "gallery";
+
+    postGalleryTab.classList.add("active");
+    postCommissionTab.classList.remove("active");
+
+    postPrice.style.display = "none";
+    postPriceLabel.style.display = "none";
+
+}
+
+function resetPostForm(){
+
+    document.getElementById("postForm").reset();
+
+    postPreviewImage.style.display = "none";
+
+    postUploadContent.style.display = "flex";
+
+    postCategory = "commission";
+
+    postCommissionTab.classList.add("active");
+    postGalleryTab.classList.remove("active");
+
+    postPrice.style.display = "block";
+    postPriceLabel.style.display = "block";
+
+}
+
+function showToast(text){
+
+    const toast = document.getElementById("toast");
+
+    toast.innerHTML = text;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2000);
+
+}
+
+savePostBtn.onclick = async () => {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
+        alert("Belum login");
+
+        return;
+
+    }
+
+    const file = postImageInput.files[0];
+
+    if (!file) {
+
+        alert("Pilih gambar");
+
+        return;
+
+    }
+
+    // Cari artist_profile milik user
+    const { data: profile } = await supabaseClient
+        .from("artist_profiles")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+
+    if (!profile) {
+
+        alert("Artist Profile tidak ditemukan");
+
+        return;
+
+    }
+
+    const fileExt = file.name.split(".").pop();
+
+    const filePath =
+        `${profile.id}/${Date.now()}.${fileExt}`;
+
+    // Upload Storage
+    const { error: uploadError } =
+        await supabaseClient.storage
+            .from("artworks")
+            .upload(filePath, file);
+
+    if (uploadError) {
+
+        alert(uploadError.message);
+
+        return;
+
+    }
+
+    const { data: publicUrlData } =
+        supabaseClient.storage
+            .from("artworks")
+            .getPublicUrl(filePath);
+
+    const imageUrl =
+        publicUrlData.publicUrl;
+
+    // Insert database
+    const { error } =
+        await supabaseClient
+            .from("artwork")
+            .insert({
+
+                artist_id: profile.id,
+
+                title: postTitle.value,
+
+                description: postDescription.value,
+
+                price:
+                    postCategory === "commission"
+                        ? postPrice.value
+                        : null,
+
+                image_url: imageUrl,
+
+                category: postCategory
+
+            });
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    showToast("✔ Artwork berhasil dipost!");
+
+    postModal.style.display = "none";
+
+    resetPostForm();
+
+    await loadArtwork();
+
+}
 
