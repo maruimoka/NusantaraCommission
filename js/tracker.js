@@ -26,6 +26,7 @@ const saveProfileBtn = document.getElementById("saveProfileBtn");
 
 const avatarInput = document.getElementById("avatarInput");
 const editAvatarPreview = document.getElementById("editAvatarPreview");
+let currentProfile = null;
 
 
 // ======================
@@ -33,16 +34,19 @@ const editAvatarPreview = document.getElementById("editAvatarPreview");
 // ======================
 openEditProfile?.addEventListener("click", () => {
 
+   if (currentProfile) {
     document.getElementById("editName").value =
-        document.getElementById("profileName").textContent;
+        currentProfile.display_name ?? "";
 
     document.getElementById("editBio").value =
-        document.getElementById("profileBio").textContent;
+        currentProfile.bio ?? "";
 
-    document.getElementById("editSocial").value = "";
+    document.getElementById("editSocial").value =
+        currentProfile.medsos ?? "";
 
     editAvatarPreview.src =
-        document.getElementById("profileUserImage").src;
+        currentProfile.profile_image || "asset/imagesbanner1.png";
+}
 
     editProfileModal.style.display = "flex";
 });
@@ -164,6 +168,14 @@ if (file) {
     document.getElementById("profileBio").textContent = bio;
     document.getElementById("profileUserImage").src = imageUrl;
 
+    currentProfile = {
+    user_id: userId,
+    display_name: name,
+    bio: bio,
+    medsos: social,
+    profile_image: imageUrl
+};
+    
     editProfileModal.style.display = "none";
 
     alert("Profile berhasil disimpan!");
@@ -243,4 +255,39 @@ async function initTracker() {
 
 }
 
+// ======================
+// LOAD PROFILE
+// ======================
+async function loadProfile() {
+   
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) return;
+
+    const { data, error } = await supabaseClient
+        .from("artist_profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+     currentProfile = data;
+    
+    document.getElementById("profileName").textContent =
+        data.display_name ?? "";
+
+    document.getElementById("profileBio").textContent =
+        data.bio ?? "";
+
+    document.getElementById("profileUserImage").src =
+        data.profile_image || "asset/imagesbanner1.png";
+}
+
+loadProfile();
 initTracker();
