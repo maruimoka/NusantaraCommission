@@ -132,7 +132,7 @@ if (file) {
         .from("avatars")
         .getPublicUrl(filePath);
 
-    imageUrl = data.publicUrl;
+    imageUrl = publicUrlData.publicUrl;
 }
     
     const { data, error } = await supabaseClient
