@@ -70,7 +70,7 @@ registerSubmitBtn.addEventListener("click", async () => {
     loginModal.style.display = "flex";
 });
 
-lloginSubmitBtn.addEventListener("click", async () => {
+loginSubmitBtn.addEventListener("click", async () => {
 
     const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
