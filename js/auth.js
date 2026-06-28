@@ -65,27 +65,8 @@ registerSubmitBtn.addEventListener("click", async () => {
         alert(error.message);
         return;
     }
-     const user = data.user;
-    
-    await supabaseClient
-    .from("users")
-    .insert([
-        {
-            id: data.user.id,
-            username: username
-        }
-    ]);
-await supabaseClient
-.from("artist_profile")
-.insert([
-    {
-        user_id: user.id,
-        display_name: username
-    }
-]);
-
     alert("Register berhasil!");
-
+const user = data.user;
 await supabaseClient
 .from("users")
 .insert([
@@ -93,7 +74,19 @@ await supabaseClient
         id: user.id,
         username: username
     }
+
+const { error: profileError } = await supabaseClient
+.from("artist_profile")
+.insert([
+{
+    user_id: user.id,
+    display_name: username
+}]);
+
+console.log(profileError);
 ]);
+
+alert("Register berhasil!");
     
 console.log("Menutup register");
 
@@ -116,16 +109,6 @@ loginSubmitBtn.addEventListener("click", async () => {
         return;
     }
 
-    const user = data.user;
-
-await supabaseClient
-.from("users")
-.insert([
-{
-    id: user.id,
-    username: document.getElementById("reg-username").value
-}
-]);
     alert("Login berhasil!");
     
     loginModal.style.display = "none";
