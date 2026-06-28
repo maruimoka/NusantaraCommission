@@ -152,81 +152,100 @@
         <span class="dot"></span>
     </section>
 
-    <!-- GALLERY -->
-    <section class="gallery-section">
+<!-- ========================= -->
+<!-- GALLERY -->
+<!-- ========================= -->
 
-        <h2><u>GALLERY & COMMISSION</u></h2>
+<section class="gallery-section">
 
-        <div class="gallery-grid" id="galleryGrid">
-        </div>
-    </section>
-<!-- MODAL COMMISSION DETAIL -->
+    <h2><u>GALLERY & COMMISSION</u></h2>
+
+    <div
+        id="galleryGrid"
+        class="gallery-grid">
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PREVIEW MODAL -->
+<!-- ========================= -->
+
 <div id="previewModal" class="modal">
 
-    <div class="modal-content">
+    <div class="modal-content preview-modal">
 
-        <span id="closePreview" class="close-btn">&times;</span>
+        <span
+            id="closePreview"
+            class="close-btn">
+
+            &times;
+
+        </span>
 
         <div class="modal-layout">
 
-            <!-- KIRI -->
+            <!-- LEFT -->
+
             <div class="modal-left">
 
                 <img
-                    src="assets/images/sample-art.jpg"
-                    alt="Artwork Preview"
+                    id="modalImage"
                     class="modal-artwork"
-                >
+                    src="">
 
             </div>
 
-            <!-- KANAN -->
+            <!-- RIGHT -->
+
             <div class="modal-right">
 
-                <h2 class="modal-title">
-                    Commission Result - A1
-                </h2>
+                <h2 id="modalTitle"></h2>
 
-                <p class="modal-price">
-                    Rp150.000
-                </p>
+                <h3 id="modalPrice"></h3>
+
+                <!-- Artist -->
 
                 <div class="artist-row">
 
-    <div class="artist-info">
+                    <div class="artist-info">
 
-        <div class="artist-avatar">
-            <img src="assets/images/sample-art.jpg" alt="Artist Avatar">
-        </div>
+                        <img
+                            id="modalArtistAvatar"
+                            class="artist-avatar"
+                            src="">
 
-        <a href="profile-follow.html?user=katsuru17.06"
-         class="modal-artist">
-         Katsuru17.06
-        </a>
+                        <a
+                            id="modalArtist"
+                            href="#">
 
-    </div>
+                        </a>
 
-    <div class="artist-actions">
+                    </div>
 
-        <button class="icon-btn" onclick="openOrderForm()">
-            <i class="fa-solid fa-cart-shopping"></i>
-        </button>
+                    <div class="artist-actions">
 
-        <button class="icon-btn">
-            <i class="fa-solid fa-comment"></i>
-        </button>
+                        <button
+                            id="orderBtn"
+                            class="icon-btn">
 
-    </div>
+                            <i class="fa-solid fa-cart-shopping"></i>
 
-</div>
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Description -->
 
                 <div class="description-box">
 
                     <h3>Description</h3>
 
-                    <p>
-                        ya pokoknya ya gitu deh, ini cuma contoh deskripsi aja, nanti bisa diganti sama deskripsi asli dari si pembuat karya
-                    </p>
+                    <p id="modalDescription"></p>
 
                 </div>
 
@@ -238,101 +257,81 @@
 
 </div>
 
-<!-- ORDER FORMULIR -->
+
+<!-- ========================= -->
+<!-- ORDER MODAL -->
+<!-- ========================= -->
+
 <div id="commissionModal" class="modal">
+
     <div id="detailPage">
-        <span id="closecommission" class="close-btn">&times;</span>
 
-        <img src="sample.jpg" width="300">
+        <span
+            id="closecommission"
+            class="close-btn">
 
-         <h2>COUPLE BUST UP COMMISSION</h2>
+            &times;
 
-        <h3 class="price">
-         IDR 210.000
+        </span>
+
+        <img
+            id="orderArtworkImage"
+            src="">
+
+        <h2 id="orderArtworkTitle"></h2>
+
+        <h3
+            id="orderArtworkPrice"
+            class="price">
+
         </h3>
 
         <label>
-         Drop your File / Link for Commission Reference
+
+            Drop your File / Link for Commission Reference
+
         </label>
 
-    <div class="upload-box">
+        <div class="upload-box">
 
-    <div id="fileList">
-        <!-- daftar file muncul di sini -->
-    </div>
+            <div id="fileList"></div>
 
-    <label class="add-file-btn">
-        + Add File
-        <input
-            type="file"
-            id="referenceImage"
-            multiple
-            hidden
-        >
-    </label>
+            <label class="add-file-btn">
 
-</div>
+                + Add File
 
-    <!-- Description -->
-    <label for="description">Details:</label>
-    <textarea
-        id="description"
-        placeholder="Describe your commission request here..."
-    ></textarea>
+                <input
+                    type="file"
+                    id="referenceImage"
+                    multiple
+                    hidden>
 
-        <button id="submitOrderBtn">
-         SUBMIT
+            </label>
+
+        </div>
+
+        <label>
+
+            Details
+
+        </label>
+
+        <textarea
+            id="description"
+            placeholder="Describe your commission request...">
+
+        </textarea>
+
+        <button
+            id="submitOrderBtn">
+
+            SUBMIT
+
         </button>
 
     </div>
 
 </div>
-<div id="previewModal" class="modal">
-
-    <div class="modal-content">
-
-        <span id="closePreview" class="close-btn">
-            &times;
-        </span>
-
-        <div class="modal-layout">
-
-            <div class="modal-left">
-
-                <img
-                    id="modalImage"
-                    src="images/art1.jpg"
-                    class="modal-artwork"
-                >
-
-            </div>
-
-            <div class="modal-right">
-
-                <h2 id="modalTitle">
-                    Commission Result - A1
-                </h2>
-
-                <p>
-                    By Katsuru17.06
-                </p>
-
-                <p>
-                    Ini deskripsi commission.
-                </p>
-
-                <button class="order-btn">
-                    ORDER
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
