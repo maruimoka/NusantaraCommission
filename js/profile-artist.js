@@ -14,88 +14,9 @@ const closePreview = document.getElementById("closePreview");
 const bannerImage = document.getElementById("bannerImage");
 const bannerInput = document.getElementById("bannerInput");
 
-bannerImage.addEventListener("click", () => {
+let currentProfile = null;
 
-    bannerInput.click();
 
-});
-
-bannerInput.addEventListener("change", function(){
-
-    const file = this.files[0];
-
-    if(!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(e){
-
-        bannerImage.src = e.target.result;
-
-    }
-
-    reader.readAsDataURL(file);
-
-});
-
-const file = avatarInput.files[0];
-
-const bannerFile = bannerInput.files[0];
-
-let bannerUrl = currentProfile?.banner_image || "";
-
-if (bannerFile) {
-
-    const ext = bannerFile.name.split(".").pop();
-
-    const path = `${userId}/banner.${ext}`;
-
-    const { error } = await supabaseClient.storage
-        .from("avatars")
-        .upload(path, bannerFile, {
-
-            upsert: true
-
-        });
-
-    if (error) {
-
-        alert(error.message);
-
-        return;
-
-    }
-
-    const { data } = supabaseClient.storage
-        .from("avatars")
-        .getPublicUrl(path);
-
-    bannerUrl = data.publicUrl;
-
-}
-
-.upsert({
-
-    user_id: userId,
-
-    display_name: name,
-
-    bio: bio,
-
-    medsos: social,
-
-    profile_image: imageUrl,
-
-    banner_image: bannerUrl
-
-},
-{
-    onConflict: "user_id"
-})
-
-document.getElementById("bannerImage").src =
-    data.banner_image ||
-    "asset/default-banner.jpg";
 // =========================
 // LOAD PROFILE
 // =========================
@@ -119,17 +40,132 @@ async function loadProfile() {
         return;
     }
 
+    currentProfile = profile;
+
     document.getElementById("profileName").textContent =
-        profile.display_name ?? "New Artist";
+        profile.display_name || "New Artist";
 
     document.getElementById("profileBio").textContent =
-        profile.bio ?? "";
+        profile.bio || "No bio yet.";
 
     document.getElementById("profileUserImage").src =
-        profile.profile_image || "asset/imagesbanner1.png";
+        profile.profile_image ||
+        "asset/imagesbanner1.png";
 
+    bannerImage.src =
+        profile.banner_image ||
+        "asset/default-banner.jpg";
 }
 
+
+// =========================
+// CLICK BANNER
+// =========================
+
+bannerImage.addEventListener("click", () => {
+
+    bannerInput.click();
+
+});
+
+
+// =========================
+// CHANGE BANNER
+// =========================
+
+bannerInput.addEventListener("change", async function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    // Preview dulu
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+
+        bannerImage.src = e.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+    // Login
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
+        alert("Belum login");
+
+        return;
+
+    }
+
+    const userId = user.id;
+
+    const ext = file.name.split(".").pop();
+
+    const filePath =
+        `${userId}/banner.${ext}`;
+
+    // Upload Storage
+
+    const {
+        error: uploadError
+    } = await supabaseClient.storage
+        .from("avatars")
+        .upload(filePath, file, {
+
+            upsert: true
+
+        });
+
+    if (uploadError) {
+
+        alert(uploadError.message);
+
+        return;
+
+    }
+
+    const {
+        data: publicUrlData
+    } = supabaseClient.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+    // Simpan ke DB
+
+    const {
+        error
+    } = await supabaseClient
+        .from("artist_profiles")
+        .update({
+
+            banner_image:
+                publicUrlData.publicUrl
+
+        })
+        .eq("user_id", userId);
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    currentProfile.banner_image =
+        publicUrlData.publicUrl;
+
+    console.log("Banner updated!");
+
+});
 
 // =========================
 // LOAD ARTWORK
@@ -143,33 +179,50 @@ async function loadArtwork() {
 
     if (!user) return;
 
-    // Cari artist profile milik user
-    const { data: profile } = await supabaseClient
-        .from("artist_profiles")
-        .select("id")
-        .eq("user_id", user.id)
-        .single();
+    // Ambil artist profile
+    const { data: profile, error: profileError } =
+        await supabaseClient
+            .from("artist_profiles")
+            .select("id")
+            .eq("user_id", user.id)
+            .single();
 
-    if (!profile) return;
+    if (profileError) {
 
-    // Ambil artwork
-    const { data: artworks, error } = await supabaseClient
-        .from("artwork")
-        .select("*")
-        .eq("artist_id", profile.id);
+        console.log(profileError);
 
-    if (error) {
-        console.log(error);
         return;
+
     }
 
-    const commissions = artworks.filter(
-        item => item.category === "commission"
-    );
+    // Ambil semua artwork milik artist
 
-    const galleries = artworks.filter(
-        item => item.category === "gallery"
-    );
+    const { data: artworks, error } =
+        await supabaseClient
+            .from("artwork")
+            .select("*")
+            .eq("artist_id", profile.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (error) {
+
+        console.log(error);
+
+        return;
+
+    }
+
+    const commissions =
+        artworks.filter(item =>
+            item.category === "commission"
+        );
+
+    const galleries =
+        artworks.filter(item =>
+            item.category === "gallery"
+        );
 
     renderCards(
         commissions,
@@ -194,25 +247,62 @@ function renderCards(data, container, type) {
 
     container.innerHTML = "";
 
+    if (!data.length) {
+
+        container.innerHTML = `
+            <div class="empty-card">
+
+                <h3>No ${type} Yet</h3>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
     data.forEach(item => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
         card.className = "card";
 
         card.innerHTML = `
+
             <div class="art-image">
-                <img src="${item.image_url}">
+
+                <img
+                    src="${item.image_url}"
+                    alt="${item.title}">
+
             </div>
 
-            <span class="tag">${type}</span>
+            <span class="tag">
 
-            <h3>${item.title}</h3>
+                ${type}
 
-            <p>${item.price ?? "-"}</p>
+            </span>
+
+            <h3>
+
+                ${item.title}
+
+            </h3>
+
+            <p>
+
+                ${item.price ?? "-"}
+
+            </p>
+
         `;
 
-        card.onclick = () => openPreview(item);
+        card.onclick = () => {
+
+            openPreview(item);
+
+        };
 
         container.appendChild(card);
 
@@ -222,10 +312,10 @@ function renderCards(data, container, type) {
 
 
 // =========================
-// PREVIEW
+// PREVIEW MODAL
 // =========================
 
-function openPreview(item){
+function openPreview(item) {
 
     document.getElementById("modalImage").src =
         item.image_url;
@@ -241,22 +331,22 @@ function openPreview(item){
 }
 
 
-closePreview.onclick = function(){
+closePreview.onclick = function () {
 
     previewModal.style.display = "none";
 
-}
+};
 
 
-window.onclick = function(e){
+window.addEventListener("click", function (e) {
 
-    if(e.target == previewModal){
+    if (e.target === previewModal) {
 
         previewModal.style.display = "none";
 
     }
 
-}
+});
 
 
 // =========================
@@ -265,23 +355,40 @@ window.onclick = function(e){
 
 gallerySection.style.display = "none";
 
-commissionTab.onclick = function(){
+commissionTab.onclick = function () {
 
     commissionSection.style.display = "grid";
+
     gallerySection.style.display = "none";
 
     commissionTab.classList.add("active");
+
     galleryTab.classList.remove("active");
 
-}
+};
 
-galleryTab.onclick = function(){
+
+galleryTab.onclick = function () {
 
     commissionSection.style.display = "none";
+
     gallerySection.style.display = "grid";
 
     galleryTab.classList.add("active");
+
     commissionTab.classList.remove("active");
+
+};
+
+// =========================
+// REFRESH PROFILE
+// =========================
+
+async function refreshProfile() {
+
+    await loadProfile();
+
+    await loadArtwork();
 
 }
 
@@ -290,7 +397,19 @@ galleryTab.onclick = function(){
 // INIT
 // =========================
 
-async function init(){
+async function init() {
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+
+        window.location.href = "index.html";
+
+        return;
+
+    }
 
     await loadProfile();
 
@@ -299,3 +418,42 @@ async function init(){
 }
 
 init();
+
+
+// =========================
+// OPTIONAL HELPER
+// =========================
+
+async function getCurrentArtist() {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) return null;
+
+    const { data } =
+        await supabaseClient
+            .from("artist_profiles")
+            .select("*")
+            .eq("user_id", user.id)
+            .single();
+
+    return data;
+
+}
+
+
+// =========================
+// RELOAD SAAT LOGIN BERUBAH
+// =========================
+
+supabaseClient.auth.onAuthStateChange(
+    async () => {
+
+        await refreshProfile();
+
+    }
+);
+
+
