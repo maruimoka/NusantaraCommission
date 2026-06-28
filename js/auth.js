@@ -55,25 +55,37 @@ registerSubmitBtn.addEventListener("click", async () => {
     const password = document.getElementById("reg-password").value;
     const username = document.getElementById("reg-username").value;
 
-    const { data, error } =
-    await supabaseClient.auth.signUp({
+    const { data, error } = await supabaseClient.auth.signUp({
         email,
         password
     });
 
-    if(error){
+    if (error) {
         alert(error.message);
         return;
     }
-    alert("Register berhasil!");
-const user = data.user;
-await supabaseClient
-.from("users")
-.insert([
-    {
-        id: user.id,
-        username: username
+
+    const user = data.user;
+
+    const { error: insertError } = await supabaseClient
+        .from("users")
+        .insert([
+            {
+                id: user.id,
+                username: username
+            }
+        ]);
+
+    if (insertError) {
+        console.log(insertError);
     }
+
+    alert("Register berhasil!");
+
+    registerModal.style.display = "none";
+    loginModal.style.display = "flex";
+
+});   // <-- HARUS ADA INI
 
 const { error: profileError } = await supabaseClient
 .from("artist_profile")
