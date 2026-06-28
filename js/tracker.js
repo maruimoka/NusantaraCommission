@@ -96,6 +96,8 @@ saveProfileBtn?.addEventListener("click", async () => {
 
 const { data, error } = await supabaseClient
     .from("artist_profiles")
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    console.log(user);
     .upsert({
         display_name: name,
         bio: bio,
