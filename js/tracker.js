@@ -93,7 +93,7 @@ saveProfileBtn?.addEventListener("click", async () => {
     const image = document.getElementById("editAvatarPreview").src;
 
     const { error } = await supabaseClient
-        .from("artist_profile")
+        .from("artist_profiles")
         .update({
             display_name: name,
             bio: bio,
