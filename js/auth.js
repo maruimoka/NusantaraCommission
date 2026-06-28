@@ -70,6 +70,7 @@ console.log("Menutup register");
 
 registerModal.style.display = "none";
 loginModal.style.display = "flex";
+});
 
 loginSubmitBtn.addEventListener("click", async () => {
 
