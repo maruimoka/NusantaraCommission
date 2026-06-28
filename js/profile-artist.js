@@ -37,6 +37,21 @@ galleries,
 gallerySection,
 "GALLERY"
 );
+
+
+const { data: commissions } =
+await supabaseClient
+.from("artwork")
+.select("*")
+.eq("artist_id", artist.id)
+.eq("category","commission");
+
+const { data: galleries } =
+await supabaseClient
+.from("artwork")
+.select("*")
+.eq("artist_id", artist.id)
+.eq("category","gallery");
 // =========================
 // ELEMENT
 // =========================
@@ -69,23 +84,17 @@ function renderCards(data, container, type) {
 card.className = "card";
 
 card.innerHTML = `
+<div class="art-image">
+    <img src="${item.image_url}">
+</div>
 
-<img src="${item.image}" alt="${item.title}">
+<span class="tag">
+${type}
+</span>
 
-   <div class="card-body">
+<h3>${item.title}</h3>
 
-    <span class="tag">
-        ${type}
-    </span>
-
-    <h3>${item.title}</h3>
-
-    <p>
-        <i class="fa-regular fa-user"></i>
-        ${item.artist}
-    </p>
-
-   </div>
+<p>${item.price ?? "-"}</p>
 `;
 
         card.addEventListener("click", () => {
