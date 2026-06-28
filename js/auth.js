@@ -1,65 +1,52 @@
-// Login Modal
+// LOGIN MODAL
 const loginBtn = document.querySelector(".login-btn");
 const loginModal = document.getElementById("loginModal");
 const registerModal = document.getElementById("registerModal");
 const profileMenu = document.getElementById("profileMenu");
-const openLoginBtn = document.getElementById("openLoginBtn");
+
 const loginSubmitBtn = document.getElementById("loginSubmitBtn");
 const registerSubmitBtn = document.getElementById("registerSubmitBtn");
 
-
-loginBtn.addEventListener("click", () => {
-    loginModal.style.display = "flex";
-});
-
+// OPEN LOGIN
 if (loginBtn) {
     loginBtn.addEventListener("click", () => {
         loginModal.style.display = "flex";
     });
 }
 
-// Close Button
-const closeLogin = document.getElementById("closelogin");
-const closeRegister = document.getElementById("closeregister");
-
-closeLogin.addEventListener("click", () => {
+// CLOSE LOGIN
+document.getElementById("closelogin")?.addEventListener("click", () => {
     loginModal.style.display = "none";
-    document.getElementById("username").value = "";
-    document.getElementById("password").value = "";
 });
 
-closeRegister.addEventListener("click", () => {
+// CLOSE REGISTER
+document.getElementById("closeregister")?.addEventListener("click", () => {
     registerModal.style.display = "none";
     loginModal.style.display = "none";
-    document.getElementById("reg-email").value = "";
-    document.getElementById("reg-username").value = "";
-    document.getElementById("reg-password").value = "";
 });
 
-// Switch Modal
-const showregister = document.getElementById("showregister");
-showregister.addEventListener("click", (e) => {
+// SWITCH MODAL
+document.getElementById("showregister")?.addEventListener("click", (e) => {
     e.preventDefault();
-    document.getElementById("loginForm").reset();
     loginModal.style.display = "none";
     registerModal.style.display = "flex";
 });
 
-const showlogin = document.getElementById("showlogin");
-
-showlogin.addEventListener("click", (e) => {
+document.getElementById("showlogin")?.addEventListener("click", (e) => {
     e.preventDefault();
-    document.getElementById("registerForm").reset();
     registerModal.style.display = "none";
     loginModal.style.display = "flex";
 });
 
+
+// REGISTER
 registerSubmitBtn.addEventListener("click", async () => {
 
     const email = document.getElementById("reg-email").value;
     const password = document.getElementById("reg-password").value;
     const username = document.getElementById("reg-username").value;
 
+    // 1. signup auth
     const { data, error } = await supabaseClient.auth.signUp({
         email,
         password
@@ -72,6 +59,7 @@ registerSubmitBtn.addEventListener("click", async () => {
 
     const user = data.user;
 
+    // 2. insert ke tabel users
     const { error: insertError } = await supabaseClient
         .from("users")
         .insert([
@@ -82,37 +70,40 @@ registerSubmitBtn.addEventListener("click", async () => {
         ]);
 
     if (insertError) {
-        console.log(insertError);
+        console.log("Users insert error:", insertError);
+        return;
+    }
+
+    // 3. OPTIONAL: artist profile (fix syntax)
+    const { error: profileError } = await supabaseClient
+        .from("artist_profile")
+        .insert([
+            {
+                user_id: user.id,
+                display_name: username
+            }
+        ]);
+
+    if (profileError) {
+        console.log("Profile insert error:", profileError);
     }
 
     alert("Register berhasil!");
 
     registerModal.style.display = "none";
     loginModal.style.display = "flex";
+});
 
-const { error: profileError } = await supabaseClient
-.from("artist_profile")
-.insert([
-{
-    user_id: user.id,
-    display_name: username
-}];
 
-console.log(profileError);
-});   // <-- HARUS ADA INI
-console.log("Menutup register");
-
-registerModal.style.display = "none";
-loginModal.style.display = "flex";
-
+// LOGIN
 loginSubmitBtn.addEventListener("click", async () => {
 
     const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
+    const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
     });
 
     if (error) {
@@ -121,65 +112,24 @@ loginSubmitBtn.addEventListener("click", async () => {
     }
 
     alert("Login berhasil!");
-    
+
     loginModal.style.display = "none";
     loginBtn.style.display = "none";
     profileMenu.style.display = "flex";
 });
 
-// hero banner
-const slides = document.querySelectorAll(".slide");
 
-let currentSlide = 0;
-
-setInterval(() => {
-
-    // Hilangkan slide aktif
-    slides[currentSlide].classList.remove("active");
-
-    // Pindah ke slide berikutnya
-    currentSlide++;
-
-    if(currentSlide >= slides.length){
-        currentSlide = 0;
-    }
-
-    // Tampilkan slide baru
-    slides[currentSlide].classList.add("active");
-
-    updateDots();
-
-},1400);
-const dots = document.querySelectorAll(".dot");
-function updateDots(){
-
-    dots.forEach(dot => {
-        dot.classList.remove("active");
-    });
-
-    dots[currentSlide].classList.add("active");
-
-}
-
-const params = new URLSearchParams(window.location.search);
-const username = params.get("user");
-
+// CHECK SESSION
 async function checkLogin() {
-
     const { data } = await supabaseClient.auth.getSession();
 
     if (data.session) {
-
         loginBtn.style.display = "none";
         profileMenu.style.display = "flex";
-
     } else {
-
         loginBtn.style.display = "block";
         profileMenu.style.display = "none";
-
     }
-
 }
 
 checkLogin();
