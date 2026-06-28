@@ -1,16 +1,9 @@
-
 // ======================
 // TRACKER MODAL
 // ======================
 const trackerList = document.getElementById("trackerList");
 const trackerModal = document.getElementById("trackerModal");
 const closeBtn = document.querySelector(".close");
-
-document.querySelectorAll(".tracker-card").forEach(card => {
-    card.addEventListener("click", () => {
-        trackerModal.style.display = "flex";
-    });
-});
 
 closeBtn?.addEventListener("click", () => {
     trackerModal.style.display = "none";
@@ -29,14 +22,15 @@ window.addEventListener("click", (e) => {
 const editProfileModal = document.getElementById("editProfileModal");
 const openEditProfile = document.getElementById("openEditProfile");
 const closeEditProfile = document.getElementById("closeEditProfile");
-
 const saveProfileBtn = document.getElementById("saveProfileBtn");
 
 const avatarInput = document.getElementById("avatarInput");
 const editAvatarPreview = document.getElementById("editAvatarPreview");
 
 
-// OPEN MODAL
+// ======================
+// OPEN EDIT MODAL
+// ======================
 openEditProfile?.addEventListener("click", () => {
 
     document.getElementById("editName").value =
@@ -45,90 +39,100 @@ openEditProfile?.addEventListener("click", () => {
     document.getElementById("editBio").value =
         document.getElementById("profileBio").textContent;
 
-    document.getElementById("editSocial").value ="";
+    document.getElementById("editSocial").value = "";
+
+    editAvatarPreview.src =
+        document.getElementById("profileUserImage").src;
 
     editProfileModal.style.display = "flex";
 });
 
 
-// CLOSE MODAL
+// ======================
+// CLOSE EDIT MODAL
+// ======================
 closeEditProfile?.addEventListener("click", () => {
     editProfileModal.style.display = "none";
 });
 
 
+// ======================
 // IMAGE PREVIEW
+// ======================
 avatarInput?.addEventListener("change", function () {
 
     const file = this.files[0];
+
     if (!file) return;
 
     const reader = new FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = function (e) {
         editAvatarPreview.src = e.target.result;
     };
 
     reader.readAsDataURL(file);
+
 });
 
 
 // ======================
-// SAVE PROFILE (UI ONLY - kalau DB sudah di auth.js)
+// SAVE PROFILE
 // ======================
 saveProfileBtn?.addEventListener("click", async () => {
 
-    console.log("SAVE CLICKED");
-    const user = await supabaseClient.auth.getUser();
-    console.log("USER:", user);
+    // cek login
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
 
-    if (!user.data?.user) {
-        alert("User tidak login");
+    if (!user) {
+        alert("User belum login");
         return;
     }
 
-    const userId = user.data.user.id;
+    const userId = user.id;
 
-    const name = document.getElementById("editName").value;
-    const bio = document.getElementById("editBio").value;
-    const social = document.getElementById("editSocial").value;
-    const image = document.getElementById("editAvatarPreview").src;
+    const name = document.getElementById("editName").value.trim();
+    const bio = document.getElementById("editBio").value.trim();
+    const social = document.getElementById("editSocial").value.trim();
+    const image = editAvatarPreview.src;
 
-console.log("Auth object:", user);
-console.log("Auth user id:", user.data.user.id);
+    console.log("USER ID :", userId);
 
-console.log("Data yang dikirim:", {
-    user_id: userId,
-    display_name: name,
-    bio: bio,
-    medsos: social,
-    profile_image: image
-});
-    
-const { data, error } = await supabaseClient
-    .from("artist_profiles
-    .upsert({
+    console.log({
+        user_id: userId,
         display_name: name,
         bio: bio,
         medsos: social,
         profile_image: image
-    },
+    });
+
+    const { data, error } = await supabaseClient
+        .from("artist_profiles")
+        .upsert(
+            {
+                user_id: userId,
+                display_name: name,
+                bio: bio,
+                medsos: social,
+                profile_image: image
+            },
             {
                 onConflict: "user_id"
-             }
-            )
-    .select();
-    
-console.log("UPDATE DATA:", data);
-console.log("UPDATE ERROR:", error);
+            }
+        )
+        .select();
+
+    console.log("RESULT :", data);
+    console.log("ERROR :", error);
 
     if (error) {
-        console.log("UPDATE ERROR:", error);
         alert(error.message);
         return;
     }
 
-    // update UI juga
+    // update UI
     document.getElementById("profileName").textContent = name;
     document.getElementById("profileBio").textContent = bio;
     document.getElementById("profileUserImage").src = image;
@@ -137,34 +141,31 @@ console.log("UPDATE ERROR:", error);
 
     alert("Profile berhasil disimpan!");
 
-    console.log("USER ID:", user.data.user.id);
-
-    console.log("UPDATE TRIGGERED");
 });
 
 
-
-
 // ======================
-// SAFE INIT (FIX AWAY FROM GLOBAL AWAIT)
+// LOAD TRACKER
 // ======================
 async function initTracker() {
 
-    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
 
-    if (!sessionData?.session) return;
+    if (!session) return;
 
-    const user = sessionData.session.user;
+    const user = session.user;
 
     const { data, error } = await supabaseClient
         .from("commission")
         .select(`
             *,
-            artist:artist_id (
+            artist:artist_id(
                 display_name,
                 profile_image
             ),
-            artwork:artwork_id (
+            artwork:artwork_id(
                 title,
                 price,
                 description,
@@ -184,32 +185,35 @@ async function initTracker() {
     data.forEach(item => {
 
         trackerList.innerHTML += `
-        <div class="tracker-card">
+            <div class="tracker-card">
 
-            <div class="card-left">
+                <div class="card-left">
 
-                <h4>${item.artist?.display_name ?? "-"}</h4>
+                    <h4>${item.artist?.display_name ?? "-"}</h4>
 
-                <div class="commission-name">
-                    <span>${item.artwork?.title ?? "-"}</span>
+                    <div class="commission-name">
+                        <span>${item.artwork?.title ?? "-"}</span>
+                    </div>
+
+                </div>
+
+                <div class="card-right">
+                    <span>${item.status}</span>
                 </div>
 
             </div>
-
-            <div class="card-right">
-                <span>${item.status}</span>
-            </div>
-
-        </div>
         `;
+
     });
 
-    // rebind click event AFTER render
     document.querySelectorAll(".tracker-card").forEach(card => {
+
         card.addEventListener("click", () => {
             trackerModal.style.display = "flex";
         });
+
     });
+
 }
 
 initTracker();
