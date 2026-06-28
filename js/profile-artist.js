@@ -506,3 +506,45 @@ function showDeleteToast(){
     },2000);
 
 }
+
+async function loadProfile(){
+
+}
+
+const {
+    data: { session }
+} = await supabaseClient.auth.getSession();
+
+if(!session) return;
+
+const userId = session.user.id;
+
+const { data: profile, error } =
+await supabaseClient
+.from("artist_profile")
+.select("*")
+.eq("user_id", userId)
+.maybeSingle();
+
+if(!profile){
+
+    document.getElementById("profileName").textContent =
+    "New Artist";
+
+    document.getElementById("profileBio").textContent =
+    "No bio yet.";
+
+    return;
+
+}
+
+document.getElementById("profileName").textContent =
+profile.display_name;
+
+document.getElementById("profileBio").textContent =
+profile.bio;
+
+document.getElementById("profileUserImage").src =
+profile.profile_image;
+
+loadProfile();
