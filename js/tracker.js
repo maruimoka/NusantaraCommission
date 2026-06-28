@@ -95,7 +95,18 @@ saveProfileBtn?.addEventListener("click", async () => {
     const image = document.getElementById("editAvatarPreview").src;
 
 const { data, error } = await supabaseClient
-    .from("artist_profiles")
+    .from("artist_profiles
+
+          console.log("Auth object:", user);
+console.log("Auth user id:", user.data.user.id);
+
+console.log("Data yang dikirim:", {
+    user_id: userId,
+    display_name: name,
+    bio: bio,
+    medsos: social,
+    profile_image: image
+});
     .upsert({
         display_name: name,
         bio: bio,
