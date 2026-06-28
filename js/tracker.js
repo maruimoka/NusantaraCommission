@@ -97,7 +97,7 @@ saveProfileBtn?.addEventListener("click", async () => {
         .update({
             display_name: name,
             bio: bio,
-            social: social,
+            medsos: social,
             profile_image: image
         })
         .eq("user_id", userId);
