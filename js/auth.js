@@ -65,7 +65,8 @@ registerSubmitBtn.addEventListener("click", async () => {
         alert(error.message);
         return;
     }
-
+     const user = data.user;
+    
     await supabaseClient
     .from("users")
     .insert([
@@ -74,10 +75,26 @@ registerSubmitBtn.addEventListener("click", async () => {
             username: username
         }
     ]);
+await supabaseClient
+.from("artist_profile")
+.insert([
+    {
+        user_id: user.id,
+        display_name: username
+    }
+]);
 
     alert("Register berhasil!");
 
-
+await supabaseClient
+.from("users")
+.insert([
+    {
+        id: user.id,
+        username: username
+    }
+]);
+    
 console.log("Menutup register");
 
 registerModal.style.display = "none";
