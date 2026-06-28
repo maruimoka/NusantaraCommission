@@ -34,6 +34,30 @@ const postPriceLabel = document.getElementById("postPriceLabel");
 
 const editBtn = document.querySelector(".edit-btn");
 
+const editModal = document.getElementById("editModal");
+
+const closeEdit = document.getElementById("closeEdit");
+
+const saveEditBtn = document.getElementById("saveEditBtn");
+
+const imageInput = document.getElementById("imageInput");
+
+const imagePreview = document.getElementById("imagePreview");
+
+const uploadContent = document.getElementById("uploadContent");
+
+const commissionBtn =
+document.getElementById("editCommissionTab");
+
+const galleryBtn =
+document.getElementById("editGalleryTab");
+
+const priceInput =
+document.getElementById("editPrice");
+
+const priceLabel =
+document.getElementById("priceLabel");
+
 let currentProfile = null;
 let postCategory = "commission";
 let selectedArtwork = null;
