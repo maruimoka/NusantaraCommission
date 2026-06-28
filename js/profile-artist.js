@@ -548,3 +548,15 @@ document.getElementById("profileUserImage").src =
 profile.profile_image;
 
 loadProfile();
+
+await supabaseClient
+.from("artist_profile")
+.insert([
+{
+    user_id: data.user.id,
+    display_name: username,
+    bio: "",
+    profile_image: "",
+    banner_image: ""
+}
+]);
