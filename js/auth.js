@@ -96,16 +96,14 @@ const { error: profileError } = await supabaseClient
 {
     user_id: user.id,
     display_name: username
-});
+}]);
 
 console.log(profileError);
 });   // <-- HARUS ADA INI
-    
 console.log("Menutup register");
 
 registerModal.style.display = "none";
 loginModal.style.display = "flex";
-});
 
 loginSubmitBtn.addEventListener("click", async () => {
 
