@@ -85,8 +85,6 @@ registerSubmitBtn.addEventListener("click", async () => {
     registerModal.style.display = "none";
     loginModal.style.display = "flex";
 
-});   // <-- HARUS ADA INI
-
 const { error: profileError } = await supabaseClient
 .from("artist_profile")
 .insert([
@@ -97,8 +95,7 @@ const { error: profileError } = await supabaseClient
 
 console.log(profileError);
 ]);
-
-alert("Register berhasil!");
+});   // <-- HARUS ADA INI
     
 console.log("Menutup register");
 
