@@ -1,4 +1,6 @@
-// LOGIN MODAL
+// =======================
+// ELEMENTS
+// =======================
 const loginBtn = document.querySelector(".login-btn");
 const loginModal = document.getElementById("loginModal");
 const registerModal = document.getElementById("registerModal");
@@ -7,25 +9,33 @@ const profileMenu = document.getElementById("profileMenu");
 const loginSubmitBtn = document.getElementById("loginSubmitBtn");
 const registerSubmitBtn = document.getElementById("registerSubmitBtn");
 
-// OPEN LOGIN
-if (loginBtn) {
+
+// =======================
+// OPEN LOGIN MODAL
+// =======================
+if (loginBtn && loginModal) {
     loginBtn.addEventListener("click", () => {
         loginModal.style.display = "flex";
     });
 }
 
-// CLOSE LOGIN
+
+// =======================
+// CLOSE MODALS
+// =======================
 document.getElementById("closelogin")?.addEventListener("click", () => {
     loginModal.style.display = "none";
 });
 
-// CLOSE REGISTER
 document.getElementById("closeregister")?.addEventListener("click", () => {
     registerModal.style.display = "none";
     loginModal.style.display = "none";
 });
 
+
+// =======================
 // SWITCH MODAL
+// =======================
 document.getElementById("showregister")?.addEventListener("click", (e) => {
     e.preventDefault();
     loginModal.style.display = "none";
@@ -39,89 +49,122 @@ document.getElementById("showlogin")?.addEventListener("click", (e) => {
 });
 
 
+// =======================
 // REGISTER
-registerSubmitBtn.addEventListener("click", async () => {
+// =======================
+if (registerSubmitBtn) {
+    registerSubmitBtn.addEventListener("click", async () => {
 
-    const email = document.getElementById("reg-email").value;
-    const password = document.getElementById("reg-password").value;
-    const username = document.getElementById("reg-username").value;
+        const email = document.getElementById("reg-email").value;
+        const password = document.getElementById("reg-password").value;
+        const username = document.getElementById("reg-username").value;
 
-    // 1. signup auth
-    const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password
+        // basic validation
+        if (!email || !password || !username) {
+            alert("Semua field harus diisi!");
+            return;
+        }
+
+        // 1. AUTH SIGNUP
+        const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password
+        });
+
+        if (error) {
+            console.log("Signup error:", error);
+            alert(error.message);
+            return;
+        }
+
+        const user = data.user;
+
+        if (!user) {
+            alert("Signup gagal: user tidak terbentuk");
+            return;
+        }
+
+        // 2. INSERT USERS TABLE
+        const { error: insertError } = await supabaseClient
+            .from("users")
+            .insert([
+                {
+                    id: user.id,
+                    username: username
+                }
+            ]);
+
+        if (insertError) {
+            console.log("Users insert error:", insertError);
+            alert(insertError.message);
+            return;
+        }
+
+        // 3. OPTIONAL PROFILE TABLE
+        const { error: profileError } = await supabaseClient
+            .from("artist_profile")
+            .insert([
+                {
+                    user_id: user.id,
+                    display_name: username
+                }
+            ]);
+
+        if (profileError) {
+            console.log("Profile insert error:", profileError);
+        }
+
+        alert("Register berhasil!");
+
+        registerModal.style.display = "none";
+        loginModal.style.display = "flex";
     });
-
-    if (error) {
-        alert(error.message);
-        return;
-    }
-
-    const user = data.user;
-
-    // 2. insert ke tabel users
-    const { error: insertError } = await supabaseClient
-        .from("users")
-        .insert([
-            {
-                id: user.id,
-                username: username
-            }
-        ]);
-
-    if (insertError) {
-        console.log("Users insert error:", insertError);
-        return;
-    }
-
-    // 3. OPTIONAL: artist profile (fix syntax)
-    const { error: profileError } = await supabaseClient
-        .from("artist_profile")
-        .insert([
-            {
-                user_id: user.id,
-                display_name: username
-            }
-        ]);
-
-    if (profileError) {
-        console.log("Profile insert error:", profileError);
-    }
-
-    alert("Register berhasil!");
-
-    registerModal.style.display = "none";
-    loginModal.style.display = "flex";
-});
+}
 
 
+// =======================
 // LOGIN
-loginSubmitBtn.addEventListener("click", async () => {
+// =======================
+if (loginSubmitBtn) {
+    loginSubmitBtn.addEventListener("click", async () => {
 
-    const email = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+        const email = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
+        if (!email || !password) {
+            alert("Email dan password wajib diisi!");
+            return;
+        }
+
+        const { error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            alert(error.message);
+            return;
+        }
+
+        alert("Login berhasil!");
+
+        loginModal.style.display = "none";
+        loginBtn.style.display = "none";
+        profileMenu.style.display = "flex";
     });
+}
+
+
+// =======================
+// CHECK SESSION
+// =======================
+async function checkLogin() {
+    const { data, error } = await supabaseClient.auth.getSession();
 
     if (error) {
-        alert(error.message);
+        console.log("Session error:", error);
         return;
     }
-
-    alert("Login berhasil!");
-
-    loginModal.style.display = "none";
-    loginBtn.style.display = "none";
-    profileMenu.style.display = "flex";
-});
-
-
-// CHECK SESSION
-async function checkLogin() {
-    const { data } = await supabaseClient.auth.getSession();
 
     if (data.session) {
         loginBtn.style.display = "none";
