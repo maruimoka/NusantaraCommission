@@ -45,7 +45,7 @@ openEditProfile?.addEventListener("click", () => {
     document.getElementById("editBio").value =
         document.getElementById("profileBio").textContent;
 
-    document.getElementById("editSocial").value =;
+    document.getElementById("editSocial").value ="";
 
     editProfileModal.style.display = "flex";
 });
