@@ -94,10 +94,7 @@ saveProfileBtn?.addEventListener("click", async () => {
     const social = document.getElementById("editSocial").value;
     const image = document.getElementById("editAvatarPreview").src;
 
-const { data, error } = await supabaseClient
-    .from("artist_profiles
-
-          console.log("Auth object:", user);
+console.log("Auth object:", user);
 console.log("Auth user id:", user.data.user.id);
 
 console.log("Data yang dikirim:", {
@@ -107,6 +104,9 @@ console.log("Data yang dikirim:", {
     medsos: social,
     profile_image: image
 });
+    
+const { data, error } = await supabaseClient
+    .from("artist_profiles
     .upsert({
         display_name: name,
         bio: bio,
