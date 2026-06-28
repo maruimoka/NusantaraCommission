@@ -634,19 +634,17 @@ savePostBtn.onclick = async () => {
 
     const imageUrl =
         publicUrlData.publicUrl;
-
-    // Insert database
-    const { error } =
-        await supabaseClient
-            .from("artwork")
-        console.log({
+    console.log({
     artist_id: profile.id,
-    title,
-    description,
+    title: postTitle.value,
+    description: postDescription.value,
     imageUrl,
-    price,
-    category
+    price: postPrice.value,
+    category: postCategory
 });
+
+const { error } = await supabaseClient
+    .from("artwork")
             .insert({
 
                 artist_id: profile.id,
