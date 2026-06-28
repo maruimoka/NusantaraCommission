@@ -76,7 +76,9 @@ avatarInput?.addEventListener("change", function () {
 // ======================
 saveProfileBtn?.addEventListener("click", async () => {
 
+    console.log("SAVE CLICKED");
     const user = await supabaseClient.auth.getUser();
+    console.log("USER:", user);
 
     if (!user.data?.user) {
         alert("User tidak login");
