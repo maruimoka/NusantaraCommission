@@ -2,11 +2,11 @@
 // ======================
 // TRACKER MODAL
 // ======================
-const trackerCards = document.querySelectorAll(".tracker-card");
+const trackerList = document.getElementById("trackerList");
 const trackerModal = document.getElementById("trackerModal");
 const closeBtn = document.querySelector(".close");
 
-trackerCards.forEach(card => {
+document.querySelectorAll(".tracker-card").forEach(card => {
     card.addEventListener("click", () => {
         trackerModal.style.display = "flex";
     });
@@ -36,7 +36,7 @@ const avatarInput = document.getElementById("avatarInput");
 const editAvatarPreview = document.getElementById("editAvatarPreview");
 
 
-// OPEN MODAL + FILL DATA
+// OPEN MODAL
 openEditProfile?.addEventListener("click", () => {
 
     document.getElementById("editName").value =
@@ -55,88 +55,68 @@ closeEditProfile?.addEventListener("click", () => {
 });
 
 
-// IMAGE PREVIEW ONLY
+// IMAGE PREVIEW
 avatarInput?.addEventListener("change", function () {
+
     const file = this.files[0];
     if (!file) return;
 
     const reader = new FileReader();
+
     reader.onload = (e) => {
         editAvatarPreview.src = e.target.result;
     };
+
     reader.readAsDataURL(file);
 });
 
 
 // ======================
-// LOAD SESSION (FIXED)
+// SAVE PROFILE (UI ONLY - kalau DB sudah di auth.js)
 // ======================
-async function getUser() {
-    const { data, error } = await supabaseClient.auth.getSession();
+saveProfileBtn?.addEventListener("click", () => {
 
-    if (error || !data.session) return null;
+    document.getElementById("profileName").textContent =
+        document.getElementById("editName").value;
 
-    return data.session.user;
-}
+    document.getElementById("profileBio").textContent =
+        document.getElementById("editBio").value;
 
-
-// ======================
-// SAVE PROFILE TO SUPABASE (IMPORTANT FIX)
-// ======================
-saveProfileBtn?.addEventListener("click", async () => {
-
-    const user = await getUser();
-    if (!user) {
-        alert("Not logged in");
-        return;
-    }
-
-    const username = document.getElementById("editName").value;
-    const bio = document.getElementById("editBio").value;
-    const social = document.getElementById("editSocial").value;
-    const image = editAvatarPreview.src;
-
-    const { error } = await supabaseClient
-        .from("artist_profile")
-        .update({
-            display_name: username,
-            bio: bio,
-            social: social,
-            profile_image: image
-        })
-        .eq("user_id", user.id);
-
-    if (error) {
-        console.log(error);
-        alert("Gagal update profile");
-        return;
-    }
-
-    // update UI
-    document.getElementById("profileName").textContent = username;
-    document.getElementById("profileBio").textContent = bio;
-    document.getElementById("profileUserImage").src = image;
+    document.getElementById("profileUserImage").src =
+        document.getElementById("editAvatarPreview").src;
 
     editProfileModal.style.display = "none";
 
-    alert("Profile updated!");
+    if (typeof showToast === "function") {
+        showToast();
+    }
 });
 
 
 // ======================
-// LOAD COMMISSIONS (FIXED)
+// SAFE INIT (FIX AWAY FROM GLOBAL AWAIT)
 // ======================
-async function loadCommissions() {
+async function initTracker() {
 
-    const user = await getUser();
-    if (!user) return;
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+
+    if (!sessionData?.session) return;
+
+    const user = sessionData.session.user;
 
     const { data, error } = await supabaseClient
         .from("commissions")
         .select(`
             *,
-            artist:artist_id(username, profile_image),
-            artwork:artwork_id(title, price, cover_image)
+            artist:artist_id (
+                username,
+                profile_image
+            ),
+            artwork:artwork_id (
+                title,
+                price,
+                cover_image
+            )
         `)
         .eq("client_id", user.id);
 
@@ -144,8 +124,6 @@ async function loadCommissions() {
         console.log(error);
         return;
     }
-
-    const trackerList = document.getElementById("trackerList");
 
     trackerList.innerHTML = "";
 
@@ -155,11 +133,13 @@ async function loadCommissions() {
         <div class="tracker-card">
 
             <div class="card-left">
+
                 <h4>${item.artist?.username ?? "-"}</h4>
 
                 <div class="commission-name">
                     <span>${item.artwork?.title ?? "-"}</span>
                 </div>
+
             </div>
 
             <div class="card-right">
@@ -169,6 +149,13 @@ async function loadCommissions() {
         </div>
         `;
     });
+
+    // rebind click event AFTER render
+    document.querySelectorAll(".tracker-card").forEach(card => {
+        card.addEventListener("click", () => {
+            trackerModal.style.display = "flex";
+        });
+    });
 }
 
-loadCommissions();
+initTracker();
