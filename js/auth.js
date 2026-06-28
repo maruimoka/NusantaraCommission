@@ -87,28 +87,19 @@ if (registerSubmitBtn) {
         // 2. INSERT USERS TABLE
         const { error: insertError } = await supabaseClient
             .from("users")
-            .insert([
+            .insert(
                 {
                     id: user.id,
                     username: username
                 }
-            ]);
+            );
 
         if (insertError) {
-            console.log("Users insert error:", insertError);
-            alert(insertError.message);
+             alert(insertError.message);
             return;
         }
 
         // 3. OPTIONAL PROFILE TABLE
-        const { error: profileError } = await supabaseClient
-            .from("artist_profiles")
-            .insert([
-                {
-                    user_id: user.id,
-                    display_name: username
-                }
-            ]);
 
         if (profileError) {
             console.log("Profile insert error:", profileError);
