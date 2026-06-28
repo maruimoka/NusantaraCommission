@@ -32,8 +32,11 @@ const postCommissionTab = document.getElementById("postCommissionTab");
 const postGalleryTab = document.getElementById("postGalleryTab");
 const postPriceLabel = document.getElementById("postPriceLabel");
 
+const editBtn = document.querySelector(".edit-btn");
+
 let currentProfile = null;
 let postCategory = "commission";
+let selectedArtwork = null;
 
 
 // =========================
@@ -334,7 +337,9 @@ function renderCards(data, container, type) {
 // PREVIEW MODAL
 // =========================
 
-function openPreview(item) {
+function openPreview(item){
+
+    selectedArtwork = item;
 
     document.getElementById("modalImage").src =
         item.image_url;
@@ -344,6 +349,9 @@ function openPreview(item) {
 
     document.getElementById("modalPrice").textContent =
         item.price ?? "-";
+
+    document.getElementById("modalDescription").textContent =
+        item.description ?? "";
 
     previewModal.style.display = "flex";
 
@@ -682,4 +690,151 @@ const { error } = await supabaseClient
 
 }
 
+editBtn.onclick = () => {
 
+    if(!selectedArtwork) return;
+
+    previewModal.style.display = "none";
+
+    editModal.style.display = "flex";
+
+    document.getElementById("editTitle").value =
+        selectedArtwork.title;
+
+    document.getElementById("editDescription").value =
+        selectedArtwork.description;
+
+    document.getElementById("editPrice").value =
+        selectedArtwork.price ?? "";
+
+    imagePreview.src =
+        selectedArtwork.image_url;
+
+    imagePreview.style.display = "block";
+
+    uploadContent.style.display = "none";
+
+    if(selectedArtwork.category==="commission"){
+
+        commissionBtn.classList.add("active");
+        galleryBtn.classList.remove("active");
+
+        priceInput.style.display="block";
+        priceLabel.style.display="block";
+
+    }else{
+
+        galleryBtn.classList.add("active");
+        commissionBtn.classList.remove("active");
+
+        priceInput.style.display="none";
+        priceLabel.style.display="none";
+
+    }
+
+}
+
+saveEditBtn.onclick = async () => {
+
+    if(!selectedArtwork) return;
+
+    let imageUrl = selectedArtwork.image_url;
+
+    const file = imageInput.files[0];
+
+    if(file){
+
+        const ext = file.name.split(".").pop();
+
+        const path =
+            `${selectedArtwork.artist_id}/${Date.now()}.${ext}`;
+
+        const {error:uploadError} =
+        await supabaseClient.storage
+        .from("artworks")
+        .upload(path,file);
+
+        if(uploadError){
+
+            alert(uploadError.message);
+
+            return;
+
+        }
+
+        const {data} =
+        supabaseClient.storage
+        .from("artworks")
+        .getPublicUrl(path);
+
+        imageUrl = data.publicUrl;
+
+    }
+
+    const category =
+        commissionBtn.classList.contains("active")
+        ? "commission"
+        : "gallery";
+
+    const {error} =
+    await supabaseClient
+    .from("artwork")
+    .update({
+
+        title:
+            document.getElementById("editTitle").value,
+
+        description:
+            document.getElementById("editDescription").value,
+
+        price:
+            category==="commission"
+            ? document.getElementById("editPrice").value
+            : null,
+
+        category,
+
+        image_url:imageUrl
+
+    })
+    .eq("id",selectedArtwork.id);
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    showToast("✔ Artwork berhasil diupdate!");
+
+    editModal.style.display="none";
+
+    reseteditForm();
+
+    await loadArtwork();
+
+}
+
+imageInput.addEventListener("change",function(){
+
+    const file=this.files[0];
+
+    if(!file) return;
+
+    const reader=new FileReader();
+
+    reader.onload=function(e){
+
+        imagePreview.src=e.target.result;
+
+        imagePreview.style.display="block";
+
+        uploadContent.style.display="none";
+
+    }
+
+    reader.readAsDataURL(file);
+
+});
