@@ -862,3 +862,26 @@ imageInput.addEventListener("change",function(){
     reader.readAsDataURL(file);
 
 });
+
+function reseteditForm() {
+
+    document.getElementById("editTitle").value = "";
+    document.getElementById("editDescription").value = "";
+    document.getElementById("editPrice").value = "";
+
+    imageInput.value = "";
+
+    imagePreview.src = "";
+    imagePreview.style.display = "none";
+
+    uploadContent.style.display = "flex";
+
+    commissionBtn.classList.add("active");
+    galleryBtn.classList.remove("active");
+
+    priceLabel.style.display = "block";
+    priceInput.style.display = "block";
+
+    selectedArtwork = null;
+
+}
