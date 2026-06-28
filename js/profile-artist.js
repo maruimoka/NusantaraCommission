@@ -823,6 +823,8 @@ saveEditBtn.onclick = async () => {
     })
     .eq("id",selectedArtwork.id);
 
+    console.log(error);
+    
     if(error){
 
         alert(error.message);
