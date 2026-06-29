@@ -23,8 +23,6 @@ document.getElementById("modalArtist");
 const modalArtistAvatar =
 document.getElementById("modalArtistAvatar");
 
-const closePreview =
-document.getElementById("closePreview");
 // =========================
 // LOAD HOMEPAGE
 // =========================
