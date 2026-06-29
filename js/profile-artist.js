@@ -809,22 +809,18 @@ saveEditBtn.onclick = async () => {
 
      console.log(selectedArtwork);
     
-    const { data: updatedData, error }  = 
-    await supabaseClient
+   const { data: updatedData, error } = await supabaseClient
     .from("artwork")
     .update({
-        title:
-            document.getElementById("editTitle").value,
-        description:
-            document.getElementById("editDescription").value,
-        price:
-            category==="commission"
+        title: document.getElementById("editTitle").value,
+        description: document.getElementById("editDescription").value,
+        price: category === "commission"
             ? document.getElementById("editPrice").value
             : null,
         category,
-        image_url:imageUrl
+        image_url: imageUrl
     })
-    .eq("id",selectedArtwork.id);
+    .eq("id", selectedArtwork.id)
     .select();
 
     console.log("UPDATED:", updatedData);
