@@ -149,7 +149,6 @@ function openPreview(artwork){
     }
 
 modalArtist.onclick = () => {
-
 window.location.href =
 `profile-follow.html?id=${artwork.artist_profiles.id}`;
 
