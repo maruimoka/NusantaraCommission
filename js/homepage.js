@@ -5,24 +5,56 @@
 const galleryGrid =
 document.getElementById("galleryGrid"); 
 
+const previewModal =
+document.getElementById("previewModal");
 
+const modalImage =
+document.getElementById("modalImage");
+
+const modalTitle =
+document.getElementById("modalTitle");
+
+const modalPrice =
+document.getElementById("modalPrice");
+
+const modalDescription =
+document.getElementById("modalDescription");
+
+const modalArtist =
+document.getElementById("modalArtist");
+
+const modalArtistAvatar =
+document.getElementById("modalArtistAvatar");
+
+const closePreview =
+document.getElementById("closePreview");
 // =========================
 // LOAD HOMEPAGE
 // =========================
 
 async function loadHomepage() {
-
-    galleryGrid.innerHTML = "";
-
-    // Ambil semua artwork
-
-    const { data: artworks, error } =
-    await supabaseClient
+    const { data: artworks, error } = await supabaseClient
         .from("artwork")
-        .select("*")
-        .order("created_at", {
-            ascending: false
-        });
+        .select(`
+        *,
+        artist_profiles(
+            id,
+            display_name,
+            profile_image,
+            bio
+        )
+    `)
+        .order("created_at",{
+        ascending:false
+    });
+
+    if(error){
+
+        console.log(error);
+
+        return;
+
+    }
 
     if (error) {
 
@@ -31,99 +63,104 @@ async function loadHomepage() {
         return;
 
     }
-
-    if (!artworks.length) {
-
-        galleryGrid.innerHTML = `
-            <h3>No Artwork Yet</h3>
-        `;
-
-        return;
-
-    }
-
-    // Loop semua artwork
-
-    for (const artwork of artworks) {
-
-        // Cari artist profile
-
-        const { data: artist } =
-        await supabaseClient
-            .from("artist_profiles")
-            .select("*")
-            .eq("id", artwork.artist_id)
-            .single();
-
-        renderCard(
-            artwork,
-            artist
-        );
-
-    }
+galleryGrid.innerHTML = "";
+artworks.forEach(renderCard);
 
 }
-
 
 // =========================
 // RENDER CARD
 // =========================
 
-function renderCard(
-    artwork,
-    artist
-) {
-
-    const card =
-    document.createElement("div");
+function renderCard(artwork) {
+    const card = document.createElement("div");
 
     card.className = "art-card";
-
+    
 card.innerHTML = `
     <div class="art-image">
-        <img src="${item.image_url}" alt="${item.title}">
+    <img 
+    src="${artwork.image_url}" 
+    alt="${artwork.title}">
     </div>
 
-    <div class="card-info">
+    <div class="card-content">
 
-        <span class="tag ${item.category}">
-            ${item.category.toUpperCase()}
+        <span class="tag ${artwork.category}">
+        ${artwork.category.toUpperCase()}
         </span>
 
-        <h3>${item.title}</h3>
+        <h3>${artwork.title}</h3>
 
-        <div class="artist-info">
-
-            <img
-                src="${item.artist_profiles.profile_image || 'asset/default-profile.png'}"
-                class="artist-avatar"
-            >
-
-            <span>
-                ${item.artist_profiles.display_name}
-            </span>
-
+        <div class="artist-row">
+        <img
+        src="${
+            artwork.artist_profiles?.profile_image ||
+            "asset/default-profile.png"
+        }"
+        class="artist-avatar">
+        <span>
+        ${
+            artwork.artist_profiles?.display_name ||
+            "Unknown Artist"
+        }
+        </span>
         </div>
-
-    </div>
-`;
-
-    // Simpan data untuk Preview
+        </div>
+    `;
 
     card.artwork = artwork;
-
-    card.artist = artist;
-
     card.onclick = () => {
 
-        openPreview(card);
-
-    };
+        openPreview(artwork);
+    }
 
     galleryGrid.appendChild(card);
 
 }
 
+function openPreview(artwork){
+
+    previewModal.style.display="flex";
+
+    modalImage.src=
+        artwork.image_url;
+
+    modalTitle.textContent=
+        artwork.title;
+
+    modalDescription.textContent=
+        artwork.description;
+
+    modalArtist.textContent=
+        artwork.artist_profiles.display_name;
+
+    modalArtistAvatar.src=
+        artwork.artist_profiles.profile_image;
+
+    if(artwork.category==="commission"){
+
+        modalPrice.style.display="block";
+
+        modalPrice.textContent=
+            `Rp ${Number(artwork.price).toLocaleString("id-ID")}`;
+
+    }
+
+    else{
+
+        modalPrice.style.display="none";
+
+    }
+
+modalArtist.onclick = () => {
+
+window.location.href =
+`artist-profile-person.html?id=${artwork.artist_profiles.id}`;
+
+}
+
+}
 
 // =========================
 // INIT
