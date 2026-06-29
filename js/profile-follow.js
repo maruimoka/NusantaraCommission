@@ -61,28 +61,25 @@ async function loadProfile(){
 
 }
 
-//LOAD ARTWORK
-async function loadArtwork(){
+//LOAD ARTWORK//
+async function loadArtwork() {
 
     const { data: artworks, error } =
     await supabaseClient
+        .from("artwork")
+        .select(`
+            *,
+            artist_profiles(
+                display_name,
+                profile_image
+            )
+        `)
+        .eq("artist_id", artistId)
+        .order("created_at", {
+            ascending: false
+        });
 
-    .from("artwork")
-
-    .select(`
-    *,
-    artist_profiles(
-        display_name,
-        profile_image
-    )
-
-    .eq("artist_id", artistId);
-
-    .order("created_at",{
-        ascending:false
-    });
-
-    if(error){
+    if (error) {
 
         console.log(error);
 
@@ -90,14 +87,32 @@ async function loadArtwork(){
 
     }
 
-    commissionSection.innerHTML="";
-    gallerySection.innerHTML="";
+    commissionSection.innerHTML = "";
+    gallerySection.innerHTML = "";
 
-    artworks.forEach(item => {
+    artworks.forEach(artwork => {
 
-    renderCard(item, commissionSection, "COMMISSION");
+        if (artwork.category === "commission") {
 
+            renderCard(
+                artwork,
+                commissionSection,
+                "COMMISSION"
+            );
 
+        } else {
+
+            renderCard(
+                artwork,
+                gallerySection,
+                "GALLERY"
+            );
+
+        }
+
+    });
+
+}
 
 // =========================
 // RENDER CARD
@@ -110,18 +125,23 @@ function renderCard(artwork, container, type){
     card.className = "card";
 
     card.innerHTML = `
-        <img src="${artwork.image_url}">
+    <img src="${artwork.image_url}">
 
-        <div class="card-body">
+    <div class="card-body">
 
-            <span class="tag">
-                ${type}
-            </span>
+        <span class="tag">
+            ${type}
+        </span>
 
-            <h3>${artwork.title}</h3>
+        <h3>${artwork.title}</h3>
 
-        </div>
-    `;
+        <p>
+            <i class="fa-regular fa-user"></i>
+            ${artwork.artist_profiles?.display_name || "Unknown Artist"}
+        </p>
+
+    </div>
+`;
 
     card.onclick = () => {
 
@@ -138,38 +158,35 @@ function renderCard(artwork, container, type){
 // PREVIEW MODAL
 // =========================
 
-function openPreview(item){
+function openPreview(artwork){
 
-    document.getElementById("modalImage").src = artwork.image_url;
+    document.getElementById("modalImage").src =
+        artwork.image_url;
 
-    document.getElementById("modalTitle").textContent = artwork.title;
+    document.getElementById("modalTitle").textContent =
+        artwork.title;
 
-    document.querySelector(".modal-price").textContent = artwork.price;
+    document.querySelector(".description-box p").textContent =
+        artwork.description;
 
-    document.querySelector(".modal-artist").textContent = artwork.artist_id;
+    document.querySelector(".modal-artist").textContent =
+        artwork.artist_profiles?.display_name || "Unknown Artist";
 
-    document.querySelector(".description-box p").textContent = artwork.description;
+    document.getElementById("modalArtistAvatar").src =
+        artwork.artist_profiles?.profile_image || "asset/default-profile.png";
 
-     if(artwork.category==="commission"){
+    if(artwork.category === "commission"){
 
         document.querySelector(".modal-price").textContent =
         `Rp ${Number(artwork.price).toLocaleString("id-ID")}`;
 
     }else{
 
-        document.querySelector(".modal-price").textContent =
-        "";
+        document.querySelector(".modal-price").textContent = "";
 
     }
 
     previewModal.style.display = "flex";
-
-}
-
-
-closePreview.onclick = function(){
-
-    previewModal.style.display = "none";
 
 }
 
