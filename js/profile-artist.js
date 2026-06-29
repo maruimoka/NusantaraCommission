@@ -771,13 +771,12 @@ editBtn.onclick = () => {
 
 saveEditBtn.onclick = async () => {
 
-console.log("File:", file);
-
     if(!selectedArtwork) return;
 
     let imageUrl = selectedArtwork.image_url;
 
     const file = imageInput.files[0];
+    console.log("File:", file);
 
     if(file){
 
