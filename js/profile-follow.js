@@ -1,55 +1,6 @@
-// =========================
-// DATA
-// =========================
-
-const commissions = [
-    {
-        title: "Commission Result A1",
-        artist: "Katsuru17.06",
-        image: "sample1.jpg",
-        price: "Rp150.000",
-        description: "Contoh deskripsi commission A1."
-    },
-    {
-        title: "Commission Result A2",
-        artist: "Katsuru17.06",
-        image: "sample2.jpg",
-        price: "Rp200.000",
-        description: "Contoh deskripsi commission A2."
-    },
-    {
-        title: "Commission Result A3",
-        artist: "Katsuru17.06",
-        image: "sample3.jpg",
-        price: "Rp250.000",
-        description: "Contoh deskripsi commission A3."
-    }
-];
-
-const galleries = [
-    {
-        title: "Artwork 1",
-        artist: "Momo Tropical",
-        image: "gallery1.jpg",
-        price: "-",
-        description: "Gallery Artwork 1"
-    },
-    {
-        title: "Artwork 2",
-        artist: "Momo Tropical",
-        image: "gallery2.jpg",
-        price: "-",
-        description: "Gallery Artwork 2"
-    },
-    {
-        title: "Artwork 3",
-        artist: "Momo Tropical",
-        image: "gallery3.jpg",
-        price: "-",
-        description: "Gallery Artwork 3"
-    }
-];
-
+const params = new URLSearchParams(window.location.search);
+const artistId = params.get("id");
+console.log(artistId);
 
 // =========================
 // ELEMENT
@@ -67,49 +18,118 @@ const followersText = document.getElementById("followers");
 const previewModal = document.getElementById("previewModal");
 const closePreview = document.getElementById("closePreview");
 
+// LOAD PROFILE
+async function loadProfile(){
+
+    // Ambil profile artist
+    const { data: profile, error } =
+    await supabaseClient
+
+    .from("artist_profiles")
+
+    .select("*")
+
+    .eq("id", artistId)
+
+    .single();
+
+    if(error){
+
+        console.log(error);
+
+        return;
+
+    }
+
+    // Isi profile
+    document.querySelector(".profile-banner").innerHTML = `
+        <img
+        src="${profile.banner_image || "asset/default-banner.jpg"}"
+        style="width:100%;height:100%;object-fit:cover;">
+    `;
+
+    document.querySelector(".profileavatar img").src =
+        profile.profile_image || "asset/default-profile.png";
+
+    document.querySelector(".profile-info h1").textContent =
+        profile.display_name;
+
+    document.querySelector(".profile-info p").textContent =
+        profile.bio || "No bio yet.";
+
+    loadArtwork();
+
+}
+
+//LOAD ARTWORK
+async function loadArtwork(){
+
+    const { data: artworks, error } =
+    await supabaseClient
+
+    .from("artwork")
+
+    .select(`
+    *,
+    artist_profiles(
+        display_name,
+        profile_image
+    )
+
+    .eq("artist_id", artistId);
+
+    .order("created_at",{
+        ascending:false
+    });
+
+    if(error){
+
+        console.log(error);
+
+        return;
+
+    }
+
+    commissionSection.innerHTML="";
+    gallerySection.innerHTML="";
+
+    artworks.forEach(item => {
+
+    renderCard(item, commissionSection, "COMMISSION");
+
+
 
 // =========================
 // RENDER CARD
 // =========================
 
-function renderCards(data, container, type) {
+function renderCard(artwork, container, type){
 
-    container.innerHTML = "";
+    const card = document.createElement("div");
 
-    data.forEach(item => {
+    card.className = "card";
 
-        const card = document.createElement("div");
+    card.innerHTML = `
+        <img src="${artwork.image_url}">
 
-card.className = "card";
+        <div class="card-body">
 
-card.innerHTML = `
-    <img src="${item.image}">
+            <span class="tag">
+                ${type}
+            </span>
 
-    <div class="card-body">
+            <h3>${artwork.title}</h3>
 
-        <span class="tag">
-            ${type}
-        </span>
+        </div>
+    `;
 
-        <h3>${item.title}</h3>
+    card.onclick = () => {
 
-        <p>
-            <i class="fa-regular fa-user"></i>
-            ${item.artist}
-        </p>
+        openPreview(artwork);
 
-    </div>
-`;
+    };
 
-        card.addEventListener("click", () => {
-
-            openPreview(item);
-
-        });
-
-        container.appendChild(card);
-
-    });
+    container.appendChild(card);
 
 }
 
@@ -120,15 +140,27 @@ card.innerHTML = `
 
 function openPreview(item){
 
-    document.getElementById("modalImage").src = item.image;
+    document.getElementById("modalImage").src = artwork.image_url;
 
-    document.getElementById("modalTitle").textContent = item.title;
+    document.getElementById("modalTitle").textContent = artwork.title;
 
-    document.querySelector(".modal-price").textContent = item.price;
+    document.querySelector(".modal-price").textContent = artwork.price;
 
-    document.querySelector(".modal-artist").textContent = item.artist;
+    document.querySelector(".modal-artist").textContent = artwork.artist_id;
 
-    document.querySelector(".description-box p").textContent = item.description;
+    document.querySelector(".description-box p").textContent = artwork.description;
+
+     if(artwork.category==="commission"){
+
+        document.querySelector(".modal-price").textContent =
+        `Rp ${Number(artwork.price).toLocaleString("id-ID")}`;
+
+    }else{
+
+        document.querySelector(".modal-price").textContent =
+        "";
+
+    }
 
     previewModal.style.display = "flex";
 
@@ -157,8 +189,7 @@ window.onclick = function(e){
 // TAB
 // =========================
 
-renderCards(commissions, commissionSection, "COMMISSION");
-renderCards(galleries, gallerySection, "GALLERY");
+loadProfile();
 
 gallerySection.style.display = "none";
 
