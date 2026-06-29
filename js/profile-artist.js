@@ -196,10 +196,8 @@ bannerInput.addEventListener("change", async function () {
                 publicUrlData.publicUrl
 
         })
-
-console.log(data);
                              
-        .eq("user_id", userId);
+    .eq("user_id", userId);
 
     if (error) {
 
@@ -208,7 +206,7 @@ console.log(data);
         return;
 
     }
-
+     console.log(data);
     currentProfile.banner_image =
         publicUrlData.publicUrl;
 
