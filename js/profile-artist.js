@@ -58,6 +58,8 @@ document.getElementById("editPrice");
 const priceLabel =
 document.getElementById("priceLabel");
 
+const deleteBtn = document.querySelector(".delete-btn");
+
 let currentProfile = null;
 let postCategory = "commission";
 let selectedArtwork = null;
@@ -894,4 +896,61 @@ function reseteditForm() {
 
     selectedArtwork = null;
 
-}
+};
+
+deleteBtn.onclick = async () => {
+
+    if (!selectedArtwork) return;
+
+    const confirmDelete = confirm(
+        "Yakin ingin menghapus artwork ini?"
+    );
+
+    if (!confirmDelete) return;
+
+    // ==========================
+    // Hapus gambar dari Storage
+    // ==========================
+
+    if (selectedArtwork.image_url) {
+
+        const imagePath = selectedArtwork.image_url
+            .split("/object/public/artworks/")[1];
+
+        const { error: storageError } =
+            await supabaseClient.storage
+                .from("artworks")
+                .remove([imagePath]);
+
+        if (storageError) {
+            console.log(storageError);
+        }
+
+    }
+
+    // ==========================
+    // Hapus data di Database
+    // ==========================
+
+    const { error } = await supabaseClient
+        .from("artwork")
+        .delete()
+        .eq("id", selectedArtwork.id);
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    previewModal.style.display = "none";
+
+    selectedArtwork = null;
+
+    await loadArtwork();
+
+    showToast("✔ Artwork berhasil dihapus!");
+
+};
