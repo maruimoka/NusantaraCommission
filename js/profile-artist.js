@@ -185,23 +185,17 @@ bannerInput.addEventListener("change", async function () {
         .getPublicUrl(filePath);
 
     // Simpan ke DB
-
+ console.log("Image URL:", imageUrl);
     const {
         error
     } = await supabaseClient
         .from("artist_profiles")
-        console.log("Image URL:", imageUrl);
         .update({
 
             banner_image:
                 publicUrlData.publicUrl
 
         })
-const { data } = await supabaseClient
-  .from("artwork")
-  .select("image_url")
-  .eq("id", selectedArtwork.id)
-  .single();
 
 console.log(data);
                              
@@ -633,8 +627,8 @@ savePostBtn.onclick = async () => {
 
     }
 
-    console.log(file);
     const file = postImageInput.files[0];
+    console.log(file);
 
     if (!file) {
 
@@ -779,6 +773,9 @@ editBtn.onclick = () => {
 
 saveEditBtn.onclick = async () => {
 
+const file = imageInput.files[0];
+console.log("File:", file);
+
     if(!selectedArtwork) return;
 
     let imageUrl = selectedArtwork.image_url;
@@ -804,14 +801,15 @@ saveEditBtn.onclick = async () => {
             return;
 
         }
-
+        console.log(uploadError);
+        
         const {data} =
         supabaseClient.storage
         .from("artworks")
         .getPublicUrl(path);
 
         imageUrl = data.publicUrl;
-
+        console.log(imageUrl);
     }
 
     const category =
