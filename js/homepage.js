@@ -2,9 +2,6 @@
 // ELEMENT
 // =========================
 
-const previewModal =
-document.getElementById("previewModal");
-
 const galleryGrid =
 document.getElementById("galleryGrid"); 
 
