@@ -190,12 +190,21 @@ bannerInput.addEventListener("change", async function () {
         error
     } = await supabaseClient
         .from("artist_profiles")
+        console.log("Image URL:", imageUrl);
         .update({
 
             banner_image:
                 publicUrlData.publicUrl
 
         })
+const { data } = await supabaseClient
+  .from("artwork")
+  .select("image_url")
+  .eq("id", selectedArtwork.id)
+  .single();
+
+console.log(data);
+                             
         .eq("user_id", userId);
 
     if (error) {
@@ -624,6 +633,7 @@ savePostBtn.onclick = async () => {
 
     }
 
+    console.log(file);
     const file = postImageInput.files[0];
 
     if (!file) {
