@@ -60,6 +60,9 @@ document.getElementById("priceLabel");
 
 const deleteBtn = document.querySelector(".delete-btn");
 
+const closeEdit = document.getElementById("closeEdit");
+const editModal = document.getElementById("editModal");
+
 let currentProfile = null;
 let postCategory = "commission";
 let selectedArtwork = null;
@@ -952,5 +955,11 @@ deleteBtn.onclick = async () => {
     await loadArtwork();
 
     showToast("✔ Artwork berhasil dihapus!");
+
+};
+
+closeEdit.onclick = () => {
+
+    editModal.style.display = "none";
 
 };
