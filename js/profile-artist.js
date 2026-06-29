@@ -185,7 +185,7 @@ bannerInput.addEventListener("change", async function () {
         .getPublicUrl(filePath);
 
     // Simpan ke DB
- console.log("Image URL:", imageUrl);
+
     const {
         error
     } = await supabaseClient
@@ -206,18 +206,12 @@ bannerInput.addEventListener("change", async function () {
         return;
 
     }
-     console.log(data);
+
     currentProfile.banner_image =
         publicUrlData.publicUrl;
 
     console.log("Banner updated!");
-const { data: check } = await supabaseClient
-    .from("artwork")
-    .select("*")
-    .eq("id", selectedArtwork.id)
-    .single();
-
-console.log(check);
+    
     
 });
 
@@ -814,29 +808,26 @@ saveEditBtn.onclick = async () => {
         : "gallery";
 
      console.log(selectedArtwork);
-    const {error} =
+    
+    const { data: updatedData, error }  = 
     await supabaseClient
     .from("artwork")
     .update({
-
         title:
             document.getElementById("editTitle").value,
-
         description:
             document.getElementById("editDescription").value,
-
         price:
             category==="commission"
             ? document.getElementById("editPrice").value
             : null,
-
         category,
-
         image_url:imageUrl
-
     })
     .eq("id",selectedArtwork.id);
+    .select();
 
+    console.log("UPDATED:", updatedData);
     console.log(error);
     
     if(error){
@@ -852,6 +843,7 @@ const { data: check } = await supabaseClient
     .select("*")
     .eq("id", selectedArtwork.id)
     .single();
+    console.log("CHECK:", check);
     
     showToast("✔ Artwork berhasil diupdate!");
 
