@@ -847,6 +847,12 @@ saveEditBtn.onclick = async () => {
 
     }
 
+const { data: check } = await supabaseClient
+    .from("artwork")
+    .select("*")
+    .eq("id", selectedArtwork.id)
+    .single();
+    
     showToast("✔ Artwork berhasil diupdate!");
 
     editModal.style.display="none";
