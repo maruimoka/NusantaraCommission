@@ -960,3 +960,23 @@ closeEdit.onclick = () => {
     editModal.style.display = "none";
 
 };
+
+commissionBtn.onclick = () => {
+
+    commissionBtn.classList.add("active");
+    galleryBtn.classList.remove("active");
+
+    priceInput.style.display = "block";
+    priceLabel.style.display = "block";
+
+};
+
+galleryBtn.onclick = () => {
+
+    galleryBtn.classList.add("active");
+    commissionBtn.classList.remove("active");
+
+    priceInput.style.display = "none";
+    priceLabel.style.display = "none";
+
+};
