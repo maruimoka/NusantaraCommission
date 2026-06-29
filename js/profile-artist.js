@@ -771,7 +771,6 @@ editBtn.onclick = () => {
 
 saveEditBtn.onclick = async () => {
 
-const file = imageInput.files[0];
 console.log("File:", file);
 
     if(!selectedArtwork) return;
