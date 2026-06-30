@@ -311,6 +311,9 @@ submitOrderBtn.onclick = async () => {
     const { error } =
     await supabaseClient
     .from("commission")
+
+    const request = document.getElementById("description").value;
+    console.log("Request:", request);
     .insert({
 
         client_id: user.id,
