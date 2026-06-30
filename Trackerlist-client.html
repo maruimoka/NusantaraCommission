@@ -113,49 +113,55 @@ id="openEditProfile">
 
         <div class="tracker-left">
 
-            <img src="asset/imagesbanner1.png">
+           <img id="trackerImage">
 
         </div>
 
-        <div class="tracker-right">
+<div class="tracker-right">
 
-            <span class="status finish">
-                FINISH
-            </span>
+    <span id="trackerStatus" class="status"></span>
 
-            <h2>COUPLE BUST UP COMMISSION</h2>
+    <h2 id="trackerTitle"></h2>
 
-            <h1>IDR 210.000</h1>
+    <h1 id="trackerPrice"></h1>
 
-            <div class="artist-info">
+    <div class="artist-info">
 
-                <div class="artist-avatar"></div>
-
-                <span>KATSURU17.06</span>
-
-            </div>
-
-            <div class="reference-file">
-
-                📄 Character A.png
-
-            </div>
-
-            <div class="reference-file">
-
-                📄 Character B.png
-
-            </div>
-
-            <button class="chatbtn">
-                CHAT
-            </button>
-
+        <div class="artist-avatar">
+            <img id="trackerArtistAvatar">
         </div>
+
+        <span id="trackerArtist"></span>
 
     </div>
 
-     </div>
+    <h3>Request</h3>
+
+    <p id="trackerRequest"></p>
+
+    <h3>Reference Files</h3>
+
+    <div id="trackerReferenceList"></div>
+
+    <h3>Result</h3>
+
+    <div id="resultSection" style="display:none;">
+
+        <button
+        id="openResultBtn"
+        class="open-result-btn">
+
+            OPEN
+
+        </button>
+
+    </div>
+
+    <button class="chatbtn">
+        CHAT
+    </button>
+        </div>
+    </div>
     </div>
 
 
