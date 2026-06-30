@@ -105,7 +105,8 @@ for(const file of uploadedFiles){
     referenceUrls.push(data.publicUrl);
 
 }
-console.log("REFERENCE URLS:", referenceUrls);
+    
+console.log(referenceUrls);
     const { error } =
     await supabaseClient
     .from("commission")
