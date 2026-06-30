@@ -1,5 +1,6 @@
 let isFollowing = false;
 let currentUser = null;
+let artistUserId = null;
 
 const params = new URLSearchParams(window.location.search);
 const artistId = params.get("id");
@@ -20,6 +21,9 @@ const followersText = document.getElementById("followers");
 
 const previewModal = document.getElementById("previewModal");
 const closePreview = document.getElementById("closePreview");
+
+const followingText =
+document.getElementById("following");
 
 // LOAD PROFILE
 async function loadProfile(){
@@ -60,10 +64,10 @@ async function loadProfile(){
     document.querySelector(".profile-info p").textContent =
         profile.bio || "No bio yet.";
 
+artistUserId = profile.user_id;
+    
 await loadArtwork();
-
 await loadFollowers();
-
 await checkFollowStatus();
 }
 
@@ -113,6 +117,28 @@ async function loadFollowers(){
 
     followersText.innerHTML =
         `<b>${count}</b> Followers`;
+
+}
+
+async function loadFollowing(){
+
+    const { count, error } = await supabaseClient
+        .from("followers")
+        .select("*", {
+            count: "exact",
+            head: true
+        })
+        .eq("user_id", artistUserId);
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
+    followingText.innerHTML =
+        `<b>${count}</b> Following`;
 
 }
 
