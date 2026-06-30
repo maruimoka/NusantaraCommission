@@ -221,8 +221,7 @@ async function initTracker() {
 
     trackerList.innerHTML = "";
 
-    data.forEach(item => {
-
+ data.forEach(item => {
 trackerList.innerHTML += `
 <div class="tracker-card">
 
@@ -232,14 +231,10 @@ src="${item.artwork?.image_url}">
 
 <div class="card-left">
 
-<h4>
-${item.artist?.display_name}
-</h4>
+<h4>${item.artist?.display_name}</h4>
 
 <div class="commission-name">
-
 ${item.artwork?.title}
-
 </div>
 
 </div>
@@ -254,17 +249,17 @@ ${item.status}
 
 </div>
 `;
+     
+const lastCard =
+trackerList.lastElementChild;
 
-    });
+lastCard.addEventListener("click", () => {
 
-    document.querySelectorAll(".tracker-card").forEach(card => {
-
-card.addEventListener("click", () => {
-openTrackerModal(item);
+    openTrackerModal(item);
 
 });
 
-    });
+});
 
 }
 
@@ -285,13 +280,87 @@ document.getElementById("trackerPrice").textContent =
 document.getElementById("trackerArtist").textContent =
 order.artist.display_name;
 
-document.getElementById("trackerStatus").textContent =
-order.status;
+const status = document.getElementById("trackerStatus");
+    status.textContent = order.status;
+    status.className =
+        `status ${order.status}`;
 
-document.getElementById("trackerDescription").textContent =
+document.getElementById("trackerRequest").textContent =
 order.request_detail;
 
+document.getElementById("trackerArtistAvatar").src =
+order.artist.profile_image || "asset/default-profile.png";
+
+// ======================
+// REFERENCE FILES
+// ======================
+
+const refList =
+document.getElementById("trackerReferenceList");
+
+refList.innerHTML = "";
+
+if(order.reference_files){
+
+    order.reference_files.forEach(file => {
+
+        refList.innerHTML += `
+        <div class="reference-file">
+
+            📄
+            <a href="${file}" target="_blank">
+                Reference
+            </a>
+
+        </div>
+        `;
+
+    });
+
 }
+
+
+// ======================
+// RESULT BUTTON
+// ======================
+
+const resultSection =
+document.getElementById("resultSection");
+
+const openBtn =
+document.getElementById("openResultBtn");
+
+if(
+
+    order.status === "finish"
+
+    &&
+
+    order.result_files
+
+    &&
+
+    order.result_files.length > 0
+
+){
+
+    resultSection.style.display = "block";
+
+    openBtn.onclick = () => {
+
+        window.open(order.result_files[0], "_blank");
+
+    };
+
+}else{
+
+    resultSection.style.display = "none";
+
+}
+
+}
+
+
 // ======================
 // LOAD PROFILE
 // ======================
