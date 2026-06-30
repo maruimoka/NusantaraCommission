@@ -116,8 +116,6 @@ async function loadFollowers(){
 
 }
 
-}
-
 //LOAD ARTWORK//
 async function loadArtwork() {
 
