@@ -53,29 +53,3 @@ function renderFileList(){
 
 }
 
-function submitOrder(){
-
-    document.getElementById("description").value = "";
-
-    uploadedFiles = [];
-
-    fileList.innerHTML = "";
-
-    fileInput.value = "";
-
-    commissionModal.style.display = "none";
-
-}
-
-window.submitOrder = submitOrder;
-
-const submitBtn =
-document.getElementById("submitOrderBtn");
-
-submitBtn.addEventListener("click", (e) => {
-
-    e.preventDefault();
-
-    submitOrder();
-
-});
