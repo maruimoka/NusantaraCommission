@@ -1,4 +1,4 @@
-let selectedArtwork = null;
+
 const params = new URLSearchParams(window.location.search);
 const artistId = params.get("id");
 console.log(artistId);
