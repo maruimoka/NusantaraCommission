@@ -19,6 +19,8 @@ const followersText = document.getElementById("followers");
 const previewModal = document.getElementById("previewModal");
 const closePreview = document.getElementById("closePreview");
 
+const submitOrderBtn = document.getElementById("submitOrderBtn");
+
 // LOAD PROFILE
 async function loadProfile(){
 
@@ -287,26 +289,6 @@ function openOrderForm(){
 
 };
 
-const { data: { user } } =
-await supabaseClient.auth.getUser();
-
-await supabaseClient
-.from("commission")
-.insert({
-
-    client_id: user.id,
-
-    artist_id: selectedArtwork.artist_id,
-
-    artwork_id: selectedArtwork.id,
-
-    request_detail:
-    document.getElementById("description").value,
-
-    status: "pending"
-
-});
-
 submitOrderBtn.onclick = async () => {
 
     const {
@@ -322,7 +304,7 @@ submitOrderBtn.onclick = async () => {
     }
 
     const request =
-    document.getElementById("requestDetail").value;
+    document.getElementById("description").value;
 
     const { error } =
     await supabaseClient
