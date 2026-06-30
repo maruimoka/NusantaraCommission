@@ -272,19 +272,3 @@ closePreview.addEventListener("click", () => {
     previewModal.style.display = "none";
 
 });
-
-function openOrderForm(){
-
-    orderModal.style.display = "flex";
-
-    document.getElementById("orderImage").src =
-        selectedArtwork.image_url;
-    document.getElementById("orderTitle").textContent =
-        selectedArtwork.title;
-
-    document.getElementById("orderPrice").textContent =
-        `Rp ${Number(selectedArtwork.price).toLocaleString("id-ID")}`;
-    document.getElementById("orderArtist").textContent =
-        selectedArtwork.artist_profiles.display_name;
-
-};
