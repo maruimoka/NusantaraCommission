@@ -223,38 +223,75 @@ async function initTracker() {
 
     data.forEach(item => {
 
-        trackerList.innerHTML += `
-            <div class="tracker-card">
+trackerList.innerHTML += `
+<div class="tracker-card">
 
-                <div class="card-left">
+<img
+class="tracker-thumb"
+src="${item.artwork?.image_url}">
 
-                    <h4>${item.artist?.display_name ?? "-"}</h4>
+<div class="card-left">
 
-                    <div class="commission-name">
-                        <span>${item.artwork?.title ?? "-"}</span>
-                    </div>
+<h4>
+${item.artist?.display_name}
+</h4>
 
-                </div>
+<div class="commission-name">
 
-                <div class="card-right">
-                    <span>${item.status}</span>
-                </div>
+${item.artwork?.title}
 
-            </div>
-        `;
+</div>
+
+</div>
+
+<div class="card-right">
+
+<span class="status ${item.status}">
+${item.status}
+</span>
+
+</div>
+
+</div>
+`;
 
     });
 
     document.querySelectorAll(".tracker-card").forEach(card => {
 
-        card.addEventListener("click", () => {
-            trackerModal.style.display = "flex";
-        });
+card.addEventListener("click", () => {
+openTrackerModal(item);
+
+});
 
     });
 
 }
 
+
+function openTrackerModal(order){
+
+trackerModal.style.display = "flex";
+
+document.getElementById("trackerImage").src =
+order.artwork.image_url;
+
+document.getElementById("trackerTitle").textContent =
+order.artwork.title;
+
+document.getElementById("trackerPrice").textContent =
+`Rp ${Number(order.artwork.price).toLocaleString("id-ID")}`;
+
+document.getElementById("trackerArtist").textContent =
+order.artist.display_name;
+
+document.getElementById("trackerStatus").textContent =
+order.status;
+
+document.getElementById("trackerDescription").textContent =
+order.request_detail;
+
+}
 // ======================
 // LOAD PROFILE
 // ======================
