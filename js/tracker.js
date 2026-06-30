@@ -301,9 +301,7 @@ document.getElementById("trackerReferenceList");
 refList.innerHTML = "";
 
 if(order.reference_files && order.reference_files.length > 0){
-
     order.reference_files.forEach(file => {
-
         refList.innerHTML += `
         <div class="reference-file">
             📄
