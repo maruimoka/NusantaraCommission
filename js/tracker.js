@@ -227,29 +227,39 @@ data.forEach(order => {
 
     card.className = "tracker-card";
 
-    card.innerHTML = `
-        <img
-            class="tracker-thumb"
-            src="${order.artwork?.image_url || ""}">
+   card.innerHTML = `
 
-        <div class="card-left">
+<div class="tracker-header">
 
-            <h4>${order.artist?.display_name ?? "-"}</h4>
+    <h3>${order.artist?.display_name ?? "-"}</h3>
 
-            <div class="commission-name">
-                ${order.artwork?.title ?? "-"}
-            </div>
+    <span class="status ${order.status}">
+        ${order.status.toUpperCase()}
+    </span>
 
-        </div>
+</div>
 
-        <div class="card-right">
+<div class="tracker-title">
 
-            <span class="status ${order.status}">
-                ${order.status}
-            </span>
+    📄 ${order.artwork?.title ?? "-"}
 
-        </div>
-    `;
+</div>
+
+${
+order.result_files &&
+order.result_files.length > 0
+?
+
+`<div class="tracker-result">
+    • OPEN
+</div>`
+
+:
+
+""
+
+}
+`;
 
     card.addEventListener("click", () => {
 
