@@ -298,46 +298,36 @@ submitOrderBtn.onclick = async () => {
     } = await supabaseClient.auth.getUser();
 
     if (!user) {
-
         alert("Silakan login.");
-
         return;
-
     }
 
-    const request =
-    document.getElementById("description").value;
+    const request = document.getElementById("description").value.trim();
 
-    const { error } =
-    await supabaseClient
-    .from("commission")
-
-    const request = document.getElementById("description").value;
     console.log("Request:", request);
-    .insert({
 
-        client_id: user.id,
+    const { error } = await supabaseClient
+        .from("commission")
+        .insert({
 
-        artist_id: selectedArtwork.artist_id,
+            client_id: user.id,
 
-        artwork_id: selectedArtwork.id,
+            artist_id: selectedArtwork.artist_id,
 
-        request_detail: request,
+            artwork_id: selectedArtwork.id,
 
-        status: "pending"
+            request_detail: request,
 
-    });
+            status: "pending"
 
-    if(error){
+        });
 
+    if (error) {
         console.log(error);
-
         alert(error.message);
-
         return;
-
     }
 
     alert("Order berhasil dikirim!");
 
-}
+};
