@@ -221,43 +221,43 @@ async function initTracker() {
 
     trackerList.innerHTML = "";
 
- data.forEach(item => {
-trackerList.innerHTML += `
-<div class="tracker-card">
+data.forEach(order => {
 
-<img
-class="tracker-thumb"
-src="${item.artwork?.image_url}">
+    const card = document.createElement("div");
 
-<div class="card-left">
+    card.className = "tracker-card";
 
-<h4>${item.artist?.display_name}</h4>
+    card.innerHTML = `
+        <img
+            class="tracker-thumb"
+            src="${order.artwork?.image_url || ""}">
 
-<div class="commission-name">
-${item.artwork?.title}
-</div>
+        <div class="card-left">
 
-</div>
+            <h4>${order.artist?.display_name ?? "-"}</h4>
 
-<div class="card-right">
+            <div class="commission-name">
+                ${order.artwork?.title ?? "-"}
+            </div>
 
-<span class="status ${item.status}">
-${item.status}
-</span>
+        </div>
 
-</div>
+        <div class="card-right">
 
-</div>
-`;
-     
-const lastCard =
-trackerList.lastElementChild;
+            <span class="status ${order.status}">
+                ${order.status}
+            </span>
 
-lastCard.addEventListener("click", () => {
+        </div>
+    `;
 
-    openTrackerModal(item);
+    card.addEventListener("click", () => {
 
-});
+        openTrackerModal(order);
+
+    });
+
+    trackerList.appendChild(card);
 
 });
 
@@ -269,16 +269,16 @@ function openTrackerModal(order){
 trackerModal.style.display = "flex";
 
 document.getElementById("trackerImage").src =
-order.artwork.image_url;
+order.artwork?.image_url || "";
 
 document.getElementById("trackerTitle").textContent =
-order.artwork.title;
+order.artwork?.title ?? "-";
 
 document.getElementById("trackerPrice").textContent =
-`Rp ${Number(order.artwork.price).toLocaleString("id-ID")}`;
+`Rp ${Number(order.artwork?.price || 0).toLocaleString("id-ID")}`;
 
 document.getElementById("trackerArtist").textContent =
-order.artist.display_name;
+order.artist?.display_name ?? "-";
 
 const status = document.getElementById("trackerStatus");
     status.textContent = order.status;
@@ -286,10 +286,10 @@ const status = document.getElementById("trackerStatus");
         `status ${order.status}`;
 
 document.getElementById("trackerRequest").textContent =
-order.request_detail;
+order.request_detail ?? "-";
 
 document.getElementById("trackerArtistAvatar").src =
-order.artist.profile_image || "asset/default-profile.png";
+order.artist?.profile_image ||"asset/default-profile.png";
 
 // ======================
 // REFERENCE FILES
@@ -332,14 +332,8 @@ document.getElementById("openResultBtn");
 
 if(
 
-    order.status === "finish"
-
-    &&
-
-    order.result_files
-
-    &&
-
+    order.status === "finish" &&
+    order.result_files &&
     order.result_files.length > 0
 
 ){
@@ -348,14 +342,14 @@ if(
 
     openBtn.onclick = () => {
 
-        window.open(order.result_files[0], "_blank");
+    window.open(order.result_files[0], "_blank");
 
     };
 
 }else{
 
     resultSection.style.display = "none";
-
+    openBtn.onclick = null;
 }
 
 }
