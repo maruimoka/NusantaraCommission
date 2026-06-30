@@ -156,6 +156,8 @@ console.log("INSERT ERROR:", error);
 
     commissionModal.style.display = "none";
 
+};
+
 function renderFileList(){
 
     fileList.innerHTML = "";
