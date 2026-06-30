@@ -19,8 +19,6 @@ const followersText = document.getElementById("followers");
 const previewModal = document.getElementById("previewModal");
 const closePreview = document.getElementById("closePreview");
 
-const submitOrderBtn = document.getElementById("submitOrderBtn");
-
 // LOAD PROFILE
 async function loadProfile(){
 
@@ -162,7 +160,7 @@ function renderCard(artwork, container, type){
 // =========================
 
 function openPreview(artwork){
-    selectedArtwork = artwork;
+    selectedArtwork = (artwork);
     console.log("Selected Artwork:", selectedArtwork);
 
     document.getElementById("modalImage").src =
@@ -288,46 +286,5 @@ function openOrderForm(){
         `Rp ${Number(selectedArtwork.price).toLocaleString("id-ID")}`;
     document.getElementById("orderArtist").textContent =
         selectedArtwork.artist_profiles.display_name;
-
-};
-
-submitOrderBtn.onclick = async () => {
-
-    const {
-        data: { user }
-    } = await supabaseClient.auth.getUser();
-
-    if (!user) {
-        alert("Silakan login.");
-        return;
-    }
-
-    const request = document.getElementById("description").value.trim();
-
-    console.log("Request:", request);
-
-    const { error } = await supabaseClient
-        .from("commission")
-        .insert({
-
-            client_id: user.id,
-
-            artist_id: selectedArtwork.artist_id,
-
-            artwork_id: selectedArtwork.id,
-
-            request_detail: request,
-
-            status: "pending"
-
-        });
-
-    if (error) {
-        console.log(error);
-        alert(error.message);
-        return;
-    }
-
-    alert("Order berhasil dikirim!");
 
 };
