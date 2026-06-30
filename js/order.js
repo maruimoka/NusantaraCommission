@@ -107,12 +107,10 @@ for(const file of uploadedFiles){
 }
     
 console.log(referenceUrls);
-    const { error } =
-    await supabaseClient
-    .from("commission")
-    .insert({
 
-        client_id: user.id,
+const payload = {
+
+    client_id: user.id,
 
     artist_id: selectedArtwork.artist_id,
 
@@ -124,7 +122,17 @@ console.log(referenceUrls);
 
     status: "pending"
 
-    });
+};
+
+console.log("PAYLOAD:", payload);
+
+const { data, error } = await supabaseClient
+    .from("commission")
+    .insert(payload)
+    .select();
+
+console.log("INSERT DATA:", data);
+console.log("INSERT ERROR:", error);
 
     if(error){
 
@@ -147,11 +155,6 @@ console.log(referenceUrls);
     fileInput.value = "";
 
     commissionModal.style.display = "none";
-
-}
-
-
-
 
 function renderFileList(){
 
