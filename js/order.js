@@ -56,7 +56,9 @@ fileInput.addEventListener("change", function(){
 
     renderFileList();
 
-    const submitBtn =
+});
+
+const submitBtn =
 document.getElementById("submitOrderBtn");
 
 submitBtn.onclick = async () => {
@@ -73,8 +75,36 @@ submitBtn.onclick = async () => {
 
     }
 
-    const request =
-    document.getElementById("description").value.trim();
+   const request =
+document.getElementById("description").value.trim();
+
+let referenceUrls = [];
+
+for(const file of uploadedFiles){
+
+    const filePath =
+`${user.id}/${Date.now()}-${file.name}`;
+
+    const { error: uploadError } =
+    await supabaseClient.storage
+        .from("reference-files")
+        .upload(filePath, file);
+
+    if(uploadError){
+
+        alert(uploadError.message);
+        return;
+
+    }
+
+    const { data } =
+    supabaseClient.storage
+        .from("reference-files")
+        .getPublicUrl(filePath);
+
+    referenceUrls.push(data.publicUrl);
+
+}
 
     const { error } =
     await supabaseClient
@@ -83,13 +113,15 @@ submitBtn.onclick = async () => {
 
         client_id: user.id,
 
-        artist_id: selectedArtwork.artist_id,
+    artist_id: selectedArtwork.artist_id,
 
-        artwork_id: selectedArtwork.id,
+    artwork_id: selectedArtwork.id,
 
-        request_detail: request,
+    request_detail: request,
 
-        status: "pending"
+    reference_files: referenceUrls,
+
+    status: "pending"
 
     });
 
@@ -117,7 +149,8 @@ submitBtn.onclick = async () => {
 
 }
 
-});
+
+
 
 function renderFileList(){
 
