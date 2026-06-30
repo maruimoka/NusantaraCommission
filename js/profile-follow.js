@@ -316,7 +316,7 @@ followBtn.onclick = async () => {
 
     }else{
 
-        await supabaseClient
+       const { error } = await supabaseClient
 
             .from("followers")
 
@@ -327,7 +327,7 @@ followBtn.onclick = async () => {
                 artist_id: artistId
 
             });
-
+console.log(error);
     }
 
     await loadFollowers();
