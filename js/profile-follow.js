@@ -68,6 +68,7 @@ artistUserId = profile.user_id;
     
 await loadArtwork();
 await loadFollowers();
+await loadFollowing();
 await checkFollowStatus();
 }
 
@@ -357,7 +358,7 @@ console.log(error);
     }
 
     await loadFollowers();
-
+    await loadFollowing();
     await checkFollowStatus();
 
 };
