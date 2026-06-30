@@ -1,3 +1,6 @@
+let isFollowing = false;
+let currentUser = null;
+
 const params = new URLSearchParams(window.location.search);
 const artistId = params.get("id");
 console.log(artistId);
@@ -57,7 +60,61 @@ async function loadProfile(){
     document.querySelector(".profile-info p").textContent =
         profile.bio || "No bio yet.";
 
-    loadArtwork();
+await loadArtwork();
+
+await loadFollowers();
+
+await checkFollowStatus();
+}
+
+async function checkFollowStatus(){
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if(!user) return;
+
+    currentUser = user;
+
+    const { data } = await supabaseClient
+
+        .from("followers")
+
+        .select("*")
+
+        .eq("user_id", user.id)
+
+        .eq("artist_id", artistId);
+
+    isFollowing = data.length > 0;
+
+    followBtn.textContent =
+        isFollowing ? "UNFOLLOW" : "FOLLOW";
+
+}
+
+async function loadFollowers(){
+
+    const { count } =
+    await supabaseClient
+
+        .from("followers")
+
+        .select("*",{
+
+            count:"exact",
+
+            head:true
+
+        })
+
+        .eq("artist_id", artistId);
+
+    followersText.innerHTML =
+        `<b>${count}</b> Followers`;
+
+}
 
 }
 
@@ -237,32 +294,47 @@ galleryTab.onclick = function(){
 // FOLLOW BUTTON
 // =========================
 
-if(followBtn){
+followBtn.onclick = async () => {
 
-    let followers = 25;
-    let isFollowing = true;
+    if(!currentUser){
 
-    followBtn.onclick = function(){
+        alert("Silakan login terlebih dahulu.");
 
-        if(isFollowing){
-
-            followers--;
-
-            followBtn.innerText = "FOLLOW";
-
-        }else{
-
-            followers++;
-
-            followBtn.innerText = "UNFOLLOW";
-
-        }
-
-        followersText.innerHTML = `<b>${followers}</b> Followers`;
-
-        isFollowing = !isFollowing;
+        return;
 
     }
+
+    if(isFollowing){
+
+        await supabaseClient
+
+            .from("followers")
+
+            .delete()
+
+            .eq("user_id", currentUser.id)
+
+            .eq("artist_id", artistId);
+
+    }else{
+
+        await supabaseClient
+
+            .from("followers")
+
+            .insert({
+
+                user_id: currentUser.id,
+
+                artist_id: artistId
+
+            });
+
+    }
+
+    await loadFollowers();
+
+    await checkFollowStatus();
 
 };
 
