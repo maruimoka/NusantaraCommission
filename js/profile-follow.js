@@ -162,6 +162,8 @@ function renderCard(artwork, container, type){
 // =========================
 
 function openPreview(artwork){
+    selectedArtwork = artwork;
+    console.log("Selected Artwork:", selectedArtwork);
 
     document.getElementById("modalImage").src =
         artwork.image_url;
