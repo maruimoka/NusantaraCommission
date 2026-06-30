@@ -306,3 +306,51 @@ await supabaseClient
     status: "pending"
 
 });
+
+submitOrderBtn.onclick = async () => {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
+        alert("Silakan login.");
+
+        return;
+
+    }
+
+    const request =
+    document.getElementById("requestDetail").value;
+
+    const { error } =
+    await supabaseClient
+    .from("commission")
+    .insert({
+
+        client_id: user.id,
+
+        artist_id: selectedArtwork.artist_id,
+
+        artwork_id: selectedArtwork.id,
+
+        request_detail: request,
+
+        status: "pending"
+
+    });
+
+    if(error){
+
+        console.log(error);
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    alert("Order berhasil dikirim!");
+
+}
