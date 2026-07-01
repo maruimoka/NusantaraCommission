@@ -212,7 +212,7 @@ async function initTracker() {
                 category
             )
         `)
-        .eq("client_id", user.id);
+    .eq("client_id", user.id)
     .order("created_at", {
     ascending: false
 });
