@@ -778,7 +778,6 @@ Hover
 .status{
 
     display:inline-flex;
-
     align-items:center;
     justify-content:center;
 
@@ -794,6 +793,12 @@ Hover
     text-transform:uppercase;
 
     letter-spacing:1px;
+   
+    cursor:pointer;
+
+    border:none;
+
+    outline:none;
 }
 
 .status.pending{
@@ -828,7 +833,7 @@ Hover
 
 }
 
-.status.colouring{
+.status.coloring{
 
     background:#F19F25;
 
@@ -852,7 +857,7 @@ Hover
 
 }
 
-.status.on hold{
+.status.on-hold{
 
     background:#FF9A9A;
 
