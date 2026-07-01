@@ -406,7 +406,7 @@ background:rgba(0,0,0,.45);
 justify-content:center;
 align-items:center;
 
-z-index:999;
+ z-index:100000;
 
 }
 
@@ -424,6 +424,7 @@ border-radius:25px;
 padding:35px;
 
 position:relative;
+ z-index:100001;
 
 }
 
