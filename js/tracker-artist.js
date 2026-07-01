@@ -217,6 +217,49 @@ card.innerHTML = `
     </div>
 `;
 
+card.onclick = () => {
+
+    currentOrder = order;
+
+    document.getElementById("clientAvatar").src =
+        clientProfile.profile_image;
+
+    document.getElementById("clientName").textContent =
+        clientProfile.display_name;
+
+    document.getElementById("commissionTitle").textContent =
+        order.artwork.title;
+
+    document.getElementById("requestDetail").value =
+        order.request_detail ?? "";
+
+    statusBtn.textContent =
+        order.status ?? "WAITING";
+
+    const referenceList =
+        document.getElementById("referenceList");
+
+    referenceList.innerHTML = "";
+
+    (order.reference_files || []).forEach(url => {
+
+        const div = document.createElement("div");
+
+        div.className = "reference-file";
+
+        div.innerHTML = `
+            <i class="fa-regular fa-file"></i>
+            ${url.split("/").pop()}
+        `;
+
+        referenceList.appendChild(div);
+
+    });
+
+    trackerModalArtist.style.display = "flex";
+
+};
+        
 trackerList.appendChild(card);
     }
 
