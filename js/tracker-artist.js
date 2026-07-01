@@ -18,7 +18,6 @@ window.addEventListener("click",(e)=>{
         trackerModalArtist.style.display="none";
 
     }
-
 });
 
 const upload =
