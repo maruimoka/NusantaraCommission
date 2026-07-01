@@ -239,7 +239,7 @@
 }
 
 .order-btn,
-.chatbtn{
+.chat-btn{
 
     flex:1;
 
@@ -265,7 +265,7 @@
     color:white;
 }
 
-.chatbtn{
+.chat-btn{
 
     background:#DFDFDF;
 
