@@ -366,26 +366,55 @@ if(
 // LOAD PROFILE
 // ======================
 async function loadProfile() {
-   
+
     const {
         data: { user }
     } = await supabaseClient.auth.getUser();
 
     if (!user) return;
 
-    const { data, error } = await supabaseClient
+    // Cek apakah profile sudah ada
+    let { data, error } = await supabaseClient
         .from("artist_profiles")
         .select("*")
         .eq("user_id", user.id)
-        .maybesingle();
+        .maybeSingle();
 
     if (error) {
         console.log(error);
         return;
     }
 
-     currentProfile = data;
-    
+    // Kalau belum ada -> buat profile default
+    if (!data) {
+
+        const { error: insertError } = await supabaseClient
+            .from("artist_profiles")
+            .insert({
+                user_id: user.id,
+                display_name: user.email.split("@")[0],
+                bio: "",
+                medsos: "",
+                profile_image: ""
+            });
+
+        if (insertError) {
+            console.log(insertError);
+            return;
+        }
+
+        // Ambil lagi data yang baru dibuat
+        const result = await supabaseClient
+            .from("artist_profiles")
+            .select("*")
+            .eq("user_id", user.id)
+            .single();
+
+        data = result.data;
+    }
+
+    currentProfile = data;
+
     document.getElementById("profileName").textContent =
         data.display_name ?? "";
 
@@ -395,6 +424,5 @@ async function loadProfile() {
     document.getElementById("profileUserImage").src =
         data.profile_image || "asset/imagesbanner1.png";
 }
-
 loadProfile();
 initTracker();
