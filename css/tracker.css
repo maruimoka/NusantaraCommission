@@ -494,39 +494,7 @@ gap:15px;
 
 }
 
-.chat-btn{
 
-    width:180px;
-
-    height:55px;
-
-    margin-top:30px;
-
-    margin-left:auto;
-
-    border:none;
-
-    border-radius:15px;
-
-    background:#ff3a3a;
-
-    color:white;
-
-    font-size:26px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.chat-btn:hover{
-
-    background:#ff5555;
-
-}
 
 .commission-title{
 
