@@ -239,7 +239,7 @@
 }
 
 .order-btn,
-.chat-btn{
+.chatbtn{
 
     flex:1;
 
@@ -258,14 +258,14 @@
     transition:.25s;
 }
 
-.order-btn{
+.orderbtn{
 
     background:#DFDFDF;
 
     color:white;
 }
 
-.chat-btn{
+.chatbtn{
 
     background:#DFDFDF;
 
@@ -652,5 +652,109 @@ Hover
     transform:scale(1.03);
 
     background:#e62b2b;
+
+}
+
+/* ===========================
+   TRACKER MODAL
+=========================== */
+
+.tracker-modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.tracker-box{
+
+    width:1100px;
+
+    max-width:90%;
+
+    max-height:90vh;
+
+    overflow-y:auto;
+
+    background:#fff;
+
+    border-radius:30px;
+
+    display:flex;
+
+    gap:40px;
+
+    padding:35px;
+
+    position:relative;
+
+}
+
+.tracker-left{
+
+    flex:1;
+
+}
+
+.tracker-left img{
+
+    width:100%;
+
+    aspect-ratio:1/1;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+}
+
+.tracker-right{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.tracker-right h2{
+
+    margin:10px 0;
+
+    font-size:42px;
+
+}
+
+.tracker-right h1{
+
+    margin:0;
+
+    font-size:50px;
+
+}
+
+.close{
+
+    position:absolute;
+
+    top:15px;
+
+    right:25px;
+
+    font-size:42px;
+
+    cursor:pointer;
 
 }
