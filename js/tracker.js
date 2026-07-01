@@ -377,7 +377,7 @@ async function loadProfile() {
         .from("artist_profiles")
         .select("*")
         .eq("user_id", user.id)
-        .single();
+        .maybesingle();
 
     if (error) {
         console.log(error);
