@@ -61,31 +61,39 @@ statusBtn.onclick = () => {
 };
 
 document.querySelectorAll(".status-option")
-.forEach(btn=>{
+.forEach(btn => {
 
-btn.onclick=()=>{
+    btn.onclick = async () => {
 
-statusBtn.innerText=
-btn.innerText;
+        if (!currentOrder) return;
 
-statusBtn.className=
-btn.className;
+        const newStatus = btn.dataset.status;
 
-statusModal.style.display="none";
+        const { error } = await supabaseClient
+            .from("commission")
+            .update({
+                status: newStatus
+            })
+            .eq("id", currentOrder.id);
 
-};
+        if (error) {
+            alert(error.message);
+            return;
+        }
+
+        // update data lokal
+        currentOrder.status = newStatus;
+
+        // update tampilan tombol
+        statusBtn.textContent = newStatus;
+
+        statusModal.style.display = "none";
+
+        showToast("Status berhasil diubah!");
+
+    };
 
 });
-
-const currentStatus =
-document.getElementById("changeStatusBtn");
-
-
-currentStatus.onclick = ()=>{
-
-    statusModal.style.display="flex";
-
-};
 
 statusModal.onclick=(e)=>{
 
@@ -112,24 +120,26 @@ sendBtn.onclick = () => {
     document.getElementById("artistNote").value = "";
 
     // Toast
-    showToast();
+    showToast("Result berhasil dikirim!");
 
 };
 
-function showToast(){
+function showToast(text){
 
-    const toast = document.getElementById("toast");
+    const toast =
+    document.getElementById("toast");
+
+    toast.textContent = text;
 
     toast.classList.add("show");
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
         toast.classList.remove("show");
 
     },2000);
 
 }
-
 async function initTracker(){
 
     const { data:{ session } } =
@@ -233,15 +243,16 @@ card.onclick = () => {
     document.getElementById("requestDetail").value =
         order.request_detail ?? "";
 
-    statusBtn.textContent =
-        order.status ?? "WAITING";
-
     const referenceList =
-        document.getElementById("referenceList");
+document.getElementById("referenceList");
 
-    referenceList.innerHTML = "";
+referenceList.innerHTML = "";
 
-    (order.reference_files || []).forEach(url => {
+if(order.reference_files && order.reference_files.length){
+
+    order.reference_files.forEach(url=>{
+
+        const fileName = url.split("/").pop();
 
         const div = document.createElement("div");
 
@@ -249,12 +260,24 @@ card.onclick = () => {
 
         div.innerHTML = `
             <i class="fa-regular fa-file"></i>
-            ${url.split("/").pop()}
+            <a href="${url}" target="_blank">
+                ${fileName}
+            </a>
         `;
 
         referenceList.appendChild(div);
 
     });
+
+}else{
+
+    referenceList.innerHTML =
+    "<p>Tidak ada file.</p>";
+
+}
+    
+    statusBtn.textContent =
+        order.status ?? "WAITING";
 
     trackerModalArtist.style.display = "flex";
 
