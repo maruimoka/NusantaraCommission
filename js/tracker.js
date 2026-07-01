@@ -343,29 +343,23 @@ const openBtn =
 document.getElementById("openResultBtn");
 
 if(
-
     order.status === "finish" &&
     order.result_files &&
     order.result_files.length > 0
-
 ){
 
-    resultSection.style.display = "block";
+    resultWrapper.style.display = "block";
 
     openBtn.onclick = () => {
-
-    window.open(order.result_files[0], "_blank");
-
+        window.open(order.result_files[0], "_blank");
     };
 
 }else{
 
-    resultSection.style.display = "none";
+    resultWrapper.style.display = "none";
     openBtn.onclick = null;
-}
 
 }
-
 
 // ======================
 // LOAD PROFILE
