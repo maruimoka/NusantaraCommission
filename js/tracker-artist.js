@@ -286,4 +286,36 @@ trackerList.appendChild(card);
     }
 
 }
+loadProfile();
 initTracker();
+
+
+async function loadProfile(){
+
+    const {
+        data:{ user }
+    } = await supabaseClient.auth.getUser();
+
+    if(!user) return;
+
+    const { data, error } = await supabaseClient
+        .from("artist_profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    document.getElementById("profileName").textContent =
+        data.display_name ?? "";
+
+    document.getElementById("profileBio").textContent =
+        data.bio ?? "";
+
+    document.getElementById("profileUserImage").src =
+        data.profile_image || "asset/imagesbanner1.png";
+
+}
