@@ -213,6 +213,9 @@ async function initTracker() {
             )
         `)
         .eq("client_id", user.id);
+    .order("created_at", {
+    ascending: false
+});
 
     if (error) {
         console.log(error);
@@ -227,38 +230,27 @@ data.forEach(order => {
 
     card.className = "tracker-card";
 
-   card.innerHTML = `
+const statusClass =
+(order.status ?? "WAITING")
+.toLowerCase()
+.replace(/\s+/g,"-");
 
+card.innerHTML = `
 <div class="tracker-header">
 
     <h3>${order.artist?.display_name ?? "-"}</h3>
 
-    <span class="status ${order.status}">
-        ${order.status.toUpperCase()}
+    <span class="status ${statusClass}">
+        ${(order.status ?? "WAITING").toUpperCase()}
     </span>
 
 </div>
 
 <div class="tracker-title">
-
     📄 ${order.artwork?.title ?? "-"}
-
 </div>
 
-${
-order.result_files &&
-order.result_files.length > 0
-?
-
-`<div class="tracker-result">
-    • OPEN
-</div>`
-
-:
-
-""
-
-}
+...
 `;
 
     card.addEventListener("click", () => {
@@ -291,9 +283,22 @@ document.getElementById("trackerArtist").textContent =
 order.artist?.display_name ?? "-";
 
 const status = document.getElementById("trackerStatus");
-    status.textContent = order.status;
-    status.className =
-        `status ${order.status}`;
+
+const currentStatus =
+order.status ?? "WAITING";
+
+status.textContent = currentStatus;
+
+const statusClass =
+currentStatus
+.toLowerCase()
+.replace(/\s+/g,"-");
+
+status.className =
+`status ${statusClass}`;
+
+status.className =
+`status ${statusClass}`;
 
 document.getElementById("trackerRequest").textContent =
 order.request_detail ?? "-";
@@ -312,14 +317,15 @@ refList.innerHTML = "";
 
 if(order.reference_files && order.reference_files.length > 0){
     order.reference_files.forEach(file => {
-        refList.innerHTML += `
-        <div class="reference-file">
-            📄
-            <a href="${file}" target="_blank">
-                Reference
-            </a>
-        </div>
-        `;
+    const fileName = file.split("/").pop();
+     refList.innerHTML += `
+<div class="reference-file">
+    📄
+    <a href="${file}" target="_blank">
+        ${fileName}
+    </a>
+</div>
+`;
 
     });
 
@@ -343,10 +349,10 @@ const openBtn =
 document.getElementById("openResultBtn");
 
 if(
-    order.status === "finish" &&
-    order.result_files &&
-    order.result_files.length > 0
-){
+    order.status?.toUpperCase() === "FINISH" &&
+    order.result_files?.length
+)
+{
 
     resultWrapper.style.display = "block";
 
