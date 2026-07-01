@@ -1,5 +1,3 @@
-const user = session.user;
-console.log("LOGIN USER ID =", user.id);
 const trackerModalArtist =
 document.getElementById("trackerDetailModal");
 const trackerList =
@@ -133,15 +131,16 @@ function showToast(){
 }
 
 async function initTracker(){
+    const {data:{session} } = await supabaseClient.auth.getSession();
 
-    const {
-        data:{session}
-    } = await supabaseClient.auth.getSession();
-
-    if(!session) return;
+    if(!session)
+    { console.log("Belum login");
+     return;
+    }
 
     const user = session.user;
-
+    console.log("LOGIN USER ID =", user.id);
+    
     const { data, error } = await supabaseClient
     .from("commission")
     .select(`
