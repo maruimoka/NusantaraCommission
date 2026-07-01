@@ -812,9 +812,33 @@ Hover
 
 }
 
-.status.process{
+.status.lineart{
 
-    background:#A7D8FF;
+    background:#D3F84B;
+
+    color:#0A4A83;
+
+}
+
+.status.sketch{
+
+    background:#44B9F3;
+
+    color:#0A4A83;
+
+}
+
+.status.colouring{
+
+    background:#F19F25;
+
+    color:#0A4A83;
+
+}
+
+.status.revision{
+
+    background:#8DF9F2;
 
     color:#0A4A83;
 
@@ -828,7 +852,7 @@ Hover
 
 }
 
-.status.reject{
+.status.on hold{
 
     background:#FF9A9A;
 
