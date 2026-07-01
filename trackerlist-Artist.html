@@ -94,104 +94,9 @@
     <!-- KANAN -->
     <div class="tracker-content">
 
-      <div class="tracker-list">
-
-        <!-- CARD 1 -->
-        <div class="tracker-card">
-
-            <div class="card-left">
-
-                <h4>KATSURU17.06</h4>
-
-                <div class="commission-name">
-
-                    <i class="fa-regular fa-file"></i>
-
-                    <span>COUPLE BUST UP COMMISSION</span>
-
-                </div>
-
-                <a href="#" class="open-tracker">
-                    • OPEN
-                </a>
-
-            </div>
-
-            <div class="card-right">
-
-                <span class="status finish">
-                    FINISH
-                </span>
-
-            </div>
-
+        <div class="tracker-list" id="trackerList">
+            
         </div>
-
-
-        <!-- CARD 2 -->
-        <div class="tracker-card">
-
-            <div class="card-left">
-
-                <h4>TROPICAL MOMO</h4>
-
-                <div class="commission-name">
-
-                    <i class="fa-regular fa-file"></i>
-
-                    <span>SKETCH COMMISSION</span>
-
-                </div>
-                 <a href="#" class="open-tracker">
-                    • OPEN
-                 </a>
-
-            </div>
-
-            <div class="card-right">
-
-                <span class="status waiting">
-                    WAITING LIST
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 3 -->
-
-        <div class="tracker-card">
-
-            <div class="card-left">
-
-                <h4>GABRIELLA EMMA</h4>
-
-                <div class="commission-name">
-
-                    <i class="fa-regular fa-file"></i>
-
-                    <span>FULL BODY COMMISSION</span>
-
-                </div>
-                <a href="#" class="open-tracker">
-                    • OPEN
-                </a>
-
-
-            </div>
-
-            <div class="card-right">
-
-                <span class="status sketch">
-                    SKETCH
-                </span>
-
-            </div>
-
-        </div>
-
-        <!-- copy saja sampai 10 card -->
 
     </div>
 <!-- ========================= -->
@@ -210,38 +115,30 @@
             <div class="client-profile">
 
                 <div class="client-avatar">
-                    <img src="avatar.jpg">
+                    <img id="clientAvatar">
                 </div>
 
                 <h2 id="clientName">
-                    EMMA
                 </h2>
 
             </div>
 
             <div class="header-right">
-
-                <button class="chat-icon">
-                    <i class="fa-solid fa-comment"></i>
-                </button>
-
                 <button
                     id="changeStatusBtn"
-                    class="status finish">
-
-                    FINISH
-
-                </button>
+                    class="status">
+                    </button>
 
             </div>
 
         </div>
 
-        <h1 class="commission-title">
-            COUPLE BUST UP COMMISSION
-        </h1>
+        <h1
+            class="commission-title"
+            id="commissionTitle">
+</h1>
 
-        <hr>
+<hr>
 
         <!-- Reference -->
 
@@ -249,21 +146,7 @@
             File
         </label>
 
-        <div class="reference-file">
-
-            <i class="fa-regular fa-file"></i>
-
-            Reff Character A.png
-
-        </div>
-
-        <div class="reference-file">
-
-            <i class="fa-regular fa-file"></i>
-
-            Reff Character B.png
-
-        </div>
+        <div id="referenceList"></div>
 
         <!-- Description -->
 
@@ -272,14 +155,11 @@
         </label>
 
         <textarea
-            class="description-area"
-            readonly>
-
-Good days...
-
-        </textarea>
-
-        <hr>
+id="requestDetail"
+class="description-area"
+readonly>
+</textarea>
+<hr>
 
         <!-- Upload -->
 
