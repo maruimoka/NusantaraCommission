@@ -131,53 +131,72 @@ function showToast(){
 }
 
 async function initTracker(){
-    const {data:{session} } = await supabaseClient.auth.getSession();
 
-    if(!session)
-    { console.log("Belum login");
-     return;
+    const { data:{ session } } =
+    await supabaseClient.auth.getSession();
+
+    if(!session){
+        console.log("Belum login");
+        return;
     }
 
     const user = session.user;
-    console.log("LOGIN USER ID =", user.id);
-    
-    const { data, error } = await supabaseClient
-    .from("commission")
-    .select(`
-        *,
-        artwork:artwork_id(
-            title,
-            price,
-            image_url
-        )
-    `)
-    .eq("artist_id", user.id);
 
-console.log("ERROR :", error);
-console.log("DATA :", data);
-console.log("JUMLAH :", data.length);
+    console.log("LOGIN USER =", user.id);
+
+    // Ambil artist profile berdasarkan user login
+    const { data: profile, error: profileError } =
+    await supabaseClient
+        .from("artist_profiles")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+
+    if(profileError){
+        console.log(profileError);
+        return;
+    }
+
+    console.log("PROFILE ID =", profile.id);
+
+    // Cari semua commission milik artist
+    const { data, error } =
+    await supabaseClient
+        .from("commission")
+        .select(`
+            *,
+            artwork:artwork_id(
+                title,
+                price,
+                image_url
+            )
+        `)
+        .eq("artist_id", profile.id);
 
     if(error){
         console.log(error);
         return;
     }
 
+    console.log("DATA :", data);
+    console.log("JUMLAH :", data.length);
+
     trackerList.innerHTML = "";
 
-// loop
+    // Loop semua order
     for(const order of data){
 
-        // <-- TARUH DI SINI
-        const { data: clientProfile } = await supabaseClient
-        .from("artist_profiles")
-        .select("display_name, profile_image")
-        .eq("user_id", order.client_id)
-        .single();
+        const { data: clientProfile } =
+        await supabaseClient
+            .from("artist_profiles")
+            .select("display_name, profile_image")
+            .eq("user_id", order.client_id)
+            .single();
 
         console.log(clientProfile);
 
+        // Nanti di sini kita buat card
     }
 
 }
-
 initTracker();
