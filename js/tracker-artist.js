@@ -210,20 +210,27 @@ async function initTracker(){
 
 card.className = "tracker-card";
 
+const statusClass =
+(order.status ?? "WAITING")
+.toLowerCase()
+.replace(/\s+/g,"-");
+
 card.innerHTML = `
-    <div class="tracker-user">
 
-        <img src="${clientProfile.profile_image}">
+<div class="tracker-header">
 
-        <div>
+    <h3>${clientProfile.display_name}</h3>
 
-            <h3>${clientProfile.display_name}</h3>
+    <span class="status ${statusClass}">
+        ${(order.status ?? "WAITING").toUpperCase()}
+    </span>
 
-            <p>${order.artwork.title}</p>
+</div>
 
-        </div>
+<div class="tracker-result">
+    📄 OPEN
+</div>
 
-    </div>
 `;
 
 card.onclick = () => {
