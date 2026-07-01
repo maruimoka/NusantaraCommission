@@ -1,25 +1,25 @@
 const trackerModalArtist =
 document.getElementById("trackerDetailModal");
+const trackerList =
+document.querySelector(".tracker-list");
+let currentOrder = null;
 
-document.querySelectorAll(".open-tracker")
-.forEach(btn=>{
+const closeBtn =
+document.querySelector(".close-detail");
 
-btn.addEventListener("click",(e)=>{
-
-e.preventDefault();
-
-trackerModalArtist.style.display="flex";
-
-});
-
-});
-
-document.querySelector(".close-detail")
-.onclick=()=>{
-
-trackerModalArtist.style.display="none";
-
+closeBtn.onclick = () => {
+    trackerModalArtist.style.display = "none";
 };
+
+window.addEventListener("click",(e)=>{
+
+    if(e.target===trackerModalArtist){
+
+        trackerModalArtist.style.display="none";
+
+    }
+
+});
 
 const upload =
 document.getElementById("resultUpload");
@@ -85,57 +85,7 @@ currentStatus.onclick = ()=>{
 
     statusModal.style.display="flex";
 
-}
-
-document
-.querySelectorAll("#statusModal button")
-.forEach(btn=>{
-
-    btn.onclick=()=>{
-
-        currentStatus.innerText =
-        btn.dataset.status;
-
-        currentStatus.className =
-        "status";
-
-        switch(btn.dataset.status){
-
-            case "WAITING":
-            currentStatus.classList.add("waiting");
-            break;
-
-            case "SKETCH":
-            currentStatus.classList.add("sketch");
-            break;
-
-            case "LINEART":
-            currentStatus.classList.add("lineart");
-            break;
-
-            case "COLORING":
-            currentStatus.classList.add("coloring");
-            break;
-
-            case "REVISION":
-            currentStatus.classList.add("revision");
-            break;
-
-            case "FINISH":
-            currentStatus.classList.add("finish");
-            break;
-
-            case "ON HOLD":
-            currentStatus.classList.add("hold");
-            break;
-
-        }
-
-        statusModal.style.display="none";
-
-    }
-
-});
+};
 
 statusModal.onclick=(e)=>{
 
@@ -179,3 +129,35 @@ function showToast(){
     },2000);
 
 }
+
+async function initTracker(){
+
+    const {
+        data:{session}
+    }=await supabaseClient.auth.getSession();
+
+    if(!session) return;
+
+    const user=session.user;
+
+    const {data,error}=await supabaseClient
+    .from("commission")
+    .select(`
+        *,
+        client:client_id(
+            display_name,
+            profile_image
+        ),
+        artwork:artwork_id(
+            title,
+            price,
+            image_url
+        )
+    `)
+    .eq("artist_id",user.id);
+
+    console.log(data);
+
+}
+
+initTracker();
