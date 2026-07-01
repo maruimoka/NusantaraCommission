@@ -62,34 +62,30 @@ statusBtn.onclick = () => {
 document.querySelectorAll(".status-option")
 .forEach(btn => {
 
-    btn.onclick = async () => {
-
+btn.onclick = async () => {
         if (!currentOrder) return;
-
         const newStatus = btn.dataset.status;
 
-       const { error } =
-await supabaseClient
+       const { error } = await supabaseClient
     .from("commission")
     .update({
-
-        result_files: uploadedUrls,
-
-        status: "FINISH"
-
-    })
+         status: newStatus
+        })
     .eq("id", currentOrder.id);
 
         if (error) {
             alert(error.message);
             return;
         }
-
         // update data lokal
         currentOrder.status = newStatus;
 
         // update tampilan tombol
         statusBtn.textContent = newStatus;
+
+    const modalStatusClass =
+    newStatus.toLowerCase().replace(/\s+/g, "-");
+    statusBtn.className = `status ${modalStatusClass}`;
 
         statusModal.style.display = "none";
 
@@ -156,7 +152,8 @@ sendBtn.onclick = async () => {
         .from("commission")
         .update({
 
-            result_files: uploadedUrls
+            result_files: uploadedUrls,
+            status: "FINISH"
 
         })
         .eq("id", currentOrder.id);
@@ -168,6 +165,9 @@ sendBtn.onclick = async () => {
 
     // update data lokal
     currentOrder.result_files = uploadedUrls;
+    currentOrder.status = "FINISH";
+    statusBtn.textContent = "FINISH";
+    statusBtn.className = "status finish";
 
     trackerModalArtist.style.display = "none";
 
@@ -175,6 +175,7 @@ sendBtn.onclick = async () => {
     resultList.innerHTML = "";
 
     showToast("Result berhasil dikirim!");
+    await initTracker();
 
 };
 
@@ -338,7 +339,11 @@ if(order.reference_files && order.reference_files.length){
 }
     
     statusBtn.textContent =
-        order.status ?? "WAITING";
+    (order.status ?? "WAITING")
+    .toLowerCase()
+    .replace(/\s+/g,"-");
+        
+    statusBtn.className = `status ${statusClass}`;
 
     trackerModalArtist.style.display = "flex";
 
