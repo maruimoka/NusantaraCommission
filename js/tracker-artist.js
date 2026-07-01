@@ -134,29 +134,44 @@ async function initTracker(){
 
     const {
         data:{session}
-    }=await supabaseClient.auth.getSession();
+    } = await supabaseClient.auth.getSession();
 
     if(!session) return;
 
-    const user=session.user;
+    const user = session.user;
 
-    const {data,error}=await supabaseClient
+    const { data, error } = await supabaseClient
     .from("commission")
     .select(`
         *,
-        client:client_id(
-            display_name,
-            profile_image
-        ),
         artwork:artwork_id(
             title,
             price,
             image_url
         )
     `)
-    .eq("artist_id",user.id);
+    .eq("artist_id", user.id);
 
-    console.log(data);
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    trackerList.innerHTML = "";
+
+// loop
+    for(const order of data){
+
+        // <-- TARUH DI SINI
+        const { data: clientProfile } = await supabaseClient
+        .from("artist_profiles")
+        .select("display_name, profile_image")
+        .eq("user_id", order.client_id)
+        .single();
+
+        console.log(clientProfile);
+
+    }
 
 }
 
