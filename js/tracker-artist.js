@@ -150,19 +150,13 @@ sendBtn.onclick = async () => {
 
     }
 
-    // Note artist
-    const note =
-    document.getElementById("artistNote").value;
-
     // Simpan ke database
     const { error } =
     await supabaseClient
         .from("commission")
         .update({
 
-            result_files: uploadedUrls,
-
-            artist_note: note
+            result_files: uploadedUrls
 
         })
         .eq("id", currentOrder.id);
@@ -179,7 +173,6 @@ sendBtn.onclick = async () => {
 
     upload.value = "";
     resultList.innerHTML = "";
-    document.getElementById("artistNote").value = "";
 
     showToast("Result berhasil dikirim!");
 
