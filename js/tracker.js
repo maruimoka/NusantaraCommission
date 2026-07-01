@@ -360,6 +360,7 @@ if(
     openBtn.onclick = null;
 
 }
+}
 
 // ======================
 // LOAD PROFILE
