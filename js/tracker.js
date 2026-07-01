@@ -336,8 +336,8 @@ if(order.reference_files && order.reference_files.length > 0){
 // RESULT BUTTON
 // ======================
 
-const resultSection =
-document.getElementById("resultSection");
+const resultWrapper =
+document.getElementById("resultWrapper");
 
 const openBtn =
 document.getElementById("openResultBtn");
