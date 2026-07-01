@@ -68,12 +68,17 @@ document.querySelectorAll(".status-option")
 
         const newStatus = btn.dataset.status;
 
-        const { error } = await supabaseClient
-            .from("commission")
-            .update({
-                status: newStatus
-            })
-            .eq("id", currentOrder.id);
+       const { error } =
+await supabaseClient
+    .from("commission")
+    .update({
+
+        result_files: uploadedUrls,
+
+        status: "FINISH"
+
+    })
+    .eq("id", currentOrder.id);
 
         if (error) {
             alert(error.message);
@@ -106,19 +111,76 @@ statusModal.onclick=(e)=>{
 
 const sendBtn = document.getElementById("sendResultBtn");
 
-sendBtn.onclick = () => {
+sendBtn.onclick = async () => {
 
-    // Tutup modal
+    if (!currentOrder) return;
+
+    const files = [...upload.files];
+
+    if (files.length === 0) {
+        alert("Pilih file terlebih dahulu.");
+        return;
+    }
+
+    const uploadedUrls = [];
+
+    // Upload semua file
+    for (const file of files) {
+
+        const filePath =
+        `${currentOrder.id}/${Date.now()}-${file.name}`;
+
+        const { error: uploadError } =
+        await supabaseClient.storage
+            .from("result-files")
+            .upload(filePath, file);
+
+        if (uploadError) {
+            alert(uploadError.message);
+            return;
+        }
+
+        // Ambil public URL
+        const { data } =
+        supabaseClient.storage
+            .from("result-files")
+            .getPublicUrl(filePath);
+
+        uploadedUrls.push(data.publicUrl);
+
+    }
+
+    // Note artist
+    const note =
+    document.getElementById("artistNote").value;
+
+    // Simpan ke database
+    const { error } =
+    await supabaseClient
+        .from("commission")
+        .update({
+
+            result_files: uploadedUrls,
+
+            artist_note: note
+
+        })
+        .eq("id", currentOrder.id);
+
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    // update data lokal
+    currentOrder.result_files = uploadedUrls;
+
     trackerModalArtist.style.display = "none";
 
-    // Kosongkan upload
     upload.value = "";
     resultList.innerHTML = "";
-
-    // Kosongkan note
     document.getElementById("artistNote").value = "";
 
-    // Toast
     showToast("Result berhasil dikirim!");
 
 };
