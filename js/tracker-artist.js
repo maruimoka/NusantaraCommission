@@ -152,6 +152,10 @@ async function initTracker(){
     `)
     .eq("artist_id", user.id);
 
+console.log("ERROR :", error);
+console.log("DATA :", data);
+console.log("JUMLAH :", data.length);
+
     if(error){
         console.log(error);
         return;
