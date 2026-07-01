@@ -736,6 +736,29 @@ Hover
 
 }
 
+.tracker-right h3{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.tracker-right p{
+    margin: 0 0 30px;
+    line-height: 1.7;
+}
+
+#trackerReferenceList{
+    margin-bottom: 30px;
+}
+
+.reference-file{
+    margin-bottom: 10px;
+}
+
+#resultWrapper{
+    margin-top: 30px;
+}
+
 .close{
 
     position:absolute;
