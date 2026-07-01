@@ -657,8 +657,7 @@ font-weight:bold;
 
     align-items:center;
 
-    z-index:99999;
-
+    z-index:100002;
 }
 
 .status-box{
