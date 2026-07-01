@@ -195,7 +195,29 @@ async function initTracker(){
 
         console.log(clientProfile);
 
-        // Nanti di sini kita buat card
+        // buat card
+
+        const card = document.createElement("div");
+
+card.className = "tracker-card";
+
+card.innerHTML = `
+    <div class="tracker-user">
+
+        <img src="${clientProfile.profile_image}">
+
+        <div>
+
+            <h3>${clientProfile.display_name}</h3>
+
+            <p>${order.artwork.title}</p>
+
+        </div>
+
+    </div>
+`;
+
+trackerList.appendChild(card);
     }
 
 }
