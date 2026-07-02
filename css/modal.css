@@ -283,11 +283,11 @@
 }
 
 .artist-row{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:30px 0;
 
-    margin: 25px 0 35px;
 }
 
 .artist-info{
@@ -296,7 +296,7 @@
     gap: 15px;
 }
 
-.artist-avatar{
+.artist-info .artist-avatar{
     width: 55px;
     height: 55px;
 
@@ -318,6 +318,26 @@
     width:100%;
     height:100%;
     object-fit:cover;
+}
+
+#modalArtist{
+
+    text-decoration:none;
+
+    color:#222;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+#modalArtist:hover{
+
+    color:#ff5b5b;
+
 }
 
 .modal-artist{
