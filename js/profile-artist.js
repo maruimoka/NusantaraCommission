@@ -122,9 +122,9 @@ followingCount ?? 0;
     document.getElementById("profileBio").textContent =
         profile.bio || "No bio yet.";
 
-    document.getElementById("profileUserImage").src =
-        profile.profile_image ||
-        "asset/imagesbanner1.png";
+   document.querySelector(".profileavatar img").src =
+    profile.profile_image ||
+    "asset/imagesbanner1.png";
 
     bannerImage.src =
         profile.banner_image ||
