@@ -69,7 +69,6 @@ artworks.forEach(renderCard);
 
 // =========================
 // RENDER CARD
-// =========================
 
 function renderCard(artwork) {
     const card = document.createElement("div");
