@@ -112,6 +112,12 @@ if (registerSubmitBtn) {
         
         alert("Register berhasil!");
 
+        registerModal.style.display = "none";
+        loginModal.style.display = "none";
+        
+        loginBtn.style.display = "none";
+        profileMenu.style.display = "flex";
+
         resetRegisterForm();
         resetLoginForm();
 
