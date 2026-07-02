@@ -10,6 +10,9 @@ body{
     flex-direction:column;
 }
 
+.main-content{
+    flex:1;
+}
 
 /* ================= FOOTER ================= */
 
