@@ -1,7 +1,6 @@
 // =========================
 // ELEMENT
 // =========================
-
 const galleryGrid =
 document.getElementById("galleryGrid"); 
 
