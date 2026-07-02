@@ -24,20 +24,30 @@ if (loginBtn && loginModal) {
 // CLOSE MODALS
 // =======================
 document.getElementById("closelogin")?.addEventListener("click", () => {
+
     loginModal.style.display = "none";
+
+    resetLoginForm();
+
 });
 
-document.getElementById("closeregister")?.addEventListener("click", () => {
+ocument.getElementById("closeregister")?.addEventListener("click", () => {
+
     registerModal.style.display = "none";
-    loginModal.style.display = "none";
-});
 
+    loginModal.style.display = "none";
+
+    resetRegisterForm();
+    resetLoginForm();
+
+});
 
 // =======================
 // SWITCH MODAL
 // =======================
 document.getElementById("showregister")?.addEventListener("click", (e) => {
     e.preventDefault();
+    resetLoginForm();
     loginModal.style.display = "none";
     registerModal.style.display = "flex";
 });
@@ -139,7 +149,17 @@ if (loginSubmitBtn) {
     });
 }
 
+function resetLoginForm() {
 
+    document.getElementById("loginForm").reset();
+
+}
+
+function resetRegisterForm() {
+
+    document.getElementById("registerForm").reset();
+
+}
 // =======================
 // CHECK SESSION
 // =======================
@@ -161,3 +181,29 @@ async function checkLogin() {
 }
 
 checkLogin();
+
+const togglePassword =
+document.getElementById("togglePassword");
+
+const passwordInput =
+document.getElementById("password");
+
+togglePassword?.addEventListener("click",()=>{
+
+    if(passwordInput.type==="password"){
+
+        passwordInput.type="text";
+
+        togglePassword.classList.remove("fa-eye");
+        togglePassword.classList.add("fa-eye-slash");
+
+    }else{
+
+        passwordInput.type="password";
+
+        togglePassword.classList.remove("fa-eye-slash");
+        togglePassword.classList.add("fa-eye");
+
+    }
+
+});
