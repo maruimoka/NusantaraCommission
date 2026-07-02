@@ -159,6 +159,16 @@ window.location.href =
 
 }
 
+    const orderBtn = document.getElementById("orderBtn");
+
+orderBtn.onclick = () => {
+     console.log("Order diklik!");
+    setSelectedArtwork(artwork);
+
+    openOrderForm();
+
+};
+
 }
 
 // HERO BANNER
