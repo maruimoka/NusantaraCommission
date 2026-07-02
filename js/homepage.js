@@ -158,7 +158,6 @@ window.location.href =
 `profile-follow.html?id=${artwork.artist_profiles.id}`;
 
 }
-
     const orderBtn = document.getElementById("orderBtn");
 
 orderBtn.onclick = () => {
