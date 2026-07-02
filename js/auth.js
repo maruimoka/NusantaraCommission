@@ -187,6 +187,10 @@ async function checkLogin() {
 }
 
 checkLogin();
+window.addEventListener("load", () => {
+    resetLoginForm();
+    resetRegisterForm();
+});
 
 // hide password
 const togglePassword =
