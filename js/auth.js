@@ -182,6 +182,7 @@ async function checkLogin() {
 
 checkLogin();
 
+// hide password
 const togglePassword =
 document.getElementById("togglePassword");
 
@@ -203,6 +204,32 @@ togglePassword?.addEventListener("click",()=>{
 
         togglePassword.classList.remove("fa-eye-slash");
         togglePassword.classList.add("fa-eye");
+
+    }
+
+});
+
+const toggleRegPassword =
+document.getElementById("toggleRegPassword");
+
+const regPasswordInput =
+document.getElementById("reg-password");
+
+toggleRegPassword?.addEventListener("click",()=>{
+
+    if(regPasswordInput.type==="password"){
+
+        regPasswordInput.type="text";
+
+        toggleRegPassword.classList.remove("fa-eye");
+        toggleRegPassword.classList.add("fa-eye-slash");
+
+    }else{
+
+        regPasswordInput.type="password";
+
+        toggleRegPassword.classList.remove("fa-eye-slash");
+        toggleRegPassword.classList.add("fa-eye");
 
     }
 
