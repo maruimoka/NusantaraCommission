@@ -410,23 +410,27 @@ body{
     font-weight:700;
 }
 
-.card-content .artist-row{
+.card-content .card-artist{
     display:flex;
     align-items:center;
-    gap:10px;
-    margin-top:15px;
+    gap:12px;
+    margin-top:18px;
 }
 
 .card-content .artist-avatar{
-    width:40px;
-    height:40px;
+    width:42px;
+    height:42px;
     border-radius:50%;
     object-fit:cover;
+    flex-shrink:0;
 }
 
-.card-content .artist-row span{
-    color:#666;
-    font-size:18px;
+.card-content .card-artist span{
+    margin:0;
+    color:#444;
+    font-size:22px;
+    font-weight:500;
+    line-height:1.2;
 }
 
 .tag{
