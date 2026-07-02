@@ -23,6 +23,9 @@ document.getElementById("modalArtist");
 const modalArtistAvatar =
 document.getElementById("modalArtistAvatar");
 
+const searchInput = document.querySelector(".search-bar input");
+let allArtworks = [];
+
 // =========================
 // LOAD HOMEPAGE
 // =========================
@@ -58,6 +61,8 @@ async function loadHomepage() {
         return;
 
     }
+
+allArtworks = artworks;
 galleryGrid.innerHTML = "";
 artworks.forEach(renderCard);
 
@@ -198,5 +203,29 @@ setInterval(nextSlide, 1200);
 // =========================
 // INIT
 // =========================
+searchInput.addEventListener("input", () => {
+
+    const keyword = searchInput.value.toLowerCase().trim();
+
+    galleryGrid.innerHTML = "";
+
+    const filtered = allArtworks.filter(artwork => {
+
+        const title =
+            artwork.title?.toLowerCase() || "";
+
+        const artist =
+            artwork.artist_profiles?.display_name?.toLowerCase() || "";
+
+        return (
+            title.includes(keyword) ||
+            artist.includes(keyword)
+        );
+
+    });
+
+    filtered.forEach(renderCard);
+
+});
 
 loadHomepage();
