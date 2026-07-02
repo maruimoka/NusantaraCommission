@@ -193,7 +193,7 @@ function nextSlide(){
 
 }
 
-setInterval(nextSlide, 4000);
+setInterval(nextSlide, 1200);
 
 // =========================
 // INIT
