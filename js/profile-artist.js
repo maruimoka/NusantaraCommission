@@ -319,34 +319,28 @@ function renderCards(data, container, type) {
         card.className = "card";
 
         card.innerHTML = `
+    <div class="art-image">
+        <img
+            src="${item.image_url}"
+            alt="${item.title}">
+    </div>
 
-            <div class="art-image">
+    <div class="card-content">
 
-                <img
-                    src="${item.image_url}"
-                    alt="${item.title}">
+        <span class="tag ${item.category}">
+            ${item.category.toUpperCase()}
+        </span>
 
-            </div>
+        <h3>${item.title}</h3>
 
-            <span class="tag">
+        ${
+            item.category === "commission"
+                ? `<p class="price">Rp ${Number(item.price).toLocaleString("id-ID")}</p>`
+                : ""
+        }
 
-                ${type}
-
-            </span>
-
-            <h3>
-
-                ${item.title}
-
-            </h3>
-
-            <p>
-
-                ${item.price ?? "-"}
-
-            </p>
-
-        `;
+    </div>
+`;
 
         card.onclick = () => {
 
