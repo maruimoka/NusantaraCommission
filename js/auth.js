@@ -111,6 +111,9 @@ if (registerSubmitBtn) {
         }
         
         alert("Register berhasil!");
+        const { data: sessionData } =
+            await supabaseClient.auth.getSession();
+        console.log(sessionData.session);
 
         registerModal.style.display = "none";
         loginModal.style.display = "none";
@@ -120,9 +123,6 @@ if (registerSubmitBtn) {
 
         resetRegisterForm();
         resetLoginForm();
-
-        registerModal.style.display = "none";
-        loginModal.style.display = "flex";
     });
 }
 
