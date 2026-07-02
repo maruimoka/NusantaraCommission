@@ -14,15 +14,12 @@
 }
 
 .artist-profile{
-
     width:90%;
-    margin:auto;
-    margin-top:-70px;
+    margin:30px auto;
 
     display:flex;
     justify-content:space-between;
-    align-items:center;
-
+    align-items:flex-start;
 }
 
 .profile-left{
