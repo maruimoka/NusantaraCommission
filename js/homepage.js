@@ -87,7 +87,7 @@ card.innerHTML = `
 
         <h3>${artwork.title}</h3>
 
-        <div class="artist-row">
+        <div class="card-artist">
         <img
         src="${
             artwork.artist_profiles?.profile_image ||
