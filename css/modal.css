@@ -369,6 +369,10 @@
     transition: .25s;
 }
 
+#modalDescription{
+    white-space: pre-line;
+}
+
 .icon-btn i{
     font-size: 22px;
     color: #555;
