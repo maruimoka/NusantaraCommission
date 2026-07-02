@@ -54,6 +54,7 @@ document.getElementById("showregister")?.addEventListener("click", (e) => {
 
 document.getElementById("showlogin")?.addEventListener("click", (e) => {
     e.preventDefault();
+     resetRegisterForm();
     registerModal.style.display = "none";
     loginModal.style.display = "flex";
 });
@@ -111,6 +112,9 @@ if (registerSubmitBtn) {
         
         alert("Register berhasil!");
 
+        resetRegisterForm();
+        resetLoginForm();
+
         registerModal.style.display = "none";
         loginModal.style.display = "flex";
     });
@@ -142,6 +146,8 @@ if (loginSubmitBtn) {
         }
 
         alert("Login berhasil!");
+
+        resetLoginForm();
 
         loginModal.style.display = "none";
         loginBtn.style.display = "none";
