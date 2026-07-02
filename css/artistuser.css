@@ -297,3 +297,24 @@
 .tag.gallery{
     background:#89eceb;
 }
+
+.follow-stats{
+    display:flex;
+    gap:60px;
+    margin-top:18px;
+}
+
+.stat-item{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+}
+
+.stat-item span{
+    font-size:48px;
+    font-weight:700;
+}
+
+.stat-item p{
+    font-size:20px;
+}
