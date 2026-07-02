@@ -90,6 +90,32 @@ async function loadProfile() {
 
     currentProfile = profile;
 
+    // Jumlah followers artist
+const { count: followersCount } =
+await supabaseClient
+    .from("followers")
+    .select("*", {
+        count: "exact",
+        head: true
+    })
+    .eq("artist_id", profile.id);
+
+// Jumlah artist yang di-follow user ini
+const { count: followingCount } =
+await supabaseClient
+    .from("followers")
+    .select("*", {
+        count: "exact",
+        head: true
+    })
+    .eq("user_id", user.id);
+
+document.getElementById("followersCount").textContent =
+followersCount ?? 0;
+
+document.getElementById("followingCount").textContent =
+followingCount ?? 0;
+
     document.getElementById("profileName").textContent =
         profile.display_name || "New Artist";
 
