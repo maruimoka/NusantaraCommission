@@ -50,6 +50,24 @@
     align-items: center;
     gap: 20px;
     margin-bottom:25px;
+    position:relative;
+}
+
+.password-toggle{
+
+    position:absolute;
+
+    right:25px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    cursor:pointer;
+
+    font-size:22px;
+
+    color:#666;
+
 }
 
 .form-element input{
