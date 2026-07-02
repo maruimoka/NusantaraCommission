@@ -31,7 +31,7 @@ document.getElementById("closelogin")?.addEventListener("click", () => {
 
 });
 
-ocument.getElementById("closeregister")?.addEventListener("click", () => {
+document.getElementById("closeregister")?.addEventListener("click", () => {
 
     registerModal.style.display = "none";
 
