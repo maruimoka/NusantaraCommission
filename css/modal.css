@@ -374,6 +374,7 @@
 
     max-height: 90vh;
     overflow-y: auto;
+    z-index:10002;
 }
 
 #detailPage h2{
