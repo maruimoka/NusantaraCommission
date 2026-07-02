@@ -12,17 +12,14 @@ function openOrderForm(){
 
     previewModal.style.display = "none";
 
-    document.getElementById("orderImage").src =
-        selectedArtwork.image_url;
+    document.getElementById("orderArtworkImage").src =
+    selectedArtwork.image_url;
 
-    document.getElementById("orderTitle").textContent =
-        selectedArtwork.title;
+document.getElementById("orderArtworkTitle").textContent =
+    selectedArtwork.title;
 
-    document.getElementById("orderPrice").textContent =
-        `Rp ${Number(selectedArtwork.price).toLocaleString("id-ID")}`;
-
-    document.getElementById("orderArtist").textContent =
-        selectedArtwork.artist_profiles.display_name;
+document.getElementById("orderArtworkPrice").textContent =
+    `Rp ${Number(selectedArtwork.price).toLocaleString("id-ID")}`;
 
     commissionModal.style.display = "flex";
 }
