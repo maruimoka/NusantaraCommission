@@ -9,14 +9,42 @@ const profileMenu = document.getElementById("profileMenu");
 const loginSubmitBtn = document.getElementById("loginSubmitBtn");
 const registerSubmitBtn = document.getElementById("registerSubmitBtn");
 
+const forgotModal =
+document.getElementById("forgotModal");
+
+const forgotPasswordBtn =
+document.getElementById("forgotPassword");
+
+const forgotSubmitBtn =
+document.getElementById("forgotSubmitBtn");
+
+const rememberMe =
+document.getElementById("rememberMe");
+
+const loginEmail =
+document.getElementById("username");
+
 
 // =======================
 // OPEN LOGIN MODAL
 // =======================
 if (loginBtn && loginModal) {
     loginBtn.addEventListener("click", () => {
-        loginModal.style.display = "flex";
-    });
+
+    const savedEmail =
+    localStorage.getItem("rememberEmail");
+
+    if(savedEmail){
+
+        loginEmail.value = savedEmail;
+
+        rememberMe.checked = true;
+
+    }
+
+    loginModal.style.display = "flex";
+
+});
 }
 
 
@@ -42,6 +70,73 @@ document.getElementById("closeregister")?.addEventListener("click", () => {
 
 });
 
+
+// =======================
+// FORGOT PASSWORD
+// =======================
+
+forgotPasswordBtn?.addEventListener("click",(e)=>{
+
+    e.preventDefault();
+
+    loginModal.style.display="none";
+
+    forgotModal.style.display="flex";
+
+    document.getElementById("forgotEmail").value =
+    loginEmail.value;
+
+});
+
+document.getElementById("closeforgot")
+?.addEventListener("click",()=>{
+
+    forgotModal.style.display="none";
+
+    loginModal.style.display="flex";
+
+    resetForgotForm();
+
+});
+
+forgotSubmitBtn?.addEventListener("click",async()=>{
+
+    const email =
+    document.getElementById("forgotEmail").value.trim();
+
+    if(!email){
+
+        alert("Masukkan email.");
+
+        return;
+
+    }
+
+    const { error } =
+    await supabaseClient.auth.resetPasswordForEmail(email,{
+
+        redirectTo:
+        "https://maruimoka.github.io/NusantaraCommission/reset-password.html"
+
+    });
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    alert("Reset password link telah dikirim.");
+
+    forgotModal.style.display="none";
+
+    loginModal.style.display="flex";
+
+    resetForgotForm();
+
+});
 // =======================
 // SWITCH MODAL
 // =======================
@@ -146,11 +241,25 @@ if (loginSubmitBtn) {
             password
         });
 
-        if (error) {
+if (error) {
             alert(error.message);
             return;
         }
+if (rememberMe.checked) {
 
+    localStorage.setItem(
+        "rememberEmail",
+        email
+    );
+
+} else {
+
+    localStorage.removeItem(
+        "rememberEmail"
+    );
+
+}
+        
         alert("Login berhasil!");
 
         resetLoginForm();
@@ -163,13 +272,19 @@ if (loginSubmitBtn) {
 
 function resetLoginForm() {
 
-    document.getElementById("loginForm").reset();
+    document.getElementById("password").value = "";
 
 }
 
 function resetRegisterForm() {
 
     document.getElementById("registerForm").reset();
+
+}
+
+function resetForgotForm() {
+
+    document.getElementById("forgotEmail").value = "";
 
 }
 // =======================
@@ -194,8 +309,22 @@ async function checkLogin() {
 
 checkLogin();
 window.addEventListener("load", () => {
+
     resetLoginForm();
     resetRegisterForm();
+    resetForgotForm();
+
+    const savedEmail =
+    localStorage.getItem("rememberEmail");
+
+    if(savedEmail){
+
+        loginEmail.value = savedEmail;
+
+        rememberMe.checked = true;
+
+    }
+
 });
 
 // hide password
