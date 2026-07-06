@@ -503,8 +503,6 @@
     transition:.25s;
 }
 
-Hover
-
 .add-file-btn:hover{
 
     background:#dfdfdf;
@@ -903,5 +901,85 @@ Hover
     background:#FF9A9A;
 
     color:#7A0000;
+
+}
+
+
+/* ===========================
+   LOGIN OPTIONS
+=========================== */
+
+.login-options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:-10px;
+
+    margin-bottom:25px;
+
+}
+
+.remember-option{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.remember-option input{
+
+    width:18px;
+
+    height:18px;
+
+    cursor:pointer;
+
+}
+
+#forgotPassword{
+
+    color:#0d7dd6;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+#forgotPassword:hover{
+
+    text-decoration:underline;
+
+}
+
+
+/* ===========================
+   FORGOT PASSWORD
+=========================== */
+
+.forgot-description{
+
+    text-align:center;
+
+    font-size:16px;
+
+    color:#666;
+
+    line-height:1.6;
+
+    margin:-10px 0 30px;
 
 }
