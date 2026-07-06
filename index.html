@@ -66,18 +66,21 @@
                 <div class="login-form">
                   <form id="loginForm" autocomplete="off">
                     <h2>WELCOME BACK!!</h2>
-                    <div class="form-element">
+<div class="form-element">
                           <div class="input-icon">
                             <i class="fa-regular fa-user"></i>
                           </div>
+                        
                         <input type="email" id="username" placeholder="email" autocomplete="off">
                     </div>
 
-                      <div class="form-element">
-                        <div class="input-icon">
-                            <i class="fa-solid fa-lock"></i>
-                        </div>
-        <input
+<div class="form-element">
+
+    <div class="input-icon">
+        <i class="fa-solid fa-lock"></i>
+    </div>
+
+    <input
         type="password"
         id="password"
         placeholder="Password"
@@ -87,16 +90,53 @@
         id="togglePassword"
         class="fa-solid fa-eye password-toggle">
     </i>
-                    </div>
-                    <label class="remember-me">
-                        Belum punya akun? <a href="#" id="showregister">Sign Up</a>
-                    </label>
-                    <button type="button" id="loginSubmitBtn" class="submit-btn">
-                     ENTER
-                    </button>
-                    </form>
-                </div>
-                </div>
+
+</div>
+
+<div class="login-options">
+
+    <label class="remember-option">
+
+        <input
+            type="checkbox"
+            id="rememberMe">
+
+        Remember Me
+
+    </label>
+
+    <a
+        href="#"
+        id="forgotPassword">
+
+        Forgot Password?
+
+    </a>
+
+</div>
+
+<button
+    type="button"
+    id="loginSubmitBtn"
+    class="submit-btn">
+
+    ENTER
+
+</button>
+
+<label class="remember-me">
+
+    Belum punya akun?
+    <a href="#" id="showregister">
+
+        Sign Up
+
+    </a>
+
+</label>
+    </form>
+    </div>
+    </div>
     </div>
 
     <!-- SIGN UP MODAL -->
@@ -143,7 +183,64 @@
                 </div>
                 </div>
     </div>
+<!-- FORGOT PASSWORD MODAL -->
 
+<div id="forgotModal" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            id="closeforgot"
+            class="close-btn">
+
+            &times;
+
+        </span>
+
+        <div class="login-form">
+
+            <form autocomplete="off">
+
+                <h2>RESET PASSWORD</h2>
+
+                <p class="forgot-description">
+
+                    Enter your registered email address.
+                    We will send you a password reset link.
+
+                </p>
+
+                <div class="form-element">
+
+                    <div class="input-icon">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                    </div>
+
+                    <input
+                        type="email"
+                        id="forgotEmail"
+                        placeholder="Email">
+
+                </div>
+
+                <button
+                    type="button"
+                    id="forgotSubmitBtn"
+                    class="submit-btn">
+
+                    SEND RESET LINK
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
     <!-- HERO BANNER -->
     <section class="hero-banner">
          <div class="slider">
