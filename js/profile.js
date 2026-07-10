@@ -39,6 +39,7 @@ const saveProfileBtn = document.getElementById("saveProfileBtn");
 
 let currentUser = null;
 let currentProfile = null;
+let selectedAvatar = null;
 
 // ==============================
 // LOAD PROFILE
@@ -132,6 +133,28 @@ async function loadProfile() {
 
 }
 
+// ==============================
+// CHANGE PHOTO
+// ==============================
+
+changePhotoBtn.addEventListener("click", () => {
+
+    profileImageInput.click();
+
+});
+
+profileImageInput.addEventListener("change", (event) => {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    selectedAvatar = file;
+
+    profilePreview.src = URL.createObjectURL(file);
+
+});
+
 
 // ==============================
 // SAVE PROFILE
@@ -145,6 +168,38 @@ async function saveProfile(){
 
 async function saveProfile(){
 
+    let imageUrl = currentProfile?.profile_image ?? 
+
+        if (selectedAvatar) {
+
+    const fileExt = selectedAvatar.name.split(".").pop();
+
+    const filePath = `${currentUser.id}.${fileExt}`;
+
+    const { error: uploadError } = await supabaseClient.storage
+        .from("avatars")
+        .upload(filePath, selectedAvatar, {
+            upsert: true
+        });
+
+    if (uploadError) {
+
+        console.error(uploadError);
+
+        alert("Failed to upload avatar.");
+
+        return;
+
+    }
+
+    const { data } = supabaseClient.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+    imageUrl = data.publicUrl;
+
+}
+    
     const profileData = {
 
         display_name: displayNameInput.value.trim(),
@@ -163,6 +218,7 @@ async function saveProfile(){
 
         nik: nikInput.value.trim(),
         npwp: npwpInput.value.trim()
+        profile_image: imageUrl,
 
     };
 
