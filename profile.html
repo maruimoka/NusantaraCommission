@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Artist Profile</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/profile.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <!-- nanti copy navbar project kamu ke sini -->
+
+    <main class="profile-container">
+
+        <div class="page-title">
+            <h1>Artist Profile</h1>
+            <p>Complete your profile to receive commission payments and withdrawals.</p>
+        </div>
+
+        <!-- ================= PERSONAL ================= -->
+
+        <section class="profile-card personal-card">
+
+            <div class="avatar-section">
+
+                <img src="img/default-avatar.png"
+                     id="profilePreview"
+                     class="profile-avatar">
+
+                <input type="file"
+                       id="profileImage"
+                       accept="image/*"
+                       hidden>
+
+                <button type="button"
+                        class="change-photo-btn">
+                    Change Photo
+                </button>
+
+            </div>
+
+            <div class="personal-form">
+
+                <h2>Personal Information</h2>
+
+                <div class="input-grid">
+
+                    <div class="input-group">
+                        <label>Display Name</label>
+                        <input type="text" id="displayName">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="fullName">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email"
+                               id="email"
+                               readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Phone</label>
+                        <input type="text" id="phone">
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <label>Address</label>
+                    <textarea id="address"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Bio</label>
+                    <textarea id="bio"></textarea>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= SOCIAL ================= -->
+
+        <section class="profile-card">
+
+            <h2>Social Media</h2>
+
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Instagram</label>
+                    <input type="text" id="instagram">
+                </div>
+
+                <div class="input-group">
+                    <label>Twitter / X</label>
+                    <input type="text" id="twitter">
+                </div>
+
+                <div class="input-group">
+                    <label>Facebook</label>
+                    <input type="text" id="facebook">
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= PAYMENT ================= -->
+
+        <section class="profile-card">
+
+            <h2>Payment Information</h2>
+
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>Bank Name</label>
+                    <input type="text" id="bankName">
+                </div>
+
+                <div class="input-group">
+                    <label>Account Holder</label>
+                    <input type="text" id="accountHolder">
+                </div>
+
+                <div class="input-group full-width">
+                    <label>Account Number</label>
+                    <input type="text" id="accountNumber">
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= TAX ================= -->
+
+        <section class="profile-card">
+
+            <h2>Tax Information (Optional)</h2>
+
+            <div class="input-grid">
+
+                <div class="input-group">
+                    <label>NIK</label>
+                    <input type="text" id="nik">
+                </div>
+
+                <div class="input-group">
+                    <label>NPWP</label>
+                    <input type="text" id="npwp">
+                </div>
+
+            </div>
+
+        </section>
+
+        <button class="save-btn"
+                id="saveProfileBtn">
+            Save Profile
+        </button>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="js/profile.js"></script>
+
+</body>
+</html>
