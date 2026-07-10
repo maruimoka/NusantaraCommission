@@ -1,0 +1,288 @@
+/* ==========================
+   PROFILE PAGE
+========================== */
+
+.profile-container{
+
+    max-width:1200px;
+
+    margin:40px auto;
+
+    padding:0 20px 60px;
+}
+
+/* ==========================
+   PAGE TITLE
+========================== */
+
+.page-title{
+
+    margin-bottom:30px;
+}
+
+.page-title h1{
+
+    font-size:34px;
+
+    color:#B22222;
+
+    margin-bottom:8px;
+}
+
+.page-title p{
+
+    color:#666;
+
+    font-size:15px;
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.profile-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    margin-bottom:30px;
+
+    border:1px solid #ececec;
+    
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.profile-card h2{
+
+    padding-bottom:15px;
+
+    border-bottom:1px solid #eee;
+
+    margin-bottom:25px;
+
+}
+
+/* ==========================
+   PERSONAL CARD
+========================== */
+
+.personal-card{
+
+    display:flex;
+
+    gap:40px;
+
+    align-items:flex-start;
+}
+
+/* ==========================
+   AVATAR
+========================== */
+
+.avatar-section{
+
+    width:220px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+}
+
+.profile-avatar{
+
+    width:140px;
+    
+    height:140px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:5px solid #eee;
+
+    margin-bottom:18px;
+}
+
+
+
+.change-photo-btn{
+
+    padding:10px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    background:transparent;
+
+    color:#B22222;
+
+    border:1px solid #B22222;
+}
+
+.change-photo-btn:hover{
+
+    background:#B22222;
+
+color:white;
+}
+
+/* ==========================
+   FORM
+========================== */
+
+.personal-form{
+
+    flex:1;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.input-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+}
+
+.full-width{
+
+    grid-column:1 / -1;
+}
+
+/* ==========================
+   INPUT GROUP
+========================== */
+
+.input-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:20px;
+}
+
+.input-group label{
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#444;
+}
+
+.input-group input,
+.input-group textarea{
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    padding:12px 14px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.25s;
+}
+
+.input-group textarea{
+
+    resize:vertical;
+
+    min-height:110px;
+}
+
+.input-group input:focus,
+.input-group textarea:focus{
+
+    border-color:#B22222;
+
+    box-shadow:0 0 8px rgba(178,34,34,.2);
+}
+
+/* ==========================
+   SAVE BUTTON
+========================== */
+
+.save-btn{
+
+    display:block;
+
+    margin:20px auto 0;
+
+    padding:15px 40px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#B22222;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.save-btn:hover{
+
+    background:#8E1B1B;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media(max-width:900px){
+
+    .personal-card{
+
+        flex-direction:column;
+
+        align-items:center;
+    }
+
+    .avatar-section{
+
+        width:100%;
+    }
+
+    .personal-form{
+
+        width:100%;
+    }
+
+    .input-grid{
+
+        grid-template-columns:1fr;
+    }
+}
+
+.save-container{
+
+    display:flex;
+
+    justify-content:flex-end;
+}
+
+.save-btn{
+
+    width:220px;
+}
