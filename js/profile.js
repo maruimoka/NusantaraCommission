@@ -164,7 +164,7 @@ saveProfileBtn.addEventListener("click", saveProfile);
 
 async function saveProfile(){
 
-    let imageUrl = currentProfile?.profile_image ??; 
+    let imageUrl = currentProfile?.profile_image ??""; 
 
         if (selectedAvatar) {
 
