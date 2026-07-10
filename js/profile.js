@@ -164,11 +164,7 @@ saveProfileBtn.addEventListener("click", saveProfile);
 
 async function saveProfile(){
 
-}
-
-async function saveProfile(){
-
-    let imageUrl = currentProfile?.profile_image ?? 
+    let imageUrl = currentProfile?.profile_image ??; 
 
         if (selectedAvatar) {
 
@@ -217,8 +213,9 @@ async function saveProfile(){
         account_holder: accountHolderInput.value.trim(),
 
         nik: nikInput.value.trim(),
-        npwp: npwpInput.value.trim()
-        profile_image: imageUrl,
+        npwp: npwpInput.value.trim(),
+        
+        profile_image: imageUrl
 
     };
 
