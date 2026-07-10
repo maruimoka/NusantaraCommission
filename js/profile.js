@@ -143,7 +143,6 @@ async function saveProfile(){
 
 }
 
-
 async function saveProfile(){
 
     const profileData = {
@@ -167,7 +166,23 @@ async function saveProfile(){
 
     };
 
-    console.log(profileData);
+    const { error } = await supabaseClient
+        .from("artist_profiles")
+        .update(profileData)
+        .eq("user_id", currentUser.id);
+
+    if(error){
+
+        console.error(error);
+
+        alert("Failed to save profile.");
+
+        return;
+
+    }
+
+    alert("Profile updated successfully!");
+
+    await loadProfile();
 
 }
-
