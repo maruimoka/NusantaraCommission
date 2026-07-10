@@ -131,3 +131,43 @@ async function loadProfile() {
     }
 
 }
+
+
+// ==============================
+// SAVE PROFILE
+// ==============================
+
+saveProfileBtn.addEventListener("click", saveProfile);
+
+async function saveProfile(){
+
+}
+
+
+async function saveProfile(){
+
+    const profileData = {
+
+        display_name: displayNameInput.value.trim(),
+        full_name: fullNameInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        address: addressInput.value.trim(),
+        bio: bioInput.value.trim(),
+
+        instagram: instagramInput.value.trim(),
+        twitter: twitterInput.value.trim(),
+        facebook: facebookInput.value.trim(),
+
+        bank_name: bankNameInput.value.trim(),
+        account_number: accountNumberInput.value.trim(),
+        account_holder: accountHolderInput.value.trim(),
+
+        nik: nikInput.value.trim(),
+        npwp: npwpInput.value.trim()
+
+    };
+
+    console.log(profileData);
+
+}
+
