@@ -70,7 +70,39 @@ await loadArtwork();
 await loadFollowers();
 await loadFollowing();
 await checkFollowStatus();
+await recordProfileView();
 }
+
+// =========================
+// RECORD PROFILE VIEW
+// =========================
+
+async function recordProfileView() {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    const viewerId = user?.id ?? null;
+
+    // Jangan hitung kalau artist membuka profilnya sendiri
+    if (viewerId === artistUserId) return;
+
+    const { error } = await supabaseClient
+        .from("artist_views")
+        .insert({
+            artist_id: artistId,
+            viewer_id: viewerId,
+            source: "profile"
+        });
+
+    if (error) {
+        console.error(error);
+    }
+}
+
+
+
 
 async function checkFollowStatus(){
 
@@ -88,7 +120,7 @@ async function checkFollowStatus(){
 
         .select("*")
 
-        .eq("user_id", user.id)
+        .eq("follower_id", user.id)
 
         .eq("artist_id", artistId);
 
@@ -121,7 +153,24 @@ async function loadFollowers(){
 
 }
 
-async function loadFollowing(){
+async function loadFollowing() {
+
+    const { data: artistProfile, error: artistError } = await supabaseClient
+        .from("artist_profiles")
+        .select("id")
+        .eq("user_id", artistUserId)
+        .maybeSingle();
+
+    if (artistError) {
+        console.error(artistError);
+        return;
+    }
+
+    // Kalau user ini belum menjadi artist
+    if (!artistProfile) {
+        followingText.innerHTML = "<b>0</b> Following";
+        return;
+    }
 
     const { count, error } = await supabaseClient
         .from("artist_followers")
@@ -129,13 +178,11 @@ async function loadFollowing(){
             count: "exact",
             head: true
         })
-        .eq("user_id", artistUserId);
+        .eq("follower_id", artistUserId);
 
-    if(error){
-
-        console.log(error);
+    if (error) {
+        console.error(error);
         return;
-
     }
 
     followingText.innerHTML =
@@ -337,7 +384,7 @@ followBtn.onclick = async () => {
 
             .delete()
 
-            .eq("user_id", currentUser.id)
+            .eq("follower_id", currentUser.id)
 
             .eq("artist_id", artistId);
 
@@ -349,7 +396,7 @@ followBtn.onclick = async () => {
 
             .insert({
 
-                user_id: currentUser.id,
+                  follower_id: currentUser.id,
 
                 artist_id: artistId
 
