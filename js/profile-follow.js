@@ -84,7 +84,7 @@ async function checkFollowStatus(){
 
     const { data } = await supabaseClient
 
-        .from("followers")
+        .from("artist_followers")
 
         .select("*")
 
@@ -104,7 +104,7 @@ async function loadFollowers(){
     const { count } =
     await supabaseClient
 
-        .from("followers")
+        .from("artist_followers")
 
         .select("*",{
 
@@ -124,7 +124,7 @@ async function loadFollowers(){
 async function loadFollowing(){
 
     const { count, error } = await supabaseClient
-        .from("followers")
+        .from("artist_followers")
         .select("*", {
             count: "exact",
             head: true
@@ -333,7 +333,7 @@ followBtn.onclick = async () => {
 
         await supabaseClient
 
-            .from("followers")
+            .from("artist_followers")
 
             .delete()
 
@@ -345,7 +345,7 @@ followBtn.onclick = async () => {
 
        const { error } = await supabaseClient
 
-            .from("followers")
+            .from("artist_followers")
 
             .insert({
 
