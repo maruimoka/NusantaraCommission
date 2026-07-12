@@ -1,0 +1,90 @@
+.analytics-container{
+
+    max-width:1200px;
+    margin:40px auto;
+    padding:30px;
+
+}
+
+.artist-summary{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:40px;
+
+}
+
+.artist-summary img{
+
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+
+}
+
+.artist-info h2{
+
+    margin:0;
+
+}
+
+.artist-info p{
+
+    margin-top:8px;
+    color:#666;
+
+}
+
+.stats-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:50px;
+
+}
+
+.stat-card{
+
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.stat-card h3{
+
+    margin-bottom:15px;
+    color:#777;
+
+}
+
+.stat-card span{
+
+    font-size:34px;
+    font-weight:bold;
+
+}
+
+.chart-section{
+
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:40px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.recent-orders{
+
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
