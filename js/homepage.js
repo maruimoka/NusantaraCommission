@@ -104,16 +104,150 @@ card.innerHTML = `
         }
         </span>
         </div>
+
+        <button class="like-btn">
+    <i class="fa-regular fa-heart"></i>
+    <span class="like-count">0</span>
+</button>
         </div>
     `;
 
     card.artwork = artwork;
-    card.onclick = () => {
 
-        openPreview(artwork);
-    }
+
+const likeBtn = card.querySelector(".like-btn");
+
+
+likeBtn.onclick = async(e)=>{
+
+    e.stopPropagation();
+
+    await toggleLike(
+        artwork.id,
+        likeBtn
+    );
+
+};
+
+
+
+loadLike(
+    artwork.id,
+    likeBtn
+);
+
+
+
+card.onclick = () => {
+
+    openPreview(artwork);
+
+}
 
     galleryGrid.appendChild(card);
+
+    
+
+}
+
+async function toggleLike(
+    artworkId,
+    button
+){
+
+    const {
+        data:{
+            user
+        }
+    } = await supabaseClient.auth.getUser();
+
+
+    if(!user){
+
+        alert("Login dulu untuk like artwork");
+
+        return;
+
+    }
+
+
+    const {
+        data:existing
+    } = await supabaseClient
+    .from("artwork_likes")
+    .select("id")
+    .eq("artwork_id", artworkId)
+    .eq("user_id", user.id)
+    .single();
+
+
+
+    if(existing){
+
+
+        await supabaseClient
+        .from("artwork_likes")
+        .delete()
+        .eq("id",existing.id);
+
+
+
+    }
+    else{
+
+
+        await supabaseClient
+        .from("artwork_likes")
+        .insert({
+
+            artwork_id: artworkId,
+            user_id:user.id
+
+        });
+
+
+    }
+
+
+    loadLike(
+        artworkId,
+        button
+    );
+
+}
+
+async function loadLike(
+    artworkId,
+    button
+){
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+    .from("artwork_likes")
+    .select("*")
+    .eq(
+        "artwork_id",
+        artworkId
+    );
+
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
+
+    const count =
+    button.querySelector(".like-count");
+
+
+    count.textContent =
+    data.length;
+
 
 }
 
