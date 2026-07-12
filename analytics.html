@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nusantara Commission | Analytics</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/analytics.css">
+
+</head>
+<body>
+
+    <!-- ========================= -->
+    <!-- NAVBAR -->
+    <!-- ========================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+        </div>
+
+        <button class="home-btn" onclick="location.href='artist-tracker.html'">
+            ← Back
+        </button>
+
+    </nav>
+
+    <!-- ========================= -->
+    <!-- CONTAINER -->
+    <!-- ========================= -->
+
+    <main class="analytics-container">
+
+        <h1>Artist Analytics</h1>
+
+        <!-- ========================= -->
+        <!-- PROFILE -->
+        <!-- ========================= -->
+
+        <section class="artist-summary">
+
+            <img
+                id="artistAvatar"
+                src="images/default-avatar.png"
+                alt="Artist">
+
+            <div class="artist-info">
+
+                <h2 id="artistName">Loading...</h2>
+
+                <p id="artistUsername">@artist</p>
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- STATS -->
+        <!-- ========================= -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <h3>Total Artwork</h3>
+
+                <span id="totalArtwork">0</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Total Orders</h3>
+
+                <span id="totalOrders">0</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Total Revenue</h3>
+
+                <span id="totalRevenue">Rp 0</span>
+
+            </div>
+
+            <div class="stat-card">
+
+    <h3>Followers</h3>
+
+    <span id="totalFollowers">0</span>
+
+</div>
+
+<div class="stat-card">
+
+    <h3>Views</h3>
+
+    <span id="totalViews">0</span>
+
+</div>
+
+<div class="stat-card">
+
+    <h3>Likes</h3>
+
+    <span id="totalLikes">0</span>
+
+</div>
+
+            <div class="stat-card">
+
+                <h3>Pending</h3>
+
+                <span id="pendingOrders">0</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Progress</h3>
+
+                <span id="progressOrders">0</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Finished</h3>
+
+                <span id="finishedOrders">0</span>
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- CHART -->
+        <!-- ========================= -->
+
+        <section class="chart-section">
+
+            <h2>Revenue Overview</h2>
+
+            <canvas id="revenueChart"></canvas>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- RECENT ORDERS -->
+        <!-- ========================= -->
+
+        <section class="recent-orders">
+
+            <h2>Recent Orders</h2>
+
+            <div id="recentOrdersList">
+
+                <!-- JS -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Supabase -->
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <!-- JS -->
+    <script src="js/analytics.js"></script>
+
+</body>
+</html>
