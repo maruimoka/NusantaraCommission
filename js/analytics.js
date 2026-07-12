@@ -106,7 +106,7 @@ async function loadArtwork(){
 async function loadFollowers(){
      console.log("Artist Profile:", artistProfile);
 
-    const {count,error}=await supabaseClient
+    const {data,error}=await supabaseClient
     .from("artist_followers")
     .select("*",{count:"exact",head:true})
     .eq("artist_id",artistProfile.id);
@@ -132,7 +132,7 @@ async function loadFollowers(){
 
 async function loadViews(){
 
-    const {count,error}=await supabaseClient
+    const {data,error}=await supabaseClient
     .from("artist_views")
     .select("*",{count:"exact",head:true})
     .eq("artist_id",artistProfile.id);
