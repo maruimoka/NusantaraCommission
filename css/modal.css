@@ -983,3 +983,27 @@
     margin:-10px 0 30px;
 
 }
+
+.like-btn{
+
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+    margin-top:10px;
+
+}
+
+
+.like-btn i{
+
+    color:#555;
+
+}
+
+
+.like-count{
+
+    margin-left:5px;
+
+}
