@@ -104,6 +104,7 @@ async function loadArtwork(){
 // =========================
 
 async function loadFollowers(){
+     console.log("Artist Profile:", artistProfile);
 
     const {count,error}=await supabaseClient
     .from("artist_followers")
@@ -116,6 +117,9 @@ async function loadFollowers(){
         return;
 
     }
+
+    console.log("Followers Count:", count);
+    console.log("Followers Error:", error);
 
     totalFollowers.textContent=count;
 
@@ -138,6 +142,9 @@ async function loadViews(){
         return;
 
     }
+
+     console.log("Views Count:", count);
+    console.log("Views Error:", error);
 
     totalViews.textContent=count;
 
