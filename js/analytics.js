@@ -118,6 +118,7 @@ async function loadFollowers(){
 
     }
 
+     console.log("ALL FOLLOWERS:", data);
     console.log("Followers Count:", count);
     console.log("Followers Error:", error);
 
