@@ -64,6 +64,8 @@ async function initAnalytics(){
     await loadLikes();
 
     await loadOrderAnalytics();
+    
+    await loadRevenueChart();
 
 }
 
@@ -277,6 +279,136 @@ async function loadOrderAnalytics(){
 
 }
 
+// =========================
+// REVENUE CHART
+// =========================
+
+async function loadRevenueChart() {
+
+    const selectedYear = Number(revenueYear.value);
+
+    const { data: orders, error } = await supabaseClient
+        .from("commission")
+        .select(`
+            created_at,
+            status,
+            artwork:artwork_id(
+                price
+            )
+        `)
+        .eq("artist_id", artistProfile.id)
+        .eq("status", "FINISH");
+
+    if (error) {
+
+        console.log(error);
+        return;
+
+    }
+
+    // Revenue tiap bulan
+    const monthlyRevenue = new Array(12).fill(0);
+
+    orders.forEach(order => {
+
+        const date = new Date(order.created_at);
+
+        if (date.getFullYear() !== selectedYear) return;
+
+        const month = date.getMonth();
+
+        monthlyRevenue[month] += Number(order.artwork?.price || 0);
+
+    });
+
+    const labels = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    ];
+
+    if (revenueChart) {
+
+        revenueChart.destroy();
+
+    }
+
+    revenueChart = new Chart(revenueChartCanvas, {
+
+        type: "line",
+
+        data: {
+
+            labels,
+
+            datasets: [
+
+                {
+
+                    label: "Revenue",
+
+                    data: monthlyRevenue,
+
+                    borderWidth: 3,
+
+                    tension: 0.3,
+
+                    fill: true
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        callback(value) {
+
+                            return "Rp " + value.toLocaleString("id-ID");
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
 
 // =========================
 // YEAR FILTER
@@ -341,3 +473,13 @@ function populateMonthFilter() {
     });
 
 }
+
+// =========================
+// EVENTS
+// =========================
+
+revenueYear.addEventListener("change", () => {
+
+    loadRevenueChart();
+
+});
