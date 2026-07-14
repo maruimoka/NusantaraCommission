@@ -27,6 +27,8 @@ const orderMonth = document.getElementById("orderMonth");
 
 const recentOrdersList = document.getElementById("recentOrdersList");
 
+const statusClass = order.status.toLowerCase().replace(/\s+/g,"-");
+
 let revenueChart = null;
 
 let artistProfile = null;
@@ -465,7 +467,15 @@ async function loadRecentOrders() {
                     Rp ${Number(order.artwork?.price ?? 0).toLocaleString("id-ID")}
                 </td>
 
-                <td>${order.status}</td>
+               <td>
+
+    <span class="status-badge ${order.status.toLowerCase()}">
+
+        ${order.status}
+
+    </span>
+
+</td>
 
                 <td>
                     ${date.toLocaleDateString("id-ID")}
