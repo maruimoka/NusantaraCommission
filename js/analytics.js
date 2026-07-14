@@ -27,8 +27,6 @@ const orderMonth = document.getElementById("orderMonth");
 
 const recentOrdersList = document.getElementById("recentOrdersList");
 
-const statusClass = order.status.toLowerCase().replace(/\s+/g,"-");
-
 let revenueChart = null;
 
 let artistProfile = null;
@@ -448,8 +446,12 @@ async function loadRecentOrders() {
     recentOrdersList.innerHTML = "";
 
     orders.forEach(order => {
-
+        
         const date = new Date(order.created_at);
+        
+        const statusClass = (order.status || "")
+        .toLowerCase()
+        .replace(/\s+/g, "-");
 
         if (date.getFullYear() !== year) return;
 
