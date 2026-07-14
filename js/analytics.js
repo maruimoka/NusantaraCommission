@@ -471,7 +471,7 @@ async function loadRecentOrders() {
 
                <td>
 
-    <span class="status-badge ${order.status.toLowerCase()}">
+    <span class="status-badge ${statusClass}">
 
         ${order.status}
 
