@@ -66,6 +66,7 @@ async function initAnalytics(){
     await loadOrderAnalytics();
     
     await loadRevenueChart();
+    await loadRecentOrders();
 
 }
 
@@ -411,6 +412,73 @@ async function loadRevenueChart() {
 }
 
 // =========================
+// RECENT ORDERS
+// =========================
+
+async function loadRecentOrders() {
+
+    const year = Number(orderYear.value);
+    const month = Number(orderMonth.value);
+
+    const { data: orders, error } = await supabaseClient
+        .from("commission")
+        .select(`
+            created_at,
+            status,
+            client:client_id(
+                username
+            ),
+            artwork:artwork_id(
+                title,
+                price
+            )
+        `)
+        .eq("artist_id", artistProfile.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+
+        console.log(error);
+        return;
+
+    }
+
+    recentOrdersList.innerHTML = "";
+
+    orders.forEach(order => {
+
+        const date = new Date(order.created_at);
+
+        if (date.getFullYear() !== year) return;
+
+        if (month !== 0 && date.getMonth() + 1 !== month) return;
+
+        recentOrdersList.innerHTML += `
+
+            <tr>
+
+                <td>${order.client?.username ?? "-"}</td>
+
+                <td>${order.artwork?.title ?? "-"}</td>
+
+                <td>
+                    Rp ${Number(order.artwork?.price ?? 0).toLocaleString("id-ID")}
+                </td>
+
+                <td>${order.status}</td>
+
+                <td>
+                    ${date.toLocaleDateString("id-ID")}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+// =========================
 // YEAR FILTER
 // =========================
 
@@ -481,5 +549,17 @@ function populateMonthFilter() {
 revenueYear.addEventListener("change", () => {
 
     loadRevenueChart();
+
+});
+
+orderYear.addEventListener("change", () => {
+
+    loadRecentOrders();
+
+});
+
+orderMonth.addEventListener("change", () => {
+
+    loadRecentOrders();
 
 });
