@@ -144,23 +144,42 @@
 
         <section class="chart-section">
 
-            <h2>Revenue Overview</h2>
+    <div class="section-header">
 
-            <canvas id="revenueChart"></canvas>
+        <h2>Revenue Overview</h2>
 
-        </section>
+        <select id="revenueYear">
+            <!-- isi otomatis dari JS -->
+        </select>
 
+    </div>
+
+    <canvas id="revenueChart"></canvas>
+
+</section>
         <!-- ========================= -->
         <!-- RECENT ORDERS -->
         <!-- ========================= -->
 
-        <section class="recent-orders">
+       <section class="recent-orders">
 
-            <h2>Recent Orders</h2>
+    <div class="section-header">
 
-            <div id="recentOrdersList">
+        <h2>Recent Orders</h2>
 
-                <!-- JS -->
+        <div class="filters">
+
+            <select id="orderYear"></select>
+
+            <select id="orderMonth"></select>
+
+        </div>
+
+    </div>
+
+    <div id="recentOrdersList"></div>
+
+</section>
 
             </div>
 
