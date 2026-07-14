@@ -27,6 +27,8 @@ const postUploadContent = document.getElementById("postUploadContent");
 const postTitle = document.getElementById("postTitle");
 const postDescription = document.getElementById("postDescription");
 const postPrice = document.getElementById("postPrice");
+const postMature = document.getElementById("postMature");
+const postMature = document.getElementById("editMature");
 
 const postCommissionTab = document.getElementById("postCommissionTab");
 const postGalleryTab = document.getElementById("postGalleryTab");
@@ -401,6 +403,9 @@ function openPreview(item){
     document.getElementById("modalDescription").textContent =
         item.description ?? "";
 
+    document.getElementById("editMature").checked =
+        selectedArtwork.is_mature;
+
     previewModal.style.display = "flex";
 
 }
@@ -597,6 +602,8 @@ function resetPostForm(){
 
     document.getElementById("postForm").reset();
 
+    postMature.checked = false;
+
     postPreviewImage.style.display = "none";
 
     postUploadContent.style.display = "flex";
@@ -719,7 +726,9 @@ const { error } = await supabaseClient
 
                 image_url: imageUrl,
 
-                category: postCategory
+                category: postCategory,
+
+                 is_mature: postMature.checked
 
             });
 
@@ -840,7 +849,8 @@ saveEditBtn.onclick = async () => {
             ? document.getElementById("editPrice").value
             : null,
         category,
-        image_url: imageUrl
+        image_url: imageUrl,
+        is_mature: document.getElementById("editMature").checked
     })
     .eq("id", selectedArtwork.id)
     .select();
