@@ -53,7 +53,6 @@ document.getElementById("editCommissionTab");
 
 const galleryBtn =
 document.getElementById("editGalleryTab");
-
 const priceInput =
 document.getElementById("editPrice");
 
