@@ -17,6 +17,18 @@ const pendingOrders = document.getElementById("pendingOrders");
 const progressOrders = document.getElementById("progressOrders");
 const finishedOrders = document.getElementById("finishedOrders");
 
+const revenueChartCanvas = document.getElementById("revenueChart");
+
+const revenueYear = document.getElementById("revenueYear");
+
+const orderYear = document.getElementById("orderYear");
+
+const orderMonth = document.getElementById("orderMonth");
+
+const recentOrdersList = document.getElementById("recentOrdersList");
+
+let revenueChart = null;
+
 let artistProfile = null;
 
 // =========================
@@ -38,6 +50,9 @@ async function initAnalytics(){
         return;
 
     }
+
+    populateYearFilter();
+    populateMonthFilter();
 
     await loadArtist(user.id);
 
@@ -259,5 +274,70 @@ async function loadOrderAnalytics(){
     totalRevenue.textContent =
         "Rp " +
         revenue.toLocaleString("id-ID");
+
+}
+
+
+// =========================
+// YEAR FILTER
+// =========================
+
+function populateYearFilter() {
+
+    const currentYear = new Date().getFullYear();
+
+    revenueYear.innerHTML = "";
+    orderYear.innerHTML = "";
+
+    for (let year = currentYear; year >= currentYear - 5; year--) {
+
+        const option1 = document.createElement("option");
+        option1.value = year;
+        option1.textContent = year;
+        revenueYear.appendChild(option1);
+
+        const option2 = document.createElement("option");
+        option2.value = year;
+        option2.textContent = year;
+        orderYear.appendChild(option2);
+
+    }
+
+}
+
+// =========================
+// MONTH FILTER
+// =========================
+
+function populateMonthFilter() {
+
+    const months = [
+        "All Months",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
+
+    orderMonth.innerHTML = "";
+
+    months.forEach((month, index) => {
+
+        const option = document.createElement("option");
+
+        option.value = index;
+        option.textContent = month;
+
+        orderMonth.appendChild(option);
+
+    });
 
 }
