@@ -104,45 +104,41 @@ async function loadArtwork(){
 // =========================
 
 async function loadFollowers(){
-     console.log("Artist Profile:", artistProfile);
 
-    const {data,error}=await supabaseClient
-    .from("artist_followers")
-    .select("*",{count:"exact",head:true})
-    .eq("artist_id",artistProfile.id);
+    const { count, error } = await supabaseClient
+        .from("followers")
+        .select("*",{
+            count:"exact",
+            head:true
+        })
+        .eq("artist_id",artistProfile.id);
 
-    if(error){
+    console.log("Followers Count:",count);
+    console.log("Followers Error:",error);
 
-        console.log(error);
-        return;
-
-    }
-
-     console.log("ALL FOLLOWERS:", data);
-    console.log("Followers Count:", count);
-    console.log("Followers Error:", error);
-
-    totalFollowers.textContent=count;
+    totalFollowers.textContent = count ?? 0;
 
 }
-
 // =========================
 // VIEWS
 // =========================
 
 async function loadViews(){
 
-    const {data,error}=await supabaseClient
-    .from("artist_views")
-    .select("*",{count:"exact",head:true})
-    .eq("artist_id",artistProfile.id);
+    const { count, error } = await supabaseClient
+        .from("artist_views")
+        .select("*",{
+            count:"exact",
+            head:true
+        })
+        .eq("artist_id",artistProfile.id);
 
-    if(error){
+    console.log("Views Count:",count);
+    console.log("Views Error:",error);
 
-        console.log(error);
-        return;
+    totalViews.textContent = count ?? 0;
 
-    }
+}
 
      console.log("Views Count:", count);
     console.log("Views Error:", error);
