@@ -314,3 +314,38 @@
 .stat-item p{
     font-size:20px;
 }
+
+
+.mature-option{
+
+    margin-top:18px;
+
+}
+
+.mature-option label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.mature-option small{
+
+    display:block;
+
+    margin-left:30px;
+
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:13px;
+
+}
