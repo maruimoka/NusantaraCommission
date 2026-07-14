@@ -28,7 +28,7 @@ const postTitle = document.getElementById("postTitle");
 const postDescription = document.getElementById("postDescription");
 const postPrice = document.getElementById("postPrice");
 const postMature = document.getElementById("postMature");
-const postMature = document.getElementById("editMature");
+const editMature = document.getElementById("editMature");
 
 const postCommissionTab = document.getElementById("postCommissionTab");
 const postGalleryTab = document.getElementById("postGalleryTab");
