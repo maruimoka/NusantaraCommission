@@ -10,6 +10,12 @@ const totalArtwork = document.getElementById("totalArtwork");
 const totalFollowers = document.getElementById("totalFollowers");
 const totalViews = document.getElementById("totalViews");
 const totalLikes = document.getElementById("totalLikes");
+const totalOrders = document.getElementById("totalOrders");
+const totalRevenue = document.getElementById("totalRevenue");
+
+const pendingOrders = document.getElementById("pendingOrders");
+const progressOrders = document.getElementById("progressOrders");
+const finishedOrders = document.getElementById("finishedOrders");
 
 let artistProfile = null;
 
@@ -41,6 +47,8 @@ async function initAnalytics(){
     await loadFollowers();
     await loadViews();
     await loadLikes();
+
+    await loadOrderAnalytics();
 
 }
 
@@ -175,5 +183,81 @@ async function loadLikes(){
     .in("artwork_id",ids);
 
     totalLikes.textContent=count;
+
+}
+
+
+// =========================
+// ORDER ANALYTICS
+// =========================
+
+async function loadOrderAnalytics(){
+
+    const { data: orders, error } = await supabaseClient
+        .from("commission")
+        .select(`
+            status,
+            artwork:artwork_id(
+                price
+            )
+        `)
+        .eq("artist_id", artistProfile.id);
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
+    let pending = 0;
+    let progress = 0;
+    let finished = 0;
+    let revenue = 0;
+
+    orders.forEach(order=>{
+
+        const status = (order.status || "").toUpperCase();
+
+        if(status==="PENDING"){
+
+            pending++;
+
+        }
+
+        else if(
+            status==="WAITING" ||
+            status==="SKETCH" ||
+            status==="LINEART" ||
+            status==="COLORING" ||
+            status==="REVISION" ||
+            status==="ON HOLD"
+        ){
+
+            progress++;
+
+        }
+
+        else if(status==="FINISH"){
+
+            finished++;
+
+            revenue += Number(order.artwork?.price || 0);
+
+        }
+
+    });
+
+    totalOrders.textContent = orders.length;
+
+    pendingOrders.textContent = pending;
+
+    progressOrders.textContent = progress;
+
+    finishedOrders.textContent = finished;
+
+    totalRevenue.textContent =
+        "Rp " +
+        revenue.toLocaleString("id-ID");
 
 }
