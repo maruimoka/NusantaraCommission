@@ -223,7 +223,9 @@ bannerInput.addEventListener("change", async function () {
         .update({
 
             banner_image:
-                publicUrlData.publicUrl
+                publicUrlData.publicUrl,
+            is_mature:
+                document.getElementById("editMature").checked
 
         })
                              
