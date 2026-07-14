@@ -140,13 +140,6 @@ async function loadViews(){
 
 }
 
-     console.log("Views Count:", count);
-    console.log("Views Error:", error);
-
-    totalViews.textContent=count;
-
-}
-
 // =========================
 // LIKES
 // =========================
