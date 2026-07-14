@@ -88,3 +88,98 @@
     box-shadow:0 5px 15px rgba(0,0,0,.08);
 
 }
+
+
+.orders-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+.orders-table th{
+
+    background:#222;
+    color:white;
+    padding:14px;
+    text-align:left;
+
+}
+
+.orders-table td{
+
+    padding:14px;
+    border-bottom:1px solid #e5e5e5;
+
+}
+
+.orders-table tr:hover{
+
+    background:#fafafa;
+
+}
+
+.status-badge{
+
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+.finish{
+
+    background:#d4edda;
+    color:#1e7e34;
+
+}
+
+.pending{
+
+    background:#fff3cd;
+    color:#856404;
+
+}
+
+.waiting{
+
+    background:#cfe2ff;
+    color:#084298;
+
+}
+
+.sketch{
+
+    background:#dbeafe;
+    color:#1d4ed8;
+
+}
+
+.lineart{
+
+    background:#ede9fe;
+    color:#6d28d9;
+
+}
+
+.coloring{
+
+    background:#ffe5b4;
+    color:#b45309;
+
+}
+
+.revision{
+
+    background:#fde2e4;
+    color:#b91c1c;
+
+}
+
+.on-hold{
+
+    background:#f3f4f6;
+    color:#444;
+
+}
