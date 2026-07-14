@@ -161,49 +161,39 @@
         <!-- RECENT ORDERS -->
         <!-- ========================= -->
 
-       <section class="recent-orders">
+      <section class="recent-orders">
 
-    <div class="section-header">
+    <h2>Recent Orders</h2>
 
-        <h2>Recent Orders</h2>
+    <div class="filters">
 
-        <div class="filters">
-
-            <select id="orderYear"></select>
-
-            <select id="orderMonth"></select>
-
-        </div>
+        <select id="orderYear"></select>
+        <select id="orderMonth"></select>
 
     </div>
 
-    <div id="recentOrdersList">
+    <div class="orders-table-wrapper">
 
-        <div class="orders-table-wrapper">
+        <table class="orders-table">
 
-    <table class="orders-table">
+            <thead>
 
-        <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Artwork</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
 
-            <tr>
+            </thead>
 
-                <th>Client</th>
-                <th>Artwork</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Date</th>
+            <tbody id="recentOrdersList">
 
-            </tr>
+            </tbody>
 
-        </thead>
+        </table>
 
-        <tbody id="recentOrdersList">
-
-        </tbody>
-
-    </table>
-
-</div>
     </div>
 
 </section>
