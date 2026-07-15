@@ -172,13 +172,14 @@ async function toggleLike(
 
 
     const {
-        data:existing
+        data:existing,
+        error
     } = await supabaseClient
     .from("artwork_likes")
     .select("id")
     .eq("artwork_id", artworkId)
     .eq("user_id", user.id)
-    .single();
+    .maysingle();
 
 
 
