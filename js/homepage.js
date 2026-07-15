@@ -179,7 +179,7 @@ async function toggleLike(
     .select("id")
     .eq("artwork_id", artworkId)
     .eq("user_id", user.id)
-    .maybesingle();
+    .maybeSingle();
 
 
 
