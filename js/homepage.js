@@ -24,12 +24,29 @@ document.getElementById("modalArtistAvatar");
 
 const searchInput = document.querySelector(".search-bar input");
 let allArtworks = [];
+let canViewMature = false;
 
 // =========================
 // LOAD HOMEPAGE
 // =========================
 
 async function loadHomepage() {
+const {
+    data: { user }
+} = await supabaseClient.auth.getUser();
+
+if (user) {
+
+    const { data: profile } = await supabaseClient
+        .from("artist_profiles")
+        .select("adult_verified")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    canViewMature =
+        profile?.adult_verified ?? false;
+
+}
     const { data: artworks, error } = await supabaseClient
         .from("artwork")
         .select(`
@@ -61,7 +78,17 @@ async function loadHomepage() {
 
     }
 
-allArtworks = artworks;
+allArtworks = artworks.filter(artwork => {
+
+    if (!canViewMature && artwork.mature) {
+
+        return false;
+
+    }
+
+    return true;
+
+});
 galleryGrid.innerHTML = "";
 artworks.forEach(renderCard);
 
