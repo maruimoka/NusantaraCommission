@@ -80,7 +80,7 @@ if (user) {
 
 allArtworks = artworks.filter(artwork => {
 
-    if (!canViewMature && artwork.mature) {
+    if (!canViewMature && artwork.is_mature) {
 
         return false;
 
@@ -90,7 +90,7 @@ allArtworks = artworks.filter(artwork => {
 
 });
 galleryGrid.innerHTML = "";
-artworks.forEach(renderCard);
+allArtworks.forEach(renderCard);
 
 }
 
