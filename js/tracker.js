@@ -44,6 +44,9 @@ openEditProfile?.addEventListener("click", () => {
     document.getElementById("editSocial").value =
         currentProfile.medsos ?? "";
 
+          document.getElementById("adultVerified").checked =
+            currentProfile.adult_verified ?? false;
+
     editAvatarPreview.src =
         currentProfile.profile_image || "asset/imagesbanner1.png";
 }
@@ -100,6 +103,7 @@ saveProfileBtn?.addEventListener("click", async () => {
     const name = document.getElementById("editName").value.trim();
     const bio = document.getElementById("editBio").value.trim();
     const social = document.getElementById("editSocial").value.trim();
+    const adultVerified = document.getElementById("adultVerified").checked;
     const file = avatarInput.files[0];
 
     let imageUrl = document.getElementById("profileUserImage").src;
@@ -147,7 +151,8 @@ if (file) {
                 display_name: name,
                 bio: bio,
                 medsos: social,
-                profile_image: imageUrl
+                profile_image: imageUrl,
+                adult_verified: adultVerified
             },
             {
                 onConflict: "user_id"
@@ -173,7 +178,8 @@ if (file) {
     display_name: name,
     bio: bio,
     medsos: social,
-    profile_image: imageUrl
+    profile_image: imageUrl,
+    adult_verified: adultVerified
 };
     
     editProfileModal.style.display = "none";
