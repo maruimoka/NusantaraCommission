@@ -785,3 +785,44 @@ cursor:pointer;
     opacity:1;
 
 }
+
+.adult-option{
+
+    margin-top:20px;
+
+}
+
+.adult-label{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    cursor:pointer;
+
+    font-size:20px;
+    font-weight:700;
+
+}
+
+.adult-label input{
+
+    width:20px;
+    height:20px;
+
+    cursor:pointer;
+
+}
+
+.adult-option small{
+
+    display:block;
+
+    margin-left:34px;
+    margin-top:8px;
+
+    color:#777;
+    font-size:15px;
+    line-height:1.5;
+
+}
