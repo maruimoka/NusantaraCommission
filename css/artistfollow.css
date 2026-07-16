@@ -804,3 +804,35 @@ color:#777;
     color:#666;
     font-size:15px;
 }
+
+
+.profile-actions{
+    display:flex;
+    gap:15px;
+    margin-top:75px;
+}
+
+.chat-btn{
+
+    width:220px;
+    height:65px;
+
+    border:none;
+    border-radius:40px;
+
+    background:#4B6BFB;
+    color:white;
+
+    font-size:22px;
+    font-weight:700;
+
+    cursor:pointer;
+    transition:.25s;
+
+}
+
+.chat-btn:hover{
+
+    transform:translateY(-3px);
+
+}
