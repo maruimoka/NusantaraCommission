@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nusantara Commission | Messages</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/chat.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+<body>
+
+<!-- =========================
+        NAVBAR
+========================= -->
+
+<nav>
+
+    <div class="logo">
+
+        <a href="homepage.html">
+            Nusantara Commission
+        </a>
+
+    </div>
+
+    <div class="nav-right">
+
+        <a href="homepage.html">
+            Home
+        </a>
+
+        <a href="analytics.html">
+            Analytics
+        </a>
+
+        <a href="profile.html">
+            Profile
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+        CHAT CONTAINER
+========================= -->
+
+<div class="chat-container">
+
+
+    <!-- =====================
+            SIDEBAR
+    ====================== -->
+
+    <aside class="chat-sidebar">
+
+        <div class="sidebar-header">
+
+            <h2>Messages</h2>
+
+        </div>
+
+        <div class="search-box">
+
+            <input
+            type="text"
+            id="searchConversation"
+            placeholder="Search conversation...">
+
+        </div>
+
+        <div
+        class="conversation-list"
+        id="conversationList">
+
+            <!-- JS -->
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================
+            CHAT ROOM
+    ====================== -->
+
+    <section class="chat-room">
+
+
+        <!-- HEADER -->
+
+        <div class="chat-header">
+
+            <div class="chat-user">
+
+                <img
+                src="asset/default-profile.png"
+                id="chatAvatar">
+
+                <div>
+
+                    <h3 id="chatName">
+
+                        Select Conversation
+
+                    </h3>
+
+                    <span id="chatStatus">
+
+                        Offline
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="chat-action">
+
+                <button id="viewProfileBtn">
+
+                    View Profile
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div
+        class="chat-body"
+        id="chatBody">
+
+            <div class="empty-chat">
+
+                <i class="fa-regular fa-comments"></i>
+
+                <h2>
+
+                    Welcome to Messages
+
+                </h2>
+
+                <p>
+
+                    Select a conversation to start chatting.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- INPUT -->
+
+        <div class="chat-input">
+
+            <button
+            id="uploadImageBtn">
+
+                <i class="fa-solid fa-paperclip"></i>
+
+            </button>
+
+            <input
+            type="text"
+            id="messageInput"
+            placeholder="Type your message...">
+
+            <button
+            id="sendBtn">
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+            </button>
+
+        </div>
+
+
+    </section>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="js/chat.js"></script>
+
+</body>
+</html>
