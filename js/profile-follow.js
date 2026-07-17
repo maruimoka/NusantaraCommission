@@ -430,8 +430,8 @@ chatBtn?.addEventListener("click", async () => {
         return;
     }
 
-    // jangan bisa chat diri sendiri
-    if (user.id === artistId) {
+    // Jangan bisa chat dengan diri sendiri
+    if (user.id === artistUserId) {
         alert("You can't chat with yourself.");
         return;
     }
@@ -442,8 +442,8 @@ chatBtn?.addEventListener("click", async () => {
 
 async function openConversation(clientId, artistId) {
 
-    // cek conversation sudah ada atau belum
-    const { data: existing, error } = await supabaseClient
+    // cek apakah conversation sudah ada
+    let { data: conversation, error } = await supabaseClient
         .from("conversations")
         .select("id")
         .eq("client_id", clientId)
@@ -455,32 +455,26 @@ async function openConversation(clientId, artistId) {
         return;
     }
 
-    let conversationId;
+    // kalau belum ada, buat baru
+    if (!conversation) {
 
-    if (existing) {
-
-        conversationId = existing.id;
-
-    } else {
-
-        const { data, error } = await supabaseClient
+        const { data, error: insertError } = await supabaseClient
             .from("conversations")
             .insert({
                 client_id: clientId,
                 artist_id: artistId
             })
-            .select()
+            .select("id")
             .single();
 
-        if (error) {
-            console.log(error);
+        if (insertError) {
+            console.log(insertError);
             return;
         }
 
-        conversationId = data.id;
+        conversation = data;
     }
 
     window.location.href =
-        `chat.html?conversation=${conversationId}`;
-
+        `chat.html?conversation=${conversation.id}`;
 }
