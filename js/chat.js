@@ -35,7 +35,9 @@ let currentConversation = null;
 let otherUser = null;
 
 const params = new URLSearchParams(window.location.search);
+const conversationId = params.get("conversation");
 
+const artistId = params.get("artist");
 const conversationId = params.get("conversation");
 
 // =========================
@@ -152,34 +154,50 @@ async function loadConversationInfo(){
 
 async function openArtistConversation(artistId){
 
-    const { data: artist, error } = await supabaseClient
+    // ambil artist
+    const { data: artist } = await supabaseClient
         .from("artist_profiles")
-        .select(`
-            id,
-            display_name,
-            profile_image,
-            user_id
-        `)
+        .select("id,user_id,display_name,profile_image")
         .eq("id", artistId)
         .single();
 
-    if(error){
+    if(!artist) return;
 
-        console.log(error);
-        return;
+    // cek conversation
+    let { data: conversation } = await supabaseClient
+        .from("conversations")
+        .select("*")
+        .eq("client_id", currentUser.id)
+        .eq("artist_id", artist.id)
+        .maybeSingle();
 
+    // kalau belum ada -> buat
+    if(!conversation){
+
+        const { data } = await supabaseClient
+            .from("conversations")
+            .insert({
+                client_id: currentUser.id,
+                artist_id: artist.id
+            })
+            .select()
+            .single();
+
+        conversation = data;
     }
 
-    currentConversation = artist;
+    currentConversation = conversation.id;
 
-    chatName.textContent =
-        artist.display_name;
+    chatName.textContent = artist.display_name;
 
     chatAvatar.src =
         artist.profile_image ||
         "asset/default-profile.png";
 
-    chatStatus.textContent =
-        "Ready to chat";
+    chatStatus.textContent = "Artist";
 
+    otherUser = artist;
+
+    // nanti setelah ada
+    // loadMessages();
 }
