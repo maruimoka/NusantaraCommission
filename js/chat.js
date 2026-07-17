@@ -195,9 +195,8 @@ async function openArtistConversation(artistId){
     chatStatus.textContent = "Artist";
 
     otherUser = artist;
+     const id = await getOrCreateConversation();
     await loadMessages();
-    // nanti setelah ada
-    // loadMessages();
 }
 
 
@@ -382,8 +381,6 @@ async function loadMessages() {
 
 }
 
-const id = await getOrCreateConversation();
 
-await loadMessages();
 
 
