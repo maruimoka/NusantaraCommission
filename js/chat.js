@@ -245,3 +245,145 @@ async function loadMessages(){
         chatBody.scrollHeight;
 
 }
+
+
+async function getOrCreateConversation() {
+
+    if (currentConversation?.id) {
+        return currentConversation.id;
+    }
+
+    const { data: existing } = await supabaseClient
+        .from("conversations")
+        .select("*")
+        .eq("client_id", currentUser.id)
+        .eq("artist_id", artistId)
+        .maybeSingle();
+
+    if (existing) {
+
+        currentConversation = existing;
+
+        return existing.id;
+    }
+
+    const { data: conversation, error } = await supabaseClient
+        .from("conversations")
+        .insert({
+            client_id: currentUser.id,
+            artist_id: artistId
+        })
+        .select()
+        .single();
+
+    if (error) {
+        console.log(error);
+        return null;
+    }
+
+    currentConversation = conversation;
+
+    return conversation.id;
+}
+
+
+async function sendMessage() {
+
+    const text = messageInput.value.trim();
+
+    if (!text) return;
+
+    const conversationId =
+        await getOrCreateConversation();
+
+    if (!conversationId) return;
+
+    const { error } = await supabaseClient
+        .from("messages")
+        .insert({
+
+            conversation_id: conversationId,
+
+            sender_id: currentUser.id,
+
+            message: text
+
+        });
+
+    if (error) {
+
+        console.log(error);
+
+        return;
+
+    }
+
+    messageInput.value = "";
+
+    loadMessages();
+
+}
+
+
+sendBtn.addEventListener("click", sendMessage);
+
+messageInput.addEventListener("keypress", (e) => {
+
+    if(e.key === "Enter"){
+
+        sendMessage();
+
+    }
+
+});
+
+async function loadMessages() {
+
+    if(!currentConversation?.id) return;
+
+    const { data, error } = await supabaseClient
+        .from("messages")
+        .select("*")
+        .eq("conversation_id", currentConversation.id)
+        .order("created_at");
+
+    if(error){
+
+        console.log(error);
+
+        return;
+
+    }
+
+    chatBody.innerHTML = "";
+
+    data.forEach(message => {
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.className =
+            message.sender_id === currentUser.id
+            ? "my-message"
+            : "their-message";
+
+        bubble.innerHTML = `
+            <div class="bubble">
+                ${message.message}
+            </div>
+        `;
+
+        chatBody.appendChild(bubble);
+
+    });
+
+    chatBody.scrollTop =
+        chatBody.scrollHeight;
+
+}
+
+const id = await getOrCreateConversation();
+
+await loadMessages();
+
+
