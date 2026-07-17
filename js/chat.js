@@ -150,6 +150,8 @@ async function loadConversationInfo(){
 
 }
 
+await loadMessages();
+
 async function openArtistConversation(artistId){
 
     // ambil artist
@@ -195,7 +197,53 @@ async function openArtistConversation(artistId){
     chatStatus.textContent = "Artist";
 
     otherUser = artist;
-
+    await loadMessages();
     // nanti setelah ada
     // loadMessages();
+}
+
+
+async function loadMessages(){
+
+    if(!currentConversation) return;
+
+    const { data, error } = await supabaseClient
+        .from("messages")
+        .select("*")
+        .eq("conversation_id", currentConversation)
+        .order("created_at", {
+            ascending: true
+        });
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    chatBody.innerHTML = "";
+
+    data.forEach(message=>{
+
+        const mine =
+            message.sender_id === currentUser.id;
+
+        const bubble =
+        document.createElement("div");
+
+        bubble.className =
+            mine ? "my-message" : "their-message";
+
+        bubble.innerHTML = `
+            <div class="message-bubble">
+                ${message.message}
+            </div>
+        `;
+
+        chatBody.appendChild(bubble);
+
+    });
+
+    chatBody.scrollTop =
+        chatBody.scrollHeight;
+
 }
