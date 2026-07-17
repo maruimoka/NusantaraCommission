@@ -10,6 +10,8 @@ console.log(artistId);
 // ELEMENT
 // =========================
 
+const chatBtn = document.getElementById("chatBtn");
+
 const commissionSection = document.getElementById("commissionSection");
 const gallerySection = document.getElementById("gallerySection");
 
@@ -415,3 +417,70 @@ closePreview.addEventListener("click", () => {
     previewModal.style.display = "none";
 
 });
+
+
+chatBtn?.addEventListener("click", async () => {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+        alert("Please login first.");
+        return;
+    }
+
+    // jangan bisa chat diri sendiri
+    if (user.id === artistId) {
+        alert("You can't chat with yourself.");
+        return;
+    }
+
+    await openConversation(user.id, artistId);
+
+});
+
+async function openConversation(clientId, artistId) {
+
+    // cek conversation sudah ada atau belum
+    const { data: existing, error } = await supabaseClient
+        .from("conversations")
+        .select("id")
+        .eq("client_id", clientId)
+        .eq("artist_id", artistId)
+        .maybeSingle();
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    let conversationId;
+
+    if (existing) {
+
+        conversationId = existing.id;
+
+    } else {
+
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .insert({
+                client_id: clientId,
+                artist_id: artistId
+            })
+            .select()
+            .single();
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        conversationId = data.id;
+    }
+
+    window.location.href =
+        `chat.html?conversation=${conversationId}`;
+
+}
