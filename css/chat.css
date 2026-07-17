@@ -413,3 +413,47 @@ body{
     border:1px solid #ddd;
 
 }
+
+.my-message{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin:12px 0;
+
+}
+
+.their-message{
+
+    display:flex;
+
+    justify-content:flex-start;
+
+    margin:12px 0;
+
+}
+
+.bubble{
+
+    max-width:60%;
+
+    padding:12px 18px;
+
+    border-radius:18px;
+
+    background:#5b67ff;
+
+    color:white;
+
+    word-break:break-word;
+
+}
+
+.their-message .bubble{
+
+    background:#e5e7eb;
+
+    color:#222;
+
+}
