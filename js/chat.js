@@ -35,8 +35,6 @@ let currentConversation = null;
 let otherUser = null;
 
 const params = new URLSearchParams(window.location.search);
-const conversationId = params.get("conversation");
-
 const artistId = params.get("artist");
 const conversationId = params.get("conversation");
 
