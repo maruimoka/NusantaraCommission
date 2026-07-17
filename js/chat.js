@@ -35,9 +35,11 @@ let currentConversation = null;
 let otherUser = null;
 
 const params = new URLSearchParams(window.location.search);
-const artistId = params.get("artist");
-console.log("Artist ID :", artistId);
-const conversationId = params.get("conversation");
+
+const conversationId =
+    params.get("conversation");
+
+console.log("Conversation :", conversationId);
 
 // =========================
 // INIT
@@ -68,17 +70,13 @@ async function initChat(){
 
     console.log(currentUser);
 
-if (artistId) {
-    await openArtistConversation(artistId);
+if (conversationId) {
+
+    currentConversation = conversationId;
+
+    await loadConversationInfo();
+
 }
-
-    if(conversationId){
-
-        currentConversation = conversationId;
-
-        await loadConversationInfo();
-
-    }
 
 }
 
@@ -151,105 +149,7 @@ await loadMessages();
 }
 
 
-async function openArtistConversation(artistId){
-
-    // ambil artist
-    const { data: artist } = await supabaseClient
-        .from("artist_profiles")
-        .select("id,user_id,display_name,profile_image")
-        .eq("id", artistId)
-        .single();
-
-    if(!artist) return;
-
-    // cek conversation
-    let { data: conversation } = await supabaseClient
-        .from("conversations")
-        .select("*")
-        .eq("client_id", currentUser.id)
-        .eq("artist_id", artist.id)
-        .maybeSingle();
-
-    // kalau belum ada -> buat
-    if(!conversation){
-
-        const { data } = await supabaseClient
-            .from("conversations")
-            .insert({
-                client_id: currentUser.id,
-                artist_id: artist.id
-            })
-            .select()
-            .single();
-
-        conversation = data;
-    }
-
-    currentConversation = conversation.id;
-
-    chatName.textContent = artist.display_name;
-
-    chatAvatar.src =
-        artist.profile_image ||
-        "asset/default-profile.png";
-
-    chatStatus.textContent = "Artist";
-
-    otherUser = artist;
-     const id = await getOrCreateConversation();
-    await loadMessages();
-}
-
-
-async function loadMessages(){
-
-    if(!currentConversation) return;
-
-    const { data, error } = await supabaseClient
-        .from("messages")
-        .select("*")
-        .eq("conversation_id", currentConversation)
-        .order("created_at", {
-            ascending: true
-        });
-
-    if(error){
-        console.log(error);
-        return;
-    }
-
-    chatBody.innerHTML = "";
-
-    data.forEach(message=>{
-
-        const mine =
-            message.sender_id === currentUser.id;
-
-        const bubble =
-        document.createElement("div");
-
-        bubble.className =
-            mine ? "my-message" : "their-message";
-
-        bubble.innerHTML = `
-            <div class="message-bubble">
-                ${message.message}
-            </div>
-        `;
-
-        chatBody.appendChild(bubble);
-
-    });
-
-    chatBody.scrollTop =
-        chatBody.scrollHeight;
-
-}
-
-
 async function getOrCreateConversation() {
-
-    if (currentConversation?.id) {
         return currentConversation.id;
     }
 
@@ -339,12 +239,12 @@ messageInput.addEventListener("keypress", (e) => {
 
 async function loadMessages() {
 
-    if(!currentConversation?.id) return;
-
+   if(!currentConversation) return;
+    
     const { data, error } = await supabaseClient
         .from("messages")
         .select("*")
-        .eq("conversation_id", currentConversation.id)
+        .eq("conversation_id", currentConversation)
         .order("created_at");
 
     if(error){
