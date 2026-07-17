@@ -56,8 +56,7 @@ async function initChat(){
 
     if(!user){
 
-        alert("Please login first.");
-
+        alert("Please login first.")
         window.location.href = "index.html";
 
         return;
