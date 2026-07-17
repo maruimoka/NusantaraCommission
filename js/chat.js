@@ -66,6 +66,12 @@ async function initChat(){
 
     currentUser = user;
 
+    console.log(currentUser);
+
+if (artistId) {
+    await openArtistConversation(artistId);
+}
+
     if(conversationId){
 
         currentConversation = conversationId;
@@ -141,5 +147,39 @@ async function loadConversationInfo(){
             "Client";
 
     }
+
+}
+
+async function openArtistConversation(artistId){
+
+    const { data: artist, error } = await supabaseClient
+        .from("artist_profiles")
+        .select(`
+            id,
+            display_name,
+            profile_image,
+            user_id
+        `)
+        .eq("id", artistId)
+        .single();
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
+    currentConversation = artist;
+
+    chatName.textContent =
+        artist.display_name;
+
+    chatAvatar.src =
+        artist.profile_image ||
+        "asset/default-profile.png";
+
+    chatStatus.textContent =
+        "Ready to chat";
 
 }
