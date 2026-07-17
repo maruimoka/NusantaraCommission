@@ -146,10 +146,9 @@ async function loadConversationInfo(){
             "Client";
 
     }
-
+await loadMessages();
 }
 
-await loadMessages();
 
 async function openArtistConversation(artistId){
 
