@@ -40,9 +40,11 @@ let currentUser = null;
 
 let currentConversation = null;
 
+let otherUser = null;
+
 const params = new URLSearchParams(window.location.search);
 
-const artistId = params.get("artist");
+const conversationId = params.get("conversation");
 
 // =========================
 // INIT
@@ -72,6 +74,80 @@ async function initChat(){
 
     currentUser = user;
 
-    console.log(currentUser);
+    if(conversationId){
+
+        currentConversation = conversationId;
+
+        await loadConversationInfo();
+
+    }
+
+}
+
+
+async function loadConversationInfo(){
+
+    const { data: conversation, error } =
+    await supabaseClient
+    .from("conversations")
+    .select(`
+        *,
+        artist:artist_id(
+            id,
+            user_id,
+            display_name,
+            profile_image
+        )
+    `)
+    .eq("id", currentConversation)
+    .single();
+
+    if(error){
+
+        console.log(error);
+        return;
+
+    }
+
+    // Kalau yang login adalah CLIENT
+    if(conversation.client_id === currentUser.id){
+
+        otherUser = conversation.artist;
+
+        chatName.textContent =
+            otherUser.display_name;
+
+        chatAvatar.src =
+            otherUser.profile_image ||
+            "asset/default-profile.png";
+
+        chatStatus.textContent =
+            "Artist";
+
+    }
+
+    // Kalau yang login adalah ARTIST
+    else if(conversation.artist.user_id === currentUser.id){
+
+        const {
+            data: client
+        } = await supabaseClient
+        .from("users")
+        .select("username")
+        .eq("id", conversation.client_id)
+        .single();
+
+        otherUser = client;
+
+        chatName.textContent =
+            client.username;
+
+        chatAvatar.src =
+            "asset/default-profile.png";
+
+        chatStatus.textContent =
+            "Client";
+
+    }
 
 }
