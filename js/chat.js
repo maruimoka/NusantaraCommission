@@ -1,298 +1,179 @@
-
-// =========================
-// ELEMENTS
-// =========================
-
-const conversationList =
-document.getElementById("conversationList");
-
-const chatName =
-document.getElementById("chatName");
-
-const chatAvatar =
-document.getElementById("chatAvatar");
-
-const chatStatus =
-document.getElementById("chatStatus");
-
-const chatBody =
-document.getElementById("chatBody");
-
-const messageInput =
-document.getElementById("messageInput");
-
-const sendBtn =
-document.getElementById("sendBtn");
-
 // =========================
 // GLOBAL
 // =========================
- let currentProfileId = null;
 
-let currentUser = null;
+let currentUser = null;          // users.id
+let currentProfileId = null;     // artist_profiles.id (kalau artist)
 
 let currentConversation = null;
-
 let otherUser = null;
 
 const params = new URLSearchParams(window.location.search);
 
 const conversationId =
-    params.get("conversation");
+params.get("conversation");
 
 console.log("Conversation :", conversationId);
 
-// =========================
-// INIT
-// =========================
+async function initChat() {
 
-document.addEventListener("DOMContentLoaded", async () => {
-
-    await initChat();
-
-});
-
-async function initChat(){
     const {
-        data:{user}
+        data: { user }
     } = await supabaseClient.auth.getUser();
 
-    if(!user){
+    if (!user) {
 
-        alert("Please login first.")
+        alert("Please login first.");
         window.location.href = "index.html";
-
         return;
 
     }
 
     currentUser = user;
 
+    // cek apakah user ini artist
     const { data: profile } = await supabaseClient
-    .from("artist_profiles")
-    .select("id")
-    .eq("user_id", currentUser.id)
-    .single();
-
-if(profile){
-
-    currentProfileId = profile.id;
-
-}
-else{
-
-    currentProfileId = null;
-
-}
-
-    
-console.log("User ID :", currentUser.id);
-console.log("Profile ID :", currentProfileId);
-
-    console.log(currentUser);
-    await loadConversationList();
-
-if (conversationId) {
-
-    currentConversation = conversationId;
-
-    await loadConversationInfo();
-
-}
-
-}
-
-
-async function loadConversationInfo(){
-
-    const { data: conversation, error } =
-    await supabaseClient
-    .from("conversations")
-    .select(`
-        *,
-        artist:artist_id(
-            id,
-            user_id,
-            display_name,
-            profile_image
-        )
-    `)
-    .eq("id", currentConversation)
-    .single();
-
-    if(error){
-
-        console.log(error);
-        return;
-
-    }
-
-    // Kalau yang login adalah CLIENT
-    if(conversation.client_id ===  currentUser.id){
-
-        otherUser = conversation.artist;
-
-        chatName.textContent =
-            otherUser.display_name;
-
-        chatAvatar.src =
-            otherUser.profile_image ||
-            "asset/default-profile.png";
-
-        chatStatus.textContent =
-            "Artist";
-
-    }
-
-    // Kalau yang login adalah ARTIST
-    else if(conversation.artist_id === currentProfileId){
-
-        const {
-            data: client
-        } = await supabaseClient
-        .from("users")
-        .select("username")
-        .eq("id", conversation.client_id)
-        .single();
-
-        otherUser = client;
-
-        chatName.textContent =
-            client.username;
-
-        chatAvatar.src =
-            "asset/default-profile.png";
-
-        chatStatus.textContent =
-            "Client";
-
-    }
-await loadMessages();
-}
-
-async function loadConversationList() {
-
-    const { data: artistProfile } = await supabaseClient
         .from("artist_profiles")
         .select("id")
         .eq("user_id", currentUser.id)
         .maybeSingle();
 
-    console.log("Artist Profile :", artistProfile);
+    currentProfileId = profile?.id ?? null;
 
-    const { data, error } = await supabaseClient
-        .from("conversations")
-        .select("*")
-        .eq("artist_id", artistProfile.id);
+    console.log("User ID :", currentUser.id);
+    console.log("Artist Profile ID :", currentProfileId);
 
-    console.log("Conversation Result :", data);
-  console.log("Conversation Error :", error);
- conversations.forEach(conversation => {
-    console.log("Conversation :", conversation);
-  console.log("Client :", conversation.client);
-    console.log("Artist :", conversation.artist);
-});
+    await loadConversationList();
+
+    if (conversationId) {
+
+        currentConversation = conversationId;
+
+        await loadConversationInfo();
+
+    }
 
 }
 
-async function getOrCreateConversation() {
-        return currentConversation;
-    }
+async function loadConversationList() {
 
-async function sendMessage() {
+    conversationList.innerHTML = "";
 
-    const text = messageInput.value.trim();
+    let conversations = [];
 
-    if (!text) return;
+    // =========================
+    // LOGIN SEBAGAI ARTIST
+    // =========================
+    if (currentProfileId) {
 
-    const conversationId =
-        await getOrCreateConversation();
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .select(`
+                *,
+                client:client_id(
+                    id,
+                    username
+                )
+            `)
+            .eq("artist_id", currentProfileId)
+            .order("created_at", {
+                ascending: false
+            });
 
-    if (!conversationId) return;
+        if (error) {
+            console.log(error);
+            return;
+        }
 
-    const { error } = await supabaseClient
-        .from("messages")
-        .insert({
-
-            conversation_id: conversationId,
-
-            sender_id: currentUser.id,
-
-            message: text
-
-        });
-
-    if (error) {
-
-        console.log(error);
-
-        return;
-
-    }
-
-    messageInput.value = "";
-
-    loadMessages();
-
-}
-
-
-sendBtn.addEventListener("click", sendMessage);
-
-messageInput.addEventListener("keypress", (e) => {
-
-    if(e.key === "Enter"){
-
-        sendMessage();
+        conversations = data;
 
     }
 
-});
+    // =========================
+    // LOGIN SEBAGAI CLIENT
+    // =========================
+    else {
 
-async function loadMessages() {
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .select(`
+                *,
+                artist:artist_id(
+                    id,
+                    display_name,
+                    profile_image
+                )
+            `)
+            .eq("client_id", currentUser.id)
+            .order("created_at", {
+                ascending: false
+            });
 
-   if(!currentConversation) return;
-    
-    const { data, error } = await supabaseClient
-        .from("messages")
-        .select("*")
-        .eq("conversation_id", currentConversation)
-        .order("created_at");
+        if (error) {
+            console.log(error);
+            return;
+        }
 
-    if(error){
-
-        console.log(error);
-
-        return;
+        conversations = data;
 
     }
-    chatBody.innerHTML = "";
 
-    data.forEach(message => {
+    console.log("Conversation List :", conversations);
 
-        const bubble =
-            document.createElement("div");
+    conversations.forEach(conversation => {
 
-        bubble.className =
-            message.sender_id === currentUser.id
-            ? "my-message"
-            : "their-message";
+        const item = document.createElement("div");
+        item.className = "conversation-item";
 
-        bubble.innerHTML = `
-            <div class="bubble">
-                ${message.message}
+        let name = "";
+        let avatar = "asset/default-profile.png";
+
+        // =========================
+        // Artist melihat Client
+        // =========================
+        if (currentProfileId) {
+
+            name = conversation.client?.username || "Unknown Client";
+
+        }
+
+        // =========================
+        // Client melihat Artist
+        // =========================
+        else {
+
+            name = conversation.artist?.display_name || "Unknown Artist";
+
+            avatar =
+                conversation.artist?.profile_image ||
+                avatar;
+
+        }
+
+        item.innerHTML = `
+            <img
+                class="conversation-avatar"
+                src="${avatar}">
+
+            <div class="conversation-info">
+
+                <h4>${name}</h4>
+
+                <p>${conversation.last_message || "Start chatting..."}</p>
+
             </div>
         `;
 
-        chatBody.appendChild(bubble);
+        item.onclick = async () => {
+
+            currentConversation = conversation.id;
+
+            await loadConversationInfo();
+
+        };
+
+        conversationList.appendChild(item);
 
     });
 
-    chatBody.scrollTop =
-        chatBody.scrollHeight;
-
 }
-
-
-
-
