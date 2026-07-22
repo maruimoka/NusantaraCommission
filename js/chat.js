@@ -180,6 +180,70 @@ async function loadConversationList() {
 
 }
 
+
+async function loadConversationInfo() {
+
+    if (!currentConversation) return;
+
+    const { data: conversation, error } = await supabaseClient
+        .from("conversations")
+        .select(`
+            *,
+            artist:artist_id(
+                id,
+                user_id,
+                display_name,
+                profile_image
+            )
+        `)
+        .eq("id", currentConversation)
+        .single();
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    // =========================
+    // LOGIN SEBAGAI CLIENT
+    // =========================
+    if (conversation.client_id === currentUser.id) {
+
+        chatName.textContent =
+            conversation.artist.display_name;
+
+        chatAvatar.src =
+            conversation.artist.profile_image ||
+            "asset/default-profile.png";
+
+        chatStatus.textContent = "Artist";
+    }
+
+    // =========================
+    // LOGIN SEBAGAI ARTIST
+    // =========================
+    else {
+
+        const { data: client } = await supabaseClient
+            .from("users")
+            .select("username")
+            .eq("id", conversation.client_id)
+            .single();
+
+        chatName.textContent =
+            client.username;
+
+        chatAvatar.src =
+            "asset/default-profile.png";
+
+        chatStatus.textContent =
+            "Client";
+    }
+
+    await loadMessages();
+
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     await initChat();
