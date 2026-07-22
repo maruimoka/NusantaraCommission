@@ -153,63 +153,125 @@ async function loadConversationList() {
 
     conversationList.innerHTML = "";
 
-    // cek apakah user adalah artist
+    // Cek apakah user adalah artist
     const { data: artistProfile } = await supabaseClient
         .from("artist_profiles")
         .select("id")
         .eq("user_id", currentUser.id)
         .maybeSingle();
-    console.log("Artist Profile", artistProfile);
 
-    let query = supabaseClient
-        .from("conversations")
-        .select(`
-            *,
-            artist:artist_id(
-                id,
-                display_name,
-                profile_image,
-                user_id
-            )
-        `)
-        .order("created_at", {
-            ascending: false
-        });
+    let conversations = [];
 
-    // kalau artist
+    // =========================
+    // LOGIN SEBAGAI ARTIST
+    // =========================
     if (artistProfile) {
 
-        query = query.eq(
-            "artist_id",
-            artistProfile.id
-        );
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .select(`
+                *,
+                client:client_id(
+                    id,
+                    username
+                )
+            `)
+            .eq("artist_id", artistProfile.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        conversations = data;
 
     }
 
-    // kalau client
+    // =========================
+    // LOGIN SEBAGAI CLIENT
+    // =========================
     else {
 
-        query = query.eq(
-            "client_id",
-            currentUser.id
-        );
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .select(`
+                *,
+                artist:artist_id(
+                    id,
+                    display_name,
+                    profile_image,
+                    user_id
+                )
+            `)
+            .eq("client_id", currentUser.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        conversations = data;
 
     }
 
-    const { data: conversations, error } =
-        await query;
-
     console.log(conversations);
 
-    if (error) {
+    // Render sidebar
+    conversations.forEach(conversation => {
 
-        console.log(error);
+        const item = document.createElement("div");
+        item.className = "conversation-item";
 
-        return;
+        let name = "";
+        let avatar = "asset/default-profile.png";
 
-    }
+        if (artistProfile) {
 
-    console.log(conversations);
+            // Artist melihat client
+            name = conversation.client.username;
+
+        } else {
+
+            // Client melihat artist
+            name = conversation.artist.display_name;
+
+            avatar =
+                conversation.artist.profile_image ||
+                avatar;
+
+        }
+
+        item.innerHTML = `
+            <img
+                class="conversation-avatar"
+                src="${avatar}">
+
+            <div class="conversation-info">
+
+                <h4>${name}</h4>
+
+                <p>${conversation.last_message || "Start chatting..."}</p>
+
+            </div>
+        `;
+
+        item.onclick = async () => {
+
+            currentConversation = conversation.id;
+
+            await loadConversationInfo();
+
+        };
+
+        conversationList.appendChild(item);
+
+    });
 
 }
 
