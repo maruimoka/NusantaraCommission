@@ -128,7 +128,7 @@ async function loadConversationInfo(){
     }
 
     // Kalau yang login adalah CLIENT
-    if(conversation.client_id === currentProfileId){
+    if(conversation.client_id ===  currentUser.id){
 
         otherUser = conversation.artist;
 
@@ -233,7 +233,7 @@ async function loadConversationList() {
                     user_id
                 )
             `)
-            .eq("client_id", currentProfileId)
+            .eq("client_id", currentUser.id)
             .order("created_at", {
                 ascending: false
             });
@@ -382,7 +382,7 @@ async function loadMessages() {
             document.createElement("div");
 
         bubble.className =
-            message.sender_id === currentProfileId
+            message.sender_id === currentUser.id
             ? "my-message"
             : "their-message";
 
