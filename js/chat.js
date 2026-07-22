@@ -159,6 +159,7 @@ async function loadConversationList() {
         .select("id")
         .eq("user_id", currentUser.id)
         .maybeSingle();
+    console.log("Artist Profile", artistProfile);
 
     let query = supabaseClient
         .from("conversations")
