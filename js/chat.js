@@ -27,6 +27,7 @@ document.getElementById("sendBtn");
 // =========================
 // GLOBAL
 // =========================
+ let currentProfileId = null;
 
 let currentUser = null;
 
@@ -52,8 +53,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function initChat(){
-    let currentProfileId = null;
-
     const {
         data:{user}
     } = await supabaseClient.auth.getUser();
@@ -72,11 +71,22 @@ async function initChat(){
     const { data: profile } = await supabaseClient
     .from("artist_profiles")
     .select("id")
-    .eq("user_id", currentProfileId)
+    .eq("user_id", currentUser.id)
     .single();
 
-currentProfileId = profile.id;
+if(profile){
 
+    currentProfileId = profile.id;
+
+}
+else{
+
+    currentProfileId = null;
+
+}
+
+    
+console.log("User ID :", currentUser.id);
 console.log("Profile ID :", currentProfileId);
 
     console.log(currentUser);
@@ -135,7 +145,7 @@ async function loadConversationInfo(){
     }
 
     // Kalau yang login adalah ARTIST
-    else if(conversation.artist.user_id === currentProfileId){
+    else if(conversation.artist_id === currentProfileId){
 
         const {
             data: client
@@ -313,7 +323,7 @@ async function sendMessage() {
 
             conversation_id: conversationId,
 
-            sender_id: currentProfileId,
+            sender_id: currentUser.id,
 
             message: text
 
