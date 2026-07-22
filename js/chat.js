@@ -186,7 +186,12 @@ async function loadConversationList() {
         .eq("artist_id", artistProfile.id);
 
     console.log("Conversation Result :", data);
-    console.log("Conversation Error :", error);
+  console.log("Conversation Error :", error);
+ conversations.forEach(conversation => {
+    console.log("Conversation :", conversation);
+  console.log("Client :", conversation.client);
+    console.log("Artist :", conversation.artist);
+});
 
 }
 
@@ -261,7 +266,6 @@ async function loadMessages() {
         return;
 
     }
-
     chatBody.innerHTML = "";
 
     data.forEach(message => {
