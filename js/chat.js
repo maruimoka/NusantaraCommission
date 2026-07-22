@@ -115,8 +115,8 @@ async function loadConversationList() {
 
     console.log("Conversation List :", conversations);
 
-    conversations.forEach(conversation => {
-
+    for (const conversation of conversations) {
+         
         const item = document.createElement("div");
         item.className = "conversation-item";
 
@@ -176,7 +176,7 @@ async function loadConversationList() {
 
         conversationList.appendChild(item);
 
-    });
+    }
 
 }
 
