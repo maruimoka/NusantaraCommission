@@ -199,6 +199,8 @@ async function loadConversationList() {
     const { data: conversations, error } =
         await query;
 
+    console.log(conversations);
+
     if (error) {
 
         console.log(error);
