@@ -244,6 +244,50 @@ async function loadConversationInfo() {
 
 }
 
+async function loadMessages() {
+
+    if (!currentConversation) return;
+
+    const { data: messages, error } = await supabaseClient
+        .from("messages")
+        .select("*")
+        .eq("conversation_id", currentConversation)
+        .order("created_at", {
+            ascending: true
+        });
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    console.log("Messages :", messages);
+
+    chatBody.innerHTML = "";
+
+    messages.forEach(message => {
+
+        const bubble = document.createElement("div");
+
+        bubble.className =
+            message.sender_id === currentUser.id
+                ? "my-message"
+                : "their-message";
+
+        bubble.innerHTML = `
+            <div class="bubble">
+                ${message.message}
+            </div>
+        `;
+
+        chatBody.appendChild(bubble);
+
+    });
+
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     await initChat();
