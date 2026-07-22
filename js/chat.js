@@ -288,6 +288,49 @@ async function loadMessages() {
 
 }
 
+async function sendMessage() {
+
+    const text = messageInput.value.trim();
+
+    if (!text || !currentConversation) return;
+
+    const { error } = await supabaseClient
+        .from("messages")
+        .insert({
+            conversation_id: currentConversation,
+            sender_id: currentUser.id,
+            message: text
+        });
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    // update preview conversation
+    await supabaseClient
+        .from("conversations")
+        .update({
+            last_message: text,
+            last_message_at: new Date().toISOString()
+        })
+        .eq("id", currentConversation);
+
+    messageInput.value = "";
+
+    await loadMessages();
+}
+
+sendBtn.addEventListener("click", sendMessage);
+
+messageInput.addEventListener("keypress", (e) => {
+
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     await initChat();
