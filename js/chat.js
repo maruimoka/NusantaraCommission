@@ -179,3 +179,9 @@ async function loadConversationList() {
     });
 
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await initChat();
+
+});
