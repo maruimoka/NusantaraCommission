@@ -28,7 +28,6 @@ async function initChat() {
         alert("Please login first.");
         window.location.href = "index.html";
         return;
-
     }
 
     currentUser = user;
@@ -69,18 +68,12 @@ async function loadConversationList() {
     if (currentProfileId) {
 
         const { data, error } = await supabaseClient
-            .from("conversations")
-            .select(`
-                *,
-                client:client_id(
-                    id,
-                    username
-                )
-            `)
-            .eq("artist_id", currentProfileId)
-            .order("created_at", {
-                ascending: false
-            });
+           .from("conversations")
+    .select("*")
+    .eq("artist_id", currentProfileId)
+    .order("created_at", {
+        ascending: false
+    });
 
         if (error) {
             console.log(error);
@@ -135,7 +128,15 @@ async function loadConversationList() {
         // =========================
         if (currentProfileId) {
 
-            name = conversation.client?.username || "Unknown Client";
+            const { data: client } = await supabaseClient
+        .from("users")
+        .select("username")
+        .eq("id", conversation.client_id)
+        .single();
+
+    console.log("Client :", client);
+
+    name = client?.username || "Unknown Client";
 
         }
 
@@ -171,7 +172,6 @@ async function loadConversationList() {
             currentConversation = conversation.id;
 
             await loadConversationInfo();
-
         };
 
         conversationList.appendChild(item);
