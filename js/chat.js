@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function initChat(){
+    let currentProfileId = null;
 
     const {
         data:{user}
@@ -67,6 +68,16 @@ async function initChat(){
     }
 
     currentUser = user;
+
+    const { data: profile } = await supabaseClient
+    .from("artist_profiles")
+    .select("id")
+    .eq("user_id", currentProfileId)
+    .single();
+
+currentProfileId = profile.id;
+
+console.log("Profile ID :", currentProfileId);
 
     console.log(currentUser);
     await loadConversationList();
@@ -107,7 +118,7 @@ async function loadConversationInfo(){
     }
 
     // Kalau yang login adalah CLIENT
-    if(conversation.client_id === currentUser.id){
+    if(conversation.client_id === currentProfileId){
 
         otherUser = conversation.artist;
 
@@ -124,7 +135,7 @@ async function loadConversationInfo(){
     }
 
     // Kalau yang login adalah ARTIST
-    else if(conversation.artist.user_id === currentUser.id){
+    else if(conversation.artist.user_id === currentProfileId){
 
         const {
             data: client
@@ -157,7 +168,7 @@ async function loadConversationList() {
     const { data: artistProfile } = await supabaseClient
         .from("artist_profiles")
         .select("id")
-        .eq("user_id", currentUser.id)
+        .eq("user_id", currentProfileId)
         .maybeSingle();
 
     let conversations = [];
@@ -169,13 +180,19 @@ async function loadConversationList() {
 
         const { data, error } = await supabaseClient
             .from("conversations")
-            .select(`
-                *,
-                client:client_id(
-                    id,
-                    username
-                )
-            `)
+           .select(`
+    *,
+    client:client_id(
+        id,
+        display_name,
+        profile_image
+    ),
+    artist:artist_id(
+        id,
+        display_name,
+        profile_image
+    )
+`)
             .eq("artist_id", artistProfile.id)
             .order("created_at", {
                 ascending: false
@@ -206,7 +223,7 @@ async function loadConversationList() {
                     user_id
                 )
             `)
-            .eq("client_id", currentUser.id)
+            .eq("client_id", currentProfileId)
             .order("created_at", {
                 ascending: false
             });
@@ -296,7 +313,7 @@ async function sendMessage() {
 
             conversation_id: conversationId,
 
-            sender_id: currentUser.id,
+            sender_id: currentProfileId,
 
             message: text
 
@@ -355,7 +372,7 @@ async function loadMessages() {
             document.createElement("div");
 
         bubble.className =
-            message.sender_id === currentUser.id
+            message.sender_id === currentProfileId
             ? "my-message"
             : "their-message";
 
