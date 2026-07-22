@@ -17,6 +17,8 @@ console.log("Conversation :", conversationId);
 
 async function initChat() {
 
+     console.log("INIT CHAT");
+
     const {
         data: { user }
     } = await supabaseClient.auth.getUser();
