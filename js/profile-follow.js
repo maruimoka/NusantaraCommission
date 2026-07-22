@@ -454,15 +454,15 @@ chatBtn?.addEventListener("click", async () => {
 
 });
 
-
 async function openConversation(clientId, artistId) {
 
-    // cek apakah conversation sudah ada
+    // Cari conversation dari kedua arah
     let { data: conversation, error } = await supabaseClient
         .from("conversations")
         .select("id")
-        .eq("client_id", clientId)
-        .eq("artist_id", artistId)
+        .or(
+            `and(client_id.eq.${clientId},artist_id.eq.${artistId}),and(client_id.eq.${artistId},artist_id.eq.${clientId})`
+        )
         .maybeSingle();
 
     if (error) {
@@ -470,7 +470,7 @@ async function openConversation(clientId, artistId) {
         return;
     }
 
-    // kalau belum ada, buat baru
+    // Kalau belum ada baru buat
     if (!conversation) {
 
         const { data, error: insertError } = await supabaseClient
