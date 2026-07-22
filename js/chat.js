@@ -60,110 +60,65 @@ async function loadConversationList() {
 
     conversationList.innerHTML = "";
 
-    let conversations = [];
+    const { data: conversations, error } = await supabaseClient
+        .from("conversations")
+        .select(`
+            *,
+            artist:artist_id(
+                id,
+                display_name,
+                profile_image
+            ),
+            client:client_id(
+                id,
+                display_name,
+                profile_image
+            )
+        `)
+        .or(
+            `artist_id.eq.${currentProfileId},client_id.eq.${currentProfileId}`
+        )
+        .order("last_message_at", {
+            ascending: false
+        });
 
-    // =========================
-    // LOGIN SEBAGAI ARTIST
-    // =========================
-    if (currentProfileId) {
-
-        const { data, error } = await supabaseClient
-           .from("conversations")
-    .select("*")
-    .eq("artist_id", currentProfileId)
-    .order("created_at", {
-        ascending: false
-    });
-
-        if (error) {
-            console.log(error);
-            return;
-        }
-
-        conversations = data;
-
-    }
-
-    // =========================
-    // LOGIN SEBAGAI CLIENT
-    // =========================
-    else {
-
-        const { data, error } = await supabaseClient
-            .from("conversations")
-            .select(`
-                *,
-                artist:artist_id(
-                    id,
-                    display_name,
-                    profile_image
-                )
-            `)
-            .eq("client_id", currentUser.id)
-            .order("created_at", {
-                ascending: false
-            });
-
-        if (error) {
-            console.log(error);
-            return;
-        }
-
-        conversations = data;
-
+    if (error) {
+        console.log(error);
+        return;
     }
 
     console.log("Conversation List :", conversations);
 
     for (const conversation of conversations) {
-         
+
         const item = document.createElement("div");
         item.className = "conversation-item";
 
-        let name = "";
-        let avatar = "asset/default-profile.png";
+        let target;
 
-        // =========================
-        // Artist melihat Client
-        // =========================
-        if (currentProfileId) {
+        if (conversation.artist_id === currentProfileId) {
 
-            const { data: client } = await supabaseClient
-        .from("users")
-        .select("username")
-        .eq("id", conversation.client_id)
-        .single();
+            target = conversation.client;
 
-    console.log("Client :", client);
+        } else {
 
-    name = client?.username || "Unknown Client";
+            target = conversation.artist;
 
         }
 
-        // =========================
-        // Client melihat Artist
-        // =========================
-        else {
+        const name =
+            target?.display_name || "Unknown User";
 
-            name = conversation.artist?.display_name || "Unknown Artist";
-
-            avatar =
-                conversation.artist?.profile_image ||
-                avatar;
-
-        }
+        const avatar =
+            target?.profile_image ||
+            "asset/default-profile.png";
 
         item.innerHTML = `
-            <img
-                class="conversation-avatar"
-                src="${avatar}">
+            <img class="conversation-avatar" src="${avatar}">
 
             <div class="conversation-info">
-
                 <h4>${name}</h4>
-
                 <p>${conversation.last_message || "Start chatting..."}</p>
-
             </div>
         `;
 
@@ -172,25 +127,20 @@ async function loadConversationList() {
             currentConversation = conversation.id;
 
             await loadConversationInfo();
+
         };
 
         conversationList.appendChild(item);
 
     }
 
-     if(
+    if (!currentConversation && conversations.length > 0) {
 
-    !currentConversation &&
+        currentConversation = conversations[0].id;
 
-    conversations.length > 0
+        await loadConversationInfo();
 
-){
-
-    currentConversation = conversations[0].id;
-
-    await loadConversationInfo();
-
-}
+    }
 
 }
 
@@ -202,14 +152,20 @@ async function loadConversationInfo() {
     const { data: conversation, error } = await supabaseClient
         .from("conversations")
         .select(`
-            *,
-            artist:artist_id(
-                id,
-                user_id,
-                display_name,
-                profile_image
-            )
-        `)
+    *,
+    artist:artist_id(
+        id,
+        user_id,
+        display_name,
+        profile_image
+    ),
+    client:client_id(
+        id,
+        user_id,
+        display_name,
+        profile_image
+    )
+`)
         .eq("id", currentConversation)
         .single();
 
@@ -218,41 +174,26 @@ async function loadConversationInfo() {
         return;
     }
 
-    // =========================
-    // LOGIN SEBAGAI CLIENT
-    // =========================
-    if (conversation.client_id === currentUser.id) {
+   let target;
 
-        chatName.textContent =
-            conversation.artist.display_name;
+if (conversation.artist_id === currentProfileId) {
 
-        chatAvatar.src =
-            conversation.artist.profile_image ||
-            "asset/default-profile.png";
+    target = conversation.client;
+    chatStatus.textContent = "Client";
 
-        chatStatus.textContent = "Artist";
-    }
+} else {
 
-    // =========================
-    // LOGIN SEBAGAI ARTIST
-    // =========================
-    else {
+    target = conversation.artist;
+    chatStatus.textContent = "Artist";
 
-        const { data: client } = await supabaseClient
-            .from("users")
-            .select("username")
-            .eq("id", conversation.client_id)
-            .single();
+}
 
-        chatName.textContent =
-            client.username;
-
-        chatAvatar.src =
-            "asset/default-profile.png";
-
-        chatStatus.textContent =
-            "Client";
-    }
+chatName.textContent = target?.display_name || "Unknown User";
+     
+chatAvatar.src =
+    target?.profile_image ||
+    "asset/default-profile.png";
+ 
 
     await loadMessages();
 
@@ -385,5 +326,5 @@ supabaseClient
 
     }
 )
-
 .subscribe();
+
