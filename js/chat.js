@@ -150,42 +150,8 @@ await loadMessages();
 
 
 async function getOrCreateConversation() {
-        return currentConversation.id;
+        return currentConversation;
     }
-
-    const { data: existing } = await supabaseClient
-        .from("conversations")
-        .select("*")
-        .eq("client_id", currentUser.id)
-        .eq("artist_id", artistId)
-        .maybeSingle();
-
-    if (existing) {
-
-        currentConversation = existing;
-
-        return existing.id;
-    }
-
-    const { data: conversation, error } = await supabaseClient
-        .from("conversations")
-        .insert({
-            client_id: currentUser.id,
-            artist_id: artistId
-        })
-        .select()
-        .single();
-
-    if (error) {
-        console.log(error);
-        return null;
-    }
-
-    currentConversation = conversation;
-
-    return conversation.id;
-}
-
 
 async function sendMessage() {
 
