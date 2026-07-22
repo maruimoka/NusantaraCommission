@@ -69,6 +69,7 @@ async function initChat(){
     currentUser = user;
 
     console.log(currentUser);
+    await loadConversationList();
 
 if (conversationId) {
 
@@ -148,6 +149,66 @@ async function loadConversationInfo(){
 await loadMessages();
 }
 
+async function loadConversationList() {
+
+    conversationList.innerHTML = "";
+
+    // cek apakah user adalah artist
+    const { data: artistProfile } = await supabaseClient
+        .from("artist_profiles")
+        .select("id")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+
+    let query = supabaseClient
+        .from("conversations")
+        .select(`
+            *,
+            artist:artist_id(
+                id,
+                display_name,
+                profile_image,
+                user_id
+            )
+        `)
+        .order("created_at", {
+            ascending: false
+        });
+
+    // kalau artist
+    if (artistProfile) {
+
+        query = query.eq(
+            "artist_id",
+            artistProfile.id
+        );
+
+    }
+
+    // kalau client
+    else {
+
+        query = query.eq(
+            "client_id",
+            currentUser.id
+        );
+
+    }
+
+    const { data: conversations, error } =
+        await query;
+
+    if (error) {
+
+        console.log(error);
+
+        return;
+
+    }
+
+    console.log(conversations);
+
+}
 
 async function getOrCreateConversation() {
         return currentConversation;
