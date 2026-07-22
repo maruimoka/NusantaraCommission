@@ -178,6 +178,20 @@ async function loadConversationList() {
 
     }
 
+     if(
+
+    !currentConversation &&
+
+    conversations.length > 0
+
+){
+
+    currentConversation = conversations[0].id;
+
+    await loadConversationInfo();
+
+}
+
 }
 
 
@@ -295,30 +309,40 @@ async function sendMessage() {
     if (!text || !currentConversation) return;
 
     const { error } = await supabaseClient
-        .from("messages")
-        .insert({
-            conversation_id: currentConversation,
-            sender_id: currentUser.id,
-            message: text
-        });
+    .from("messages")
+    .insert({
 
-    if (error) {
-        console.log(error);
-        return;
-    }
+        conversation_id: currentConversation,
 
-    // update preview conversation
-    await supabaseClient
-        .from("conversations")
-        .update({
-            last_message: text,
-            last_message_at: new Date().toISOString()
-        })
-        .eq("id", currentConversation);
+        sender_id: currentUser.id,
 
-    messageInput.value = "";
+        message: text
 
-    await loadMessages();
+    });
+
+if (error) {
+
+    console.log(error);
+
+    return;
+
+}
+
+// UPDATE LAST MESSAGE
+await supabaseClient
+.from("conversations")
+.update({
+
+    last_message: text,
+
+    last_message_at: new Date().toISOString()
+
+})
+.eq("id", currentConversation);
+
+messageInput.value = "";
+
+await loadMessages();
 }
 
 sendBtn.addEventListener("click", sendMessage);
@@ -336,3 +360,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     await initChat();
 
 });
+
+supabaseClient
+.channel("messages")
+
+.on(
+    "postgres_changes",
+    {
+        event: "INSERT",
+        schema: "public",
+        table: "messages"
+    },
+    payload => {
+
+        if(
+            payload.new.conversation_id === currentConversation
+        ){
+
+            loadMessages();
+
+        }
+
+        loadConversationList();
+
+    }
+)
+
+.subscribe();
