@@ -418,7 +418,6 @@ closePreview.addEventListener("click", () => {
 
 });
 
-
 chatBtn?.addEventListener("click", async () => {
 
     const {
@@ -430,15 +429,31 @@ chatBtn?.addEventListener("click", async () => {
         return;
     }
 
-    // Jangan bisa chat dengan diri sendiri
+    // Jangan chat dengan diri sendiri
     if (user.id === artistUserId) {
         alert("You can't chat with yourself.");
         return;
     }
 
-    await openConversation(user.id, artistId);
+    // Ambil artist_profiles.id milik user login
+    const { data: myProfile, error } = await supabaseClient
+        .from("artist_profiles")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+
+    if (error) {
+        console.log(error);
+        return;
+    }
+
+    await openConversation(
+        myProfile.id,
+        artistId
+    );
 
 });
+
 
 async function openConversation(clientId, artistId) {
 
