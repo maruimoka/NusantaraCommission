@@ -815,11 +815,12 @@ color:#777;
 }
 
 .profile-action{
-    margin-left:auto;
-
     display:flex;
     flex-direction:column;
     gap:20px;
+
+    margin-left:auto;
+    align-self:center;
 }
 
 #followBtn,
