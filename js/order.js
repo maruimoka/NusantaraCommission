@@ -265,18 +265,34 @@ await supabaseClient
 
 }
 
-    const { error: paymentError } =
+// =============================
+// AMBIL NAMA CLIENT
+// =============================
+const { data: clientProfile } =
 await supabaseClient
+.from("artist_profiles")
+.select("display_name")
+.eq("user_id", user.id)
+.single();
 
+// =============================
+// SIMPAN PAYMENT
+// =============================
+const { error: paymentError } =
+await supabaseClient
 .from("payment_confirmations")
-
 .insert({
 
     commission_id: commission.id,
 
-    payment_method: "Bank Transfer",
+    client_id: user.id,
 
-    proof_url: proofUrl,
+    sender_name: clientProfile.display_name,
+    transfer_amount: selectedArtwork.price,
+
+    transfer_date: new Date().toISOString().split("T")[0],
+
+    proof_image: proofUrl,
 
     status: "Pending"
 
