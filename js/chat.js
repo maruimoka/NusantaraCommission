@@ -193,7 +193,18 @@ chatName.textContent = target?.display_name || "Unknown User";
 chatAvatar.src =
     target?.profile_image ||
     "asset/default-profile.png";
- 
+
+     // =========================
+// VIEW PROFILE BUTTON
+// =========================
+
+viewProfileBtn.onclick = () => {
+
+    if (!target) return;
+
+    window.location.href =
+        `profile-follow.html?id=${target.user_id}`;
+     };
 
     await loadMessages();
 
