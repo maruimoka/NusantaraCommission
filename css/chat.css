@@ -1,8 +1,3 @@
-html,
-body{
-    height:100%;
-    overflow:hidden;
-}
 
 /* ===========================
    CHAT PAGE
@@ -21,9 +16,11 @@ body{
 .chat-container{
     display:flex;
 
-    height:calc(100vh - 90px);
+    width:100%;
 
-    overflow:hidden;
+    margin-top:130px;      /* sesuaikan tinggi navbar */
+
+    height:calc(100vh - 130px);
 }
 /* ===========================
    SIDEBAR
@@ -434,7 +431,7 @@ body{
 
     border-radius:18px;
 
-    background:#5b67ff;
+    background:#FF3131;
 
     color:white;
 
