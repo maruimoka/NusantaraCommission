@@ -55,9 +55,12 @@ if (user) {
             id,
             display_name,
             profile_image,
-            bio
-        )
-    `)
+            bio,
+        bank_name,
+        account_holder,
+        account_number
+    )
+`)
         .order("created_at",{
         ascending:false
     });
