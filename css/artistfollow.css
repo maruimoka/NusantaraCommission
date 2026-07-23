@@ -814,29 +814,32 @@ color:#777;
     margin-top:75px;
 }
 
-.chat-btn{
+.profile-action{
+    display:flex;
+    align-items:center;
+    gap:30px;
+    margin-top:30px;
+}
 
-    width:220px;
-    height:65px;
+.chatBtn{
+    width:260px;
+    height:82px;
 
     border:none;
-    border-radius:40px;
+    border-radius:25px;
 
-    background:#4B6BFB;
-    color:white;
+    background:#FF3131;
+    color:#fff;
 
-    font-size:22px;
+    font-size:28px;
     font-weight:700;
 
     cursor:pointer;
     transition:.25s;
-
 }
 
-.chat-btn:hover{
-
-    transform:translateY(-3px);
-
+.chatBtn:hover{
+    background:#e62b2b;
 }
 
 .ordertrack a,
