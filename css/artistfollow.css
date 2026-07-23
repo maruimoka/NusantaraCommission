@@ -292,7 +292,8 @@ color:#777;
 
 }
 
-.ordertrack{
+.ordertrack,
+.analytics{
 
     margin-top:75px;
 
@@ -318,7 +319,8 @@ color:#777;
 
 }
 
-.ordertrack:hover{
+.ordertrack:hover,
+.analytics:hover{
 
     transform:translateY(-3px);
 
@@ -835,4 +837,40 @@ color:#777;
 
     transform:translateY(-3px);
 
+}
+
+.ordertrack a,
+.analytics a{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    width:100%;
+    height:100%;
+
+    text-decoration:none;
+    color:inherit;
+}
+
+.profile-bottom{
+
+    display:flex;
+
+    align-items:center;
+
+    margin-top:25px;
+
+}
+
+.follow-stats{
+    margin-right:auto;
+}
+
+.ordertrack{
+    margin-left:40px;
+}
+
+.analytics{
+    margin-left:15px;
 }
