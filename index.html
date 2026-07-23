@@ -449,6 +449,87 @@
     </div>
 
 </div>
+
+<!-- ========================= -->
+<!-- PAYMENT MODAL -->
+<!-- ========================= -->
+
+<div id="paymentModal" class="modal">
+
+    <div class="payment-box">
+
+        <span
+            id="closePayment"
+            class="close-btn">
+
+            &times;
+
+        </span>
+
+        <h2>PAYMENT</h2>
+
+        <div class="payment-info">
+
+            <label>Bank</label>
+
+            <input
+                id="paymentBank"
+                type="text"
+                readonly>
+
+            <label>Account Name</label>
+
+            <input
+                id="paymentAccountName"
+                type="text"
+                readonly>
+
+            <label>Account Number</label>
+
+            <input
+                id="paymentAccountNumber"
+                type="text"
+                readonly>
+
+            <label>Total Payment</label>
+
+            <input
+                id="paymentAmount"
+                type="text"
+                readonly>
+
+        </div>
+
+        <label>
+
+            Upload Payment Proof
+
+        </label>
+
+        <label class="upload-payment-btn">
+
+            + Upload Image
+
+            <input
+                type="file"
+                id="paymentProof"
+                accept="image/*"
+                hidden>
+
+        </label>
+
+        <div id="paymentFileName"></div>
+
+        <button
+            id="confirmPaymentBtn">
+
+            CONFIRM PAYMENT
+
+        </button>
+
+    </div>
+
+</div>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
