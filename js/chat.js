@@ -198,13 +198,12 @@ chatAvatar.src =
 // VIEW PROFILE BUTTON
 // =========================
 
+const viewProfileBtn = document.getElementById("viewProfileBtn");
+
 viewProfileBtn.onclick = () => {
-
-    if (!target) return;
-
     window.location.href =
-        `profile-follow.html?id=${target.user_id}`;
-     };
+        `profile-follow.html?id=${target.id}`;
+};
 
     await loadMessages();
 
