@@ -170,3 +170,21 @@ function renderFileList(){
     });
 
 }
+
+
+const paymentProof =
+document.getElementById("paymentProof");
+
+const paymentFileName =
+document.getElementById("paymentFileName");
+
+paymentProof?.addEventListener("change", () => {
+
+    if(paymentProof.files.length){
+
+        paymentFileName.textContent =
+        paymentProof.files[0].name;
+
+    }
+
+});
