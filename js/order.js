@@ -285,8 +285,6 @@ await supabaseClient
 
     commission_id: commission.id,
 
-    client_id: user.id,
-
     sender_name: clientProfile.display_name,
     transfer_amount: selectedArtwork.price,
 
