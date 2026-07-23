@@ -142,6 +142,9 @@ fileInput.value = "";
 // tutup order
 commissionModal.style.display = "none";
 
+console.log("Sampai sini");
+console.log(paymentModal);
+
 // buka payment
 paymentModal.style.display = "flex";
 };
