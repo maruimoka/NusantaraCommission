@@ -1,3 +1,15 @@
+const paymentModal =
+document.getElementById("paymentModal");
+
+const paymentProof =
+document.getElementById("paymentProof");
+
+const paymentMethod =
+document.getElementById("paymentMethod");
+
+const confirmPaymentBtn =
+document.getElementById("confirmPaymentBtn");
+
 const commissionModal =
 document.getElementById("commissionModal");
 
@@ -33,6 +45,7 @@ const fileList =
 document.getElementById("fileList");
 
 let uploadedFiles = [];
+let pendingOrder = {};
 let selectedArtwork = null;
 
 function setSelectedArtwork(artwork){
@@ -105,7 +118,7 @@ for(const file of uploadedFiles){
     
 console.log(referenceUrls);
 
-const payload = {
+pendingOrder = {
 
     client_id: user.id,
 
@@ -115,44 +128,22 @@ const payload = {
 
     request_detail: request,
 
-    reference_files: referenceUrls,
-
-    status: "pending"
+    reference_files: referenceUrls
 
 };
 
-console.log("PAYLOAD:", payload);
+// reset form
+document.getElementById("description").value = "";
 
-const { data, error } = await supabaseClient
-    .from("commission")
-    .insert(payload)
-    .select();
+uploadedFiles = [];
+fileList.innerHTML = "";
+fileInput.value = "";
 
-console.log("INSERT DATA:", data);
-console.log("INSERT ERROR:", error);
+// tutup order
+commissionModal.style.display = "none";
 
-    if(error){
-
-        console.log(error);
-
-        alert(error.message);
-
-        return;
-
-    }
-
-    alert("Order berhasil!");
-
-    document.getElementById("description").value = "";
-
-    uploadedFiles = [];
-
-    fileList.innerHTML = "";
-
-    fileInput.value = "";
-
-    commissionModal.style.display = "none";
-
+// buka payment
+paymentModal.style.display = "flex";
 };
 
 function renderFileList(){
@@ -171,10 +162,6 @@ function renderFileList(){
 
 }
 
-
-const paymentProof =
-document.getElementById("paymentProof");
-
 const paymentFileName =
 document.getElementById("paymentFileName");
 
@@ -188,3 +175,117 @@ paymentProof?.addEventListener("change", () => {
     }
 
 });
+
+confirmPaymentBtn.onclick = async () => {
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
+        alert("Please login.");
+        return;
+
+    }
+
+    if (!paymentProof.files.length) {
+
+        alert("Upload payment proof first.");
+        return;
+
+    }
+
+    const file = paymentProof.files[0];
+
+    const filePath =
+        `${user.id}/${Date.now()}-${file.name}`;
+
+
+        const { error: uploadError } =
+    await supabaseClient.storage
+        .from("payment-proofs")
+        .upload(filePath, file);
+
+    if(uploadError){
+
+        alert(uploadError.message);
+        return;
+
+    }
+
+    const { data: publicData } =
+    supabaseClient.storage
+        .from("payment-proofs")
+        .getPublicUrl(filePath);
+
+    const proofUrl =
+        publicData.publicUrl;
+
+    const { data: commission, error } =
+await supabaseClient
+
+.from("commission")
+
+.insert({
+
+    ...pendingOrder,
+
+    status: "Waiting Payment Verification"
+
+})
+
+.select()
+
+.single();
+
+    if(error){
+
+    console.log(error);
+
+    alert(error.message);
+
+    return;
+
+}
+
+    const { error: paymentError } =
+await supabaseClient
+
+.from("payment_confirmations")
+
+.insert({
+
+    commission_id: commission.id,
+
+    payment_method: paymentMethod.value,
+
+    proof_url: proofUrl,
+
+    status: "Pending"
+
+});
+
+    if(paymentError){
+
+    console.log(paymentError);
+
+    alert(paymentError.message);
+
+    return;
+
+}
+
+    alert("Payment submitted successfully!");
+
+paymentModal.style.display = "none";
+
+paymentProof.value = "";
+
+paymentMethod.value = "";
+paymentFileName.textContent = "";
+
+pendingOrder = {};
+
+window.location.href = "Trackerlist-client.html";
+}
