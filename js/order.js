@@ -4,9 +4,6 @@ document.getElementById("paymentModal");
 const paymentProof =
 document.getElementById("paymentProof");
 
-const paymentMethod =
-document.getElementById(payment_method: "Bank Transfer");
-
 const confirmPaymentBtn =
 document.getElementById("confirmPaymentBtn");
 
@@ -15,6 +12,9 @@ document.getElementById("commissionModal");
 
 const closeCommission =
 document.getElementById("closecommission");
+
+const paymentMethod =
+document.getElementById("paymentMethod");
 
 closeCommission.addEventListener("click", () => {
     commissionModal.style.display = "none";
@@ -274,7 +274,7 @@ await supabaseClient
 
     commission_id: commission.id,
 
-    payment_method: paymentMethod.value,
+    payment_method: "Bank Transfer",
 
     proof_url: proofUrl,
 
@@ -298,7 +298,6 @@ paymentModal.style.display = "none";
 
 paymentProof.value = "";
 
-paymentMethod.value = "";
 paymentFileName.textContent = "";
 
 pendingOrder = {};
