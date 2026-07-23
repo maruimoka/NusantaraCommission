@@ -13,15 +13,16 @@ body{
 =========================== */
 
 .chat-container{
-
     display:flex;
 
-    height:calc(100vh - 80px);
+    padding-top:95px;
+
+    height:100vh;
+
+    box-sizing:border-box;
 
     overflow:hidden;
-
 }
-
 /* ===========================
    SIDEBAR
 =========================== */
@@ -44,7 +45,7 @@ body{
 
 .sidebar-header{
 
-    padding:25px;
+   padding:20px 25px;
 
     border-bottom:1px solid #eee;
 
@@ -61,9 +62,7 @@ body{
 /* Search */
 
 .search-box{
-
-    padding:20px;
-
+    padding:15px 20px 20px;
 }
 
 .search-box input{
@@ -101,7 +100,7 @@ body{
     align-items:center;
     gap:15px;
 
-    padding:16px 18px;
+     padding:16px 20px;
 
     cursor:pointer;
 
@@ -113,7 +112,9 @@ body{
 }
 
 .conversation-item.active{
-    background:#ececff;
+     background:#fff1f1;
+
+    border-left:4px solid #ff5b5b;
 }
 
 .conversation-avatar{
@@ -245,7 +246,7 @@ body{
 
     border-radius:10px;
 
-    background:#5b67ff;
+    background:#FF3131;
 
     color:white;
 
@@ -339,7 +340,7 @@ body{
 
     border-radius:50%;
 
-    background:#5b67ff;
+    background:#FF3131;
 
     color:white;
 
@@ -393,7 +394,7 @@ body{
 
 .my-message .message-bubble{
 
-    background:#5b67ff;
+    background:#FF3131;
     color:white;
 
 }
