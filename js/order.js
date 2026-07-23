@@ -5,7 +5,7 @@ const paymentProof =
 document.getElementById("paymentProof");
 
 const paymentMethod =
-document.getElementById("paymentMethod");
+document.getElementById(payment_method: "Bank Transfer");
 
 const confirmPaymentBtn =
 document.getElementById("confirmPaymentBtn");
@@ -144,6 +144,19 @@ commissionModal.style.display = "none";
 
 console.log("Sampai sini");
 console.log(paymentModal);
+
+// isi informasi pembayaran
+document.getElementById("paymentBank").value =
+selectedArtwork.artist_profiles?.bank_name || "";
+
+document.getElementById("paymentAccountName").value =
+selectedArtwork.artist_profiles?.account_holder || "";
+
+document.getElementById("paymentAccountNumber").value =
+selectedArtwork.artist_profiles?.account_number || "";
+
+document.getElementById("paymentAmount").value =
+`Rp ${Number(selectedArtwork.price).toLocaleString("id-ID")}`;
 
 // buka payment
 paymentModal.style.display = "flex";
