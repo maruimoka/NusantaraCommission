@@ -814,6 +814,13 @@ color:#777;
     margin-top:75px;
 }
 
+.profile-action{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    margin-left:auto;
+}
+
 .chatBtn{
     width:260px;
     height:82px;
