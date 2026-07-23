@@ -36,7 +36,6 @@ const {
 } = await supabaseClient.auth.getUser();
 
 if (user) {
-
     const { data: profile } = await supabaseClient
         .from("artist_profiles")
         .select("adult_verified")
