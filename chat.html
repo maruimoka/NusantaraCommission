@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/chat.css">
+     <link rel="stylesheet" href="css/gallery.css">
 
     <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -21,33 +22,44 @@
         NAVBAR
 ========================= -->
 
-<nav>
+  <header>
+        <nav class="navbar">
 
-    <div class="logo">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="asset/logo.png">
+                </a>
+            </div>
 
-        <a href="homepage.html">
-            Nusantara Commission
-        </a>
+        <button id="logoutBtn" class="logout-btn">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+
+    </nav>
+    </header>
+<!-- LOGOUT MODAL -->
+<div class="logout-modal" id="logoutModal">
+
+    <div class="logout-box">
+
+        <span class="close-logout">&times;</span>
+
+        <h2>
+            You sure want to <br>
+            Log Out?
+        </h2>
+
+        <button class="yes-btn" id="confirmLogout">
+            Yes
+        </button>
+
+        <button class="no-btn" id="cancelLogout">
+            No
+        </button>
 
     </div>
 
-    <div class="nav-right">
-
-        <a href="homepage.html">
-            Home
-        </a>
-
-        <a href="analytics.html">
-            Analytics
-        </a>
-
-        <a href="profile.html">
-            Profile
-        </a>
-
-    </div>
-
-</nav>
+</div>
 
 
 <!-- =========================
@@ -202,6 +214,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="js/chat.js"></script>
+<script src="js/logout.js"></script>
 
 </body>
 </html>
