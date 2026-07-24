@@ -215,11 +215,12 @@ if(profileError){
     return;
 }
 
-    const { data, error } = await supabaseClient
+   const { data, error } = await supabaseClient
 .from("commission")
 .select(`
     *,
     artist:artist_id(
+        id,
         display_name,
         profile_image
     ),
@@ -233,7 +234,7 @@ if(profileError){
 `)
 .eq("client_id", myProfile.id)
 .order("created_at", {
-    ascending:false
+    ascending: false
 });
 
     if (error) {
@@ -300,6 +301,23 @@ document.getElementById("trackerPrice").textContent =
 
 document.getElementById("trackerArtist").textContent =
 order.artist?.display_name ?? "-";
+
+const trackerArtist =
+document.getElementById("trackerArtist");
+
+trackerArtist.textContent =
+order.artist?.display_name ?? "-";
+
+trackerArtist.style.cursor = "pointer";
+
+trackerArtist.onclick = () => {
+
+    if(!order.artist?.id) return;
+
+    window.location.href =
+    `profile-follow.html?id=${order.artist.id}`;
+
+};
 
 const status = document.getElementById("trackerStatus");
 
