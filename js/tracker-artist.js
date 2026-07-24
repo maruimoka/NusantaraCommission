@@ -312,6 +312,12 @@ card.onclick = () => {
     document.getElementById("requestDetail").value =
         order.request_detail ?? "";
 
+    console.log(order);
+
+const payment = order.payment_confirmations?.[0];
+
+console.log(payment);
+
     const payment =
 order.payment_confirmations?.[0];
 
