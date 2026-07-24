@@ -201,9 +201,13 @@ async function loadArtwork() {
         .select(`
             *,
             artist_profiles(
-                display_name,
-                profile_image
-            )
+        id,
+        display_name,
+        profile_image,
+        bank_name,
+        account_holder,
+        account_number
+    )
         `)
         .eq("artist_id", artistId)
         .order("created_at", {
@@ -290,7 +294,9 @@ function renderCard(artwork, container, type){
 // =========================
 
 function openPreview(artwork){
-    selectedArtwork = (artwork);
+
+    selectedArtwork = artwork;
+window.selectedArtwork = artwork;
     console.log("Selected Artwork:", selectedArtwork);
 
     document.getElementById("modalImage").src =
