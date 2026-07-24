@@ -1018,6 +1018,10 @@
 .payment-box{
 
     width:550px;
+    max-width:90%;
+
+    height:80vh;
+    max-height:750px;
 
     background:white;
 
@@ -1027,6 +1031,7 @@
 
     position:relative;
 
+    overflow-y:auto;
 }
 
 .payment-box h2{
@@ -1124,6 +1129,8 @@
 #confirmPaymentBtn{
 
     margin-top:35px;
+   
+    margin-bottom:10px;
 
     width:100%;
 
@@ -1150,5 +1157,24 @@
 #confirmPaymentBtn:hover{
 
     background:#e62b2b;
+
+}
+
+.payment-box::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.payment-box::-webkit-scrollbar-thumb{
+
+    background:#d0d0d0;
+    border-radius:999px;
+
+}
+
+.payment-box::-webkit-scrollbar-track{
+
+    background:transparent;
 
 }
