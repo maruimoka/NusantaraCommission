@@ -234,6 +234,13 @@ async function initTracker(){
                 title,
                 price,
                 image_url
+                 ),
+    payment_confirmations(
+        id,
+        sender_name,
+        transfer_amount,
+        proof_image,
+        status
             )
         `)
         .eq("artist_id", profile.id);
@@ -252,11 +259,11 @@ async function initTracker(){
     for(const order of data){
 
         const { data: clientProfile } =
-        await supabaseClient
-            .from("artist_profiles")
-            .select("display_name, profile_image")
-            .eq("user_id", order.client_id)
-            .single();
+await supabaseClient
+.from("artist_profiles")
+.select("display_name, profile_image")
+.eq("id", order.client_id)
+.single();
 
         console.log(clientProfile);
 
@@ -304,6 +311,20 @@ card.onclick = () => {
 
     document.getElementById("requestDetail").value =
         order.request_detail ?? "";
+
+    const payment =
+order.payment_confirmations?.[0];
+
+document.getElementById("paymentProofImage").src =
+payment?.proof_image || "";
+
+document.getElementById("paymentSender").textContent =
+payment?.sender_name || "-";
+
+document.getElementById("paymentAmount").textContent =
+payment?.transfer_amount
+? `Rp ${Number(payment.transfer_amount).toLocaleString("id-ID")}`
+: "-";
 
     const referenceList =
 document.getElementById("referenceList");
