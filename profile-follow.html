@@ -354,45 +354,29 @@ class="grid">
 
 <div id="paymentModal" class="modal">
 
-    <div class="modal-content payment-modal">
+    <div class="payment-box">
 
-        <span class="close-btn" id="closePayment">&times;</span>
+        <span id="closePayment" class="close-btn">&times;</span>
 
         <h2>PAYMENT</h2>
 
-        <label>Bank</label>
-        <input
-            type="text"
-            id="paymentBank"
-            readonly>
+        <div class="payment-info">
 
-        <label>Account Holder</label>
-        <input
-            type="text"
-            id="paymentAccountName"
-            readonly>
+            <label>Bank</label>
+            <input id="paymentBank" readonly>
 
-        <label>Account Number</label>
-        <input
-            type="text"
-            id="paymentAccountNumber"
-            readonly>
+            <label>Account Holder</label>
+            <input id="paymentAccountName" readonly>
 
-        <label>Transfer Amount</label>
-        <input
-            type="text"
-            id="paymentAmount"
-            readonly>
+            <label>Account Number</label>
+            <input id="paymentAccountNumber" readonly>
 
-        <label>Payment Proof</label>
+            <label>Transfer Amount</label>
+            <input id="paymentAmount" readonly>
 
-        <div class="upload-box">
+            <label>Payment Proof</label>
 
-            <p id="paymentFileName">
-                No file selected
-            </p>
-
-            <label class="add-file-btn">
+            <label class="upload-payment-btn">
 
                 + Upload Payment
 
@@ -404,14 +388,15 @@ class="grid">
 
             </label>
 
+            <p id="paymentFileName">
+                No file selected
+            </p>
+
+            <button id="confirmPaymentBtn">
+                CONFIRM PAYMENT
+            </button>
+
         </div>
-
-        <button
-            id="confirmPaymentBtn">
-
-            CONFIRM PAYMENT
-
-        </button>
 
     </div>
 
