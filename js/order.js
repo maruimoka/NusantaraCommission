@@ -10,11 +10,30 @@ document.getElementById("confirmPaymentBtn");
 const commissionModal =
 document.getElementById("commissionModal");
 
+const closePayment =
+document.getElementById("closePayment");
+
 const closeCommission =
 document.getElementById("closecommission");
 
 const paymentMethod =
 document.getElementById("paymentMethod");
+
+// ======================
+// CLOSE PAYMENT MODAL
+// ======================
+
+closePayment.addEventListener("click", () => {
+
+    paymentModal.style.display = "none";
+
+    paymentProof.value = "";
+
+    paymentFileName.textContent = "";
+
+    pendingOrder = {};
+
+});
 
 closeCommission.addEventListener("click", () => {
     commissionModal.style.display = "none";
@@ -334,3 +353,22 @@ pendingOrder = {};
 
 window.location.href = "Trackerlist-client.html";
 }
+
+window.addEventListener("click", (e) => {
+
+    // Tutup Order Modal
+    if (e.target === commissionModal) {
+        commissionModal.style.display = "none";
+    }
+
+    // Tutup Payment Modal
+    if (e.target === paymentModal) {
+        paymentModal.style.display = "none";
+    }
+
+    // Tutup Preview Modal
+    if (e.target === previewModal) {
+        previewModal.style.display = "none";
+    }
+
+});
