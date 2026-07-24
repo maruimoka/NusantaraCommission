@@ -162,30 +162,28 @@ class="description-area"
 readonly>
 </textarea>
 <hr>
+<!-- PAYMENT -->
+<label class="section-title">
+    Payment
+</label>
 
- <!-- payment proof -->
-
-        <h3>Payment Proof</h3>
-
-<img id="paymentProofImage">
+<img
+    id="paymentProofImage"
+    style="
+        width:250px;
+        border-radius:10px;
+        margin-bottom:15px;
+    ">
 
 <p>
-Sender :
-<span id="senderName"></span>
+    <strong>Sender :</strong>
+    <span id="paymentSender"></span>
 </p>
 
 <p>
-Amount :
-<span id="paymentAmount"></span>
+    <strong>Amount :</strong>
+    <span id="paymentAmount"></span>
 </p>
-
-<button id="confirmPaymentBtn">
-Confirm Payment
-</button>
-
-<button id="rejectPaymentBtn">
-Reject
-</button>
         <!-- Upload -->
 
         <h2 class="submit-title">
