@@ -318,9 +318,6 @@ const payment = order.payment_confirmations?.[0];
 
 console.log(payment);
 
-    const payment =
-order.payment_confirmations?.[0];
-
 document.getElementById("paymentProofImage").src =
 payment?.proof_image || "";
 
