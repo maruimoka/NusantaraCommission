@@ -85,6 +85,19 @@ submitBtn.onclick = async () => {
 
     }
 
+    const { data: myProfile, error: profileError } =
+await supabaseClient
+.from("artist_profiles")
+.select("id")
+.eq("user_id", user.id)
+.single();
+
+if (profileError) {
+    console.log(profileError);
+    alert("Profile tidak ditemukan.");
+    return;
+}
+
    const request =
 document.getElementById("description").value.trim();
 
@@ -120,7 +133,7 @@ console.log(referenceUrls);
 
 pendingOrder = {
 
-    client_id: user.id,
+    client_id: myProfile.id,
 
     artist_id: selectedArtwork.artist_id,
 
@@ -271,7 +284,7 @@ await supabaseClient
 const { data: clientProfile } =
 await supabaseClient
 .from("artist_profiles")
-.select("display_name")
+.select("id, display_name")
 .eq("user_id", user.id)
 .single();
 
@@ -285,7 +298,10 @@ await supabaseClient
 
     commission_id: commission.id,
 
+    client_id: clientProfile.id,
+
     sender_name: clientProfile.display_name,
+
     transfer_amount: selectedArtwork.price,
 
     transfer_date: new Date().toISOString().split("T")[0],
