@@ -351,6 +351,71 @@ class="grid">
     </div>
 
 </div>
+
+<div id="paymentModal" class="modal">
+
+    <div class="modal-content payment-modal">
+
+        <span class="close-btn" id="closePayment">&times;</span>
+
+        <h2>PAYMENT</h2>
+
+        <label>Bank</label>
+        <input
+            type="text"
+            id="paymentBank"
+            readonly>
+
+        <label>Account Holder</label>
+        <input
+            type="text"
+            id="paymentAccountName"
+            readonly>
+
+        <label>Account Number</label>
+        <input
+            type="text"
+            id="paymentAccountNumber"
+            readonly>
+
+        <label>Transfer Amount</label>
+        <input
+            type="text"
+            id="paymentAmount"
+            readonly>
+
+        <label>Payment Proof</label>
+
+        <div class="upload-box">
+
+            <p id="paymentFileName">
+                No file selected
+            </p>
+
+            <label class="add-file-btn">
+
+                + Upload Payment
+
+                <input
+                    type="file"
+                    id="paymentProof"
+                    accept="image/*"
+                    hidden>
+
+            </label>
+
+        </div>
+
+        <button
+            id="confirmPaymentBtn">
+
+            CONFIRM PAYMENT
+
+        </button>
+
+    </div>
+
+</div>
     
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
