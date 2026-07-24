@@ -202,25 +202,38 @@ async function initTracker() {
 
     const user = session.user;
 
+    // ambil id artist_profile milik client
+const { data: myProfile, error: profileError } =
+await supabaseClient
+.from("artist_profiles")
+.select("id")
+.eq("user_id", user.id)
+.single();
+
+if(profileError){
+    console.log(profileError);
+    return;
+}
+
     const { data, error } = await supabaseClient
-        .from("commission")
-        .select(`
-            *,
-            artist:artist_id(
-                display_name,
-                profile_image
-            ),
-            artwork:artwork_id(
-                title,
-                price,
-                description,
-                image_url,
-                category
-            )
-        `)
-    .eq("client_id", user.id)
-    .order("created_at", {
-    ascending: false
+.from("commission")
+.select(`
+    *,
+    artist:artist_id(
+        display_name,
+        profile_image
+    ),
+    artwork:artwork_id(
+        title,
+        price,
+        description,
+        image_url,
+        category
+    )
+`)
+.eq("client_id", myProfile.id)
+.order("created_at", {
+    ascending:false
 });
 
     if (error) {
@@ -349,7 +362,7 @@ if(order.reference_files && order.reference_files.length > 0){
 // ======================
 
 const resultWrapper =
-document.getElementById("resultWrapper");
+document.getElementById("resultSection");
 
 const openBtn =
 document.getElementById("openResultBtn");
